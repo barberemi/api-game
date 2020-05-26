@@ -37,7 +37,7 @@ initialize: pull install_vendors reset_db ##@Global Git pull, install vendors, r
 .PHONY: start
 start: ##@Global Launch API server
 	@echo "$(_PREFIX)$(WARN_COLOR)Launch API server$(NO_COLOR)"
-	bin/console server:run
+	symfony server:start
 
 .PHONY: pull
 pull: ##@Global Pull latest version from github
