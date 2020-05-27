@@ -5,14 +5,14 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 //use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="user")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-// @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
-class User
+class User implements UserInterface
 {
     use TimestampableEntity;
 
@@ -28,7 +28,7 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     protected $password;
 
@@ -40,7 +40,7 @@ class User
     protected $salt;
 
     /**
-     * @var string
+     * @var null|string
      *
      * @Assert\NotBlank(groups={"registration"})
      */
@@ -52,6 +52,7 @@ class User
      * @ORM\Column(type="string", length=255, unique=true)
      *
      * @Assert\NotBlank
+     * @Assert\Email
      */
     protected $email;
 
@@ -68,6 +69,15 @@ class User
      * @ORM\Column(type="boolean")
      */
     protected $isActive = false;
+
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        $this->salt     = md5(uniqid(null, true));
+        $this->role     = 'ROLE_USER';
+    }
 
     /**
      * @return int
@@ -118,19 +128,19 @@ class User
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getPlainPassword(): string
+    public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
 
     /**
-     * @param string $plainPassword
+     * @param null|string $plainPassword
      *
      * @return User
      */
-    public function setPlainPassword(string $plainPassword): self
+    public function setPlainPassword(?string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
 
@@ -160,9 +170,32 @@ class User
     /**
      * @return string
      */
+    public function getUsername(): string
+    {
+        return $this->getEmail();//Use by JWT for authenticate user
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function eraseCredentials()
+    {
+    }
+
+    /**
+     * @return string
+     */
     public function getRole(): string
     {
         return $this->role;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRoles(): array
+    {
+        return [$this->role];
     }
 
     /**

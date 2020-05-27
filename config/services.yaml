@@ -1,3 +1,5 @@
+#imports:
+#    - { resource: user.yml }
 # This file is the entry point to configure your own services.
 # Files in the packages/ subdirectory configure your dependencies.
 
@@ -23,19 +25,6 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
-
-
-stof_doctrine_extensions:
-    orm:
-        default:
-            timestampable: true
-
-nelmio_api_doc:
-    documentation:
-        info:
-            title: My API Game
-            description: This is an awesome API Game !
-            version: 1.0.0
-
+    App\Repository\UserRepository:
+        arguments:
+            $entityClass: 'App\Entity\User'
