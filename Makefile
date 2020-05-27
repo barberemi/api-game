@@ -30,8 +30,8 @@ HELP_FUN = \
 help: ##@Global Show this help.
 	@perl -e '$(HELP_FUN)' $(MAKEFILE_LIST)
 
-.PHONY: initialize
-initialize: pull install_vendors reset_db ##@Global Git pull, install vendors, reset db
+.PHONY: install
+install: pull install_vendors reset_db ##@Global Git pull, install vendors, reset db
 	@echo "$(_PREFIX)$(OK_COLOR)API ready to use$(NO_COLOR)."
 
 .PHONY: start
