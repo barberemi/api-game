@@ -75,8 +75,8 @@ class User implements UserInterface
      */
     public function __construct()
     {
-        $this->salt     = md5(uniqid(null, true));
-        $this->role     = 'ROLE_USER';
+        $this->salt = md5(uniqid(null, true));
+        $this->role = 'ROLE_USER';
     }
 
     /**
