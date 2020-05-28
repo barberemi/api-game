@@ -1,6 +1,6 @@
 framework:
     secret: '%env(APP_SECRET)%'
-    #csrf_protection: true
+    csrf_protection: false
     #http_method_override: true
     validation:
         enable_annotations: true
@@ -28,3 +28,6 @@ nelmio_api_doc:
             title: My API Game
             description: This is an awesome API Game !
             version: 1.0.0
+    areas:
+        path_patterns:
+            - ^/(?!_) # to exclude profiler, errors etc

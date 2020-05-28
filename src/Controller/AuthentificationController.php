@@ -3,17 +3,20 @@
 namespace App\Controller;
 
 use App\Manager\UserManager;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
  * Class AuthentificationController
  *
  * @Route("/authentification")
  */
-class AuthentificationController
+class AuthentificationController extends AbstractController
 {
     /**
      * @var UserManager userManager
@@ -85,5 +88,69 @@ class AuthentificationController
         }
 
         return new JsonResponse([], JsonResponse::HTTP_CREATED);
+    }
+
+    /**
+     * Login.
+     *
+     * @Route("/login", methods={"GET", "POST"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="When user login correctly."
+     * )
+     * @SWG\Response(
+     *     response=500,
+     *     description="When some errors on params."
+     * )
+     * @SWG\Parameter(
+     *     name="email",
+     *     in="formData",
+     *     type="string",
+     *     required=true,
+     *     description="The email of user."
+     * )
+     * @SWG\Parameter(
+     *     name="plainPassword",
+     *     in="formData",
+     *     type="string",
+     *     required=true,
+     *     description="The plainPassword of user."
+     * )
+     * @SWG\Tag(name="authentification")
+     *
+     * @param AuthenticationUtils $authenticationUtils
+     *
+     * @return Response
+     */
+    public function login(AuthenticationUtils $authenticationUtils): Response
+    {
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('login.html.twig', [
+            'last_username' => $lastUsername,
+            'error' => $error
+        ]);
+    }
+
+    /**
+     * Logout.
+     *
+     * @Route("/logout", methods={"GET"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="When user logout correctly."
+     * )
+     * @SWG\Response(
+     *     response=500,
+     *     description="When some errors."
+     * )
+     * @SWG\Tag(name="authentification")
+     *
+     */
+    public function logout()
+    {
     }
 }
