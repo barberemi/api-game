@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security;
+namespace App\Manager;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
+class AuthentificationManager extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
