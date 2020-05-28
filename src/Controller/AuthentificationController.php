@@ -31,7 +31,7 @@ class AuthentificationController
     }
 
     /**
-     * Create the user.
+     * Create an user.
      *
      * @Route("/signup", methods={"POST"})
      * @SWG\Response(

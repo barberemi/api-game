@@ -18,13 +18,12 @@ class UserRepository extends AbstractRepository
      * UserRepository constructor.
      *
      * @param ManagerRegistry              $registry
-     * @param string                       $entityClass
      * @param ValidatorInterface           $validator
      * @param UserPasswordEncoderInterface $passwordEncoder
      */
-    public function __construct(ManagerRegistry $registry, string $entityClass, ValidatorInterface $validator, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(ManagerRegistry $registry, ValidatorInterface $validator, UserPasswordEncoderInterface $passwordEncoder)
     {
-        parent::__construct($registry, $entityClass, $validator);
+        parent::__construct($registry, User::class, $validator);
         $this->passwordEncoder = $passwordEncoder;
     }
 
