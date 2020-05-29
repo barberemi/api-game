@@ -41,8 +41,8 @@ class UserRepository extends AbstractRepository
             }
             $this->validate($user);
 
-            $this->getEntityManager()->persist($user);
-            $this->getEntityManager()->flush();
+            $this->_em->persist($user);
+            $this->_em->flush();
 
             $user->setPlainPassword(null);
 

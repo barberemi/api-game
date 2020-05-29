@@ -36,8 +36,8 @@ abstract class AbstractRepository extends ServiceEntityRepository
      */
     public function create($entity)
     {
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
+        $this->_em->persist($entity);
+        $this->_em->flush();
 
         return $entity;
     }
@@ -52,7 +52,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
      */
     public function update($entity)
     {
-        $this->getEntityManager()->flush();
+        $this->_em->flush();
 
         return $entity;
     }
@@ -67,8 +67,8 @@ abstract class AbstractRepository extends ServiceEntityRepository
      */
     public function delete($entity)
     {
-        $this->getEntityManager()->remove($entity);
-        $this->getEntityManager()->flush();
+        $this->_em->remove($entity);
+        $this->_em->flush();
 
         return $entity;
     }
