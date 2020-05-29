@@ -28,19 +28,17 @@ class UserRepository extends AbstractRepository
     }
 
     /**
-     * @param string $email
-     * @param string $plainPassword
+     * @param User $user
      *
      * @return User
      * @throws \Exception
      */
-    public function create(string $email, string $plainPassword): User
+    public function create($user): User
     {
         try{
-            $user = (new User())
-                ->setEmail($email)
-                ->setPlainPassword($plainPassword);
-            $user->setPassword($this->passwordEncoder->encodePassword($user, $plainPassword));
+            if (!empty($user->getPlainPassword())) {
+                $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPlainPassword()));
+            }
             $this->validate($user);
 
             $this->getEntityManager()->persist($user);

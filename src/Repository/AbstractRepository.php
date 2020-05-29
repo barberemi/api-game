@@ -27,6 +27,53 @@ abstract class AbstractRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param mixed $entity
+     *
+     * @return mixed
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function create($entity)
+    {
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+
+        return $entity;
+    }
+
+    /**
+     * @param mixed $entity
+     *
+     * @return mixed
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function update($entity)
+    {
+        $this->getEntityManager()->flush();
+
+        return $entity;
+    }
+
+    /**
+     * @param mixed $entity
+     *
+     * @return mixed
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function delete($entity)
+    {
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
+
+        return $entity;
+    }
+
+    /**
      * @param $entity
      *
      * @throws \Exception

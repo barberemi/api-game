@@ -37,7 +37,9 @@ class UserManager
         }
 
         try {
-            $user = $this->em->getRepository(User::class)->create($email, $plainPassword);
+            $user = $this->em->getRepository(User::class)->create(
+                (new User())->setEmail($email)->setPlainPassword($plainPassword)
+            );
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }

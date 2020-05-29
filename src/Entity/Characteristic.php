@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-//use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -34,11 +33,11 @@ class Characteristic
     protected $name;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="text")
      */
-    protected $value = 0;
+    protected $description;
 
     /**
      * @return int
@@ -69,21 +68,21 @@ class Characteristic
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getValue(): int
+    public function getDescription(): string
     {
-        return $this->value;
+        return $this->description;
     }
 
     /**
-     * @param int $value
+     * @param string $description
      *
      * @return Characteristic
      */
-    public function setValue(int $value): self
+    public function setDescription(string $description): self
     {
-        $this->value = $value;
+        $this->description = $description;
 
         return $this;
     }
