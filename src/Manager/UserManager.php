@@ -4,46 +4,36 @@ namespace App\Manager;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
-class UserManager
+class UserManager extends AbstractManager
 {
     /**
-     * @var EntityManagerInterface $em
-     */
-    protected $em;
-
-    /**
+     * CharacteristicManager constructor.
+     *
      * @param EntityManagerInterface $em
+     * @param SerializerInterface    $serializer
      */
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, SerializerInterface $serializer)
     {
-        $this->em = $em;
+        parent::__construct($em, $serializer, User::class);
     }
 
     /**
-     * @param string $email
-     * @param string $plainPassword
+     * @param array $data
      *
      * @return User
      *
      * @throws \Exception
      */
-    public function create(string $email, string $plainPassword): User
+    public function create(array $data): User
     {
-        $exist = $this->em->getRepository(User::class)->findBy(['email' => $email]);
+        $exist = $this->em->getRepository(User::class)->findBy(['email' => $data['email']]);
 
         if ($exist) {
             throw new \Exception('User with this email already exists.');
         }
 
-        try {
-            $user = $this->em->getRepository(User::class)->create(
-                (new User())->setEmail($email)->setPlainPassword($plainPassword)
-            );
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
-        }
-
-        return $user;
+        return parent::create($data);
     }
 }

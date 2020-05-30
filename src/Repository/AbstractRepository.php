@@ -27,32 +27,45 @@ abstract class AbstractRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param mixed $entity
+     * @param $entity
      *
      * @return mixed
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Exception
      */
     public function create($entity)
     {
-        $this->_em->persist($entity);
-        $this->_em->flush();
+        try{
+            $this->validate($entity);
+
+            $this->_em->persist($entity);
+            $this->_em->flush();
+
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
 
         return $entity;
     }
 
     /**
-     * @param mixed $entity
+     * @param $entity
      *
      * @return mixed
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Exception
      */
     public function update($entity)
     {
-        $this->_em->flush();
+        try{
+            $this->validate($entity);
+//print_r($entity);exit;
+            $this->_em->merge($entity);
+            $this->_em->flush();
+
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
 
         return $entity;
     }
@@ -71,6 +84,16 @@ abstract class AbstractRepository extends ServiceEntityRepository
         $this->_em->flush();
 
         return $entity;
+    }
+
+    /**
+     * Used on serializer.
+     *
+     * @return string
+     */
+    public function getEntityNameSpace()
+    {
+        return $this->getEntityName();
     }
 
     /**

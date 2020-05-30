@@ -88,6 +88,18 @@ class User implements UserInterface
     }
 
     /**
+     * @param $id
+     *
+     * @return User
+     */
+    public function setId($id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getPassword(): string

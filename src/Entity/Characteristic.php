@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+//use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -28,7 +29,7 @@ class Characteristic
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     protected $name;
 
@@ -45,6 +46,18 @@ class Characteristic
     public function getId(): int
     {
         return $this->id;
+    }
+
+    /**
+     * @param $id
+     *
+     * @return Characteristic
+     */
+    public function setId($id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**

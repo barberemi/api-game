@@ -50,18 +50,15 @@ class AuthentificationController extends AbstractController
      *     description="When an user already exists with this email."
      * )
      * @SWG\Parameter(
-     *     name="email",
-     *     in="formData",
-     *     type="string",
+     *     name="user",
+     *     in="body",
      *     required=true,
-     *     description="The email of user."
-     * )
-     * @SWG\Parameter(
-     *     name="plainPassword",
-     *     in="formData",
-     *     type="string",
-     *     required=true,
-     *     description="The plainPassword of user."
+     *     description="JSON payload.",
+     *     @SWG\Schema(
+     *         type="object",
+     *         @SWG\Property(property="email", type="string", example="toto@gmail.com"),
+     *         @SWG\Property(property="plainPassword", type="string", example="totoDu56%"),
+     *     )
      * )
      * @SWG\Tag(name="authentification")
      *
@@ -71,18 +68,18 @@ class AuthentificationController extends AbstractController
      */
     public function signUp(Request $request)
     {
-        if (!$request->request->has('email')) {
+        $data = json_decode($request->getContent(), true);
+
+        if (!$data['email']) {
             return new JsonResponse(['error' => 'email is null'], JsonResponse::HTTP_BAD_REQUEST);
         }
-        $email = $request->request->get('email');
 
-        if (!$request->request->has('plainPassword')) {
+        if (!$data['plainPassword']) {
             return new JsonResponse(['error' => 'plainPassword is null'], JsonResponse::HTTP_BAD_REQUEST);
         }
-        $plainPassword = $request->request->get('plainPassword');
 
         try {
-            $this->userManager->create($email, $plainPassword);
+            $this->userManager->create($data);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
