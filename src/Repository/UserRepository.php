@@ -36,9 +36,8 @@ class UserRepository extends AbstractRepository
     public function create($user): User
     {
         try{
-            if (!empty($user->getPlainPassword())) {
-                $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPlainPassword()));
-            }
+            $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPlainPassword()));
+
             $this->validate($user);
 
             $this->_em->persist($user);

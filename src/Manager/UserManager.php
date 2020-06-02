@@ -34,6 +34,8 @@ class UserManager extends AbstractManager
             throw new \Exception('User with this email already exists.');
         }
 
+        $data['plainPassword'] = $data['password'];
+
         return parent::create($data);
     }
 }

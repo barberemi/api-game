@@ -9,12 +9,11 @@ use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
  * Class AuthentificationController
  *
- * @Route("/authentification")
+ * @Route("/auth")
  */
 class AuthentificationController extends AbstractController
 {
@@ -57,10 +56,10 @@ class AuthentificationController extends AbstractController
      *     @SWG\Schema(
      *         type="object",
      *         @SWG\Property(property="email", type="string", example="toto@gmail.com"),
-     *         @SWG\Property(property="plainPassword", type="string", example="totoDu56%"),
+     *         @SWG\Property(property="password", type="string", example="totoDu56%"),
      *     )
      * )
-     * @SWG\Tag(name="authentification")
+     * @SWG\Tag(name="auth")
      *
      * @param Request $request
      *
@@ -74,8 +73,8 @@ class AuthentificationController extends AbstractController
             return new JsonResponse(['error' => 'email is null'], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        if (!$data['plainPassword']) {
-            return new JsonResponse(['error' => 'plainPassword is null'], JsonResponse::HTTP_BAD_REQUEST);
+        if (!$data['password']) {
+            return new JsonResponse(['error' => 'password is null'], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         try {
@@ -88,66 +87,38 @@ class AuthentificationController extends AbstractController
     }
 
     /**
-     * Login.
+     * @Route("/login_check", methods={"POST"})
      *
-     * @Route("/login", methods={"GET", "POST"})
      * @SWG\Response(
      *     response=200,
-     *     description="When user login correctly."
+     *     description="When user login check correctly."
      * )
      * @SWG\Response(
      *     response=500,
      *     description="When some errors on params."
      * )
      * @SWG\Parameter(
-     *     name="email",
-     *     in="formData",
-     *     type="string",
+     *     name="user",
+     *     in="body",
      *     required=true,
-     *     description="The email of user."
+     *     description="JSON payload.",
+     *     @SWG\Schema(
+     *         type="object",
+     *         @SWG\Property(property="username", type="string", example="test@gmail.com"),
+     *         @SWG\Property(property="password", type="string", example="blabla"),
+     *     )
      * )
-     * @SWG\Parameter(
-     *     name="plainPassword",
-     *     in="formData",
-     *     type="string",
-     *     required=true,
-     *     description="The plainPassword of user."
-     * )
-     * @SWG\Tag(name="authentification")
+     * @SWG\Tag(name="auth")
      *
-     * @param AuthenticationUtils $authenticationUtils
-     *
-     * @return Response
+     * @return JsonResponse
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function checkLogin(): Response
     {
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+        $user = $this->getUser();
 
-        return $this->render('login.html.twig', [
-            'last_username' => $lastUsername,
-            'error' => $error
+        return new Response([
+            'email' => $user->getEmail(),
+            'roles' => $user->getRoles(),
         ]);
-    }
-
-    /**
-     * Logout.
-     *
-     * @Route("/logout", methods={"GET"})
-     * @SWG\Response(
-     *     response=200,
-     *     description="When user logout correctly."
-     * )
-     * @SWG\Response(
-     *     response=500,
-     *     description="When some errors."
-     * )
-     * @SWG\Tag(name="authentification")
-     *
-     */
-    public function logout()
-    {
     }
 }

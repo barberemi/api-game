@@ -46,10 +46,11 @@ class CharacteristicController extends AbstractController
      * @SWG\Tag(name="characteristics")
      *
      * @param int $id
+     * @param Request $request
      *
      * @return JsonResponse
      */
-    public function show(int $id)
+    public function show(int $id, Request $request)
     {
         try {
             $characteristic = $this->characteristicManager->get($id);
