@@ -38,6 +38,21 @@ class AbstractManager
     }
 
     /**
+     * @param int $id
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function get(int $id)
+    {
+        $exist  = $this->em->getRepository($this->repositoryNamespace)->find($id);
+
+        if (!$exist) throw new \Exception(sprintf('Entity id %d doesnt exists.', $id));
+
+        return $this->serialize($exist);
+    }
+
+    /**
      * @param array $data
      *
      * @return array|object
@@ -100,6 +115,18 @@ class AbstractManager
     protected function deserialize(array $data, array $groups = [], $objectToPopulate = null)
     {
         return  $this->serializer->deserialize(json_encode($data), $this->repositoryNamespace, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $objectToPopulate]);
+
+    }
+
+    /**
+     * @param       $data
+     * @param array $groups
+     *
+     * @return string
+     */
+    protected function serialize($data, array $groups = [])
+    {
+        return  $this->serializer->serialize($data,'json');
 
     }
 }
