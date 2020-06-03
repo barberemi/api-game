@@ -104,7 +104,7 @@ class AuthentificationController extends AbstractController
      *     description="JSON payload.",
      *     @SWG\Schema(
      *         type="object",
-     *         @SWG\Property(property="username", type="string", example="test@gmail.com"),
+     *         @SWG\Property(property="email", type="string", example="test@gmail.com"),
      *         @SWG\Property(property="password", type="string", example="blabla"),
      *     )
      * )
