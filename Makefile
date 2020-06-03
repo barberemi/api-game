@@ -31,7 +31,7 @@ help: ##@Global Show this help.
 	@perl -e '$(HELP_FUN)' $(MAKEFILE_LIST)
 
 .PHONY: install
-install: pull install_vendors reset_db ##@Global Git pull, install vendors, reset db
+install: pull install_vendors reset_db generate_jwt_config ##@Global Git pull, install vendors, reset db, generate config JWT
 	@echo "$(_PREFIX)$(OK_COLOR)API ready to use$(NO_COLOR)."
 
 .PHONY: start
@@ -61,6 +61,14 @@ clean_cache: ##@Global Clean API cache
 test_behat: ##@Global Execute API behat tests
 	$(WAIT_FOR_CONTAINER) $(API_CONTAINER)
 	bin/behat -vvv
+
+.PHONY: generate_jwt_config
+generate_jwt_config: ##Global Generate key RSA to JWT config
+	@echo "$(_PREFIX)$(WARN_COLOR)Generate private RSA key JWT$(NO_COLOR)"
+	openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096
+	@echo "$(_PREFIX)$(WARN_COLOR)Generate public RSA key JWT$(NO_COLOR)"
+	openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout
+	@echo "[$(OK_COLOR)Config JWT generate$(NO_COLOR)]"
 
 # -- #
 # DB #
