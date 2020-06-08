@@ -3,10 +3,7 @@
 namespace App\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class AbstractManager
@@ -38,14 +35,6 @@ class AbstractManager
         $this->em = $em;
         $this->serializer = $serializer;
         $this->repositoryNamespace = $this->em->getRepository($className)->getEntityNameSpace();
-
-//        $defaultContext = [
-//            AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ($object) {
-//                return $object->getId();
-//            },
-//        ];
-//        $normalizer = new ObjectNormalizer(null, null, null, null, null, null, $defaultContext);
-//        $this->serializer = new Serializer([$normalizer], [new JsonEncoder()]);
     }
 
     /**
