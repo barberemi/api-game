@@ -59,7 +59,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
     {
         try{
             $this->validate($entity);
-//print_r($entity);exit;
+
             $this->_em->merge($entity);
             $this->_em->flush();
 

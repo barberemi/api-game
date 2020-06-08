@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-//use JMS\Serializer\Annotation as Serializer;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Table(name="user")
@@ -22,6 +24,7 @@ class User implements UserInterface
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Groups({"get"})
      */
     protected $id;
 
@@ -53,6 +56,7 @@ class User implements UserInterface
      *
      * @Assert\NotBlank
      * @Assert\Email
+     * @Groups({"get"})
      */
     protected $email;
 
@@ -60,6 +64,7 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(type="string", length=60)
+     * @Groups({"get"})
      */
     protected $role;
 
@@ -67,14 +72,25 @@ class User implements UserInterface
      * @var bool
      *
      * @ORM\Column(type="boolean")
+     * @Groups({"get"})
      */
     protected $isActive = false;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\UserCharacteristic", mappedBy="user", cascade={"persist"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     * @Groups({"get"})
+     */
+    protected $characteristics;
 
     /**
      * User constructor.
      */
     public function __construct()
     {
+        $this->characteristics = new ArrayCollection();
         $this->salt = md5(uniqid(null, true));
         $this->role = 'ROLE_USER';
     }
@@ -238,6 +254,56 @@ class User implements UserInterface
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getCharacteristics(): Collection
+    {
+        return $this->characteristics;
+    }
+
+    /**
+     * @param Collection $characteristics
+     *
+     * @return User
+     */
+    public function setCharacteristics(Collection $characteristics): self
+    {
+        $this->characteristics = $characteristics;
+
+        return $this;
+    }
+
+    /**
+     * @param Characteristic $characteristic
+     *
+     * @return User
+     */
+    public function addCharacteristic(Characteristic $characteristic): self
+    {
+        if (!$this->characteristics->contains($characteristic)) {
+            $this->characteristics[] = $characteristic;
+            $characteristic->addUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Characteristic $characteristic
+     *
+     * @return User
+     */
+    public function removeCharacteristic(Characteristic $characteristic): self
+    {
+        if ($this->characteristics->contains($characteristic)) {
+            $this->characteristics->removeElement($characteristic);
+            $characteristic->removeUser($this);
+        }
 
         return $this;
     }

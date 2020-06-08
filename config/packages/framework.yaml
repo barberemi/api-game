@@ -4,6 +4,9 @@ framework:
     #http_method_override: true
     validation:
         enable_annotations: true
+    serializer:
+        enable_annotations: true
+        circular_reference_handler: App\Manager\CircularReferenceHandler
 
     # Enables session support. Note that the session will ONLY be started if you read or write from it.
     # Remove or comment this section to explicitly disable session support.
