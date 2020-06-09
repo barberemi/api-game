@@ -86,6 +86,15 @@ class User implements UserInterface
     protected $characteristics;
 
     /**
+     * @var Academy
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Academy", inversedBy="users")
+     * @ORM\JoinColumn(name="academy_id", referencedColumnName="id")
+     * @Groups({"get"})
+     */
+    protected $academy;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -304,6 +313,26 @@ class User implements UserInterface
             $this->characteristics->removeElement($characteristic);
             $characteristic->removeUser($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return null|Academy
+     */
+    public function getAcademy(): ?Academy
+    {
+        return $this->academy;
+    }
+
+    /**
+     * @param null|Academy $academy
+     *
+     * @return User
+     */
+    public function setAcademy(?Academy $academy): self
+    {
+        $this->academy = $academy;
 
         return $this;
     }
