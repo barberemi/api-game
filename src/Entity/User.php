@@ -95,11 +95,21 @@ class User implements UserInterface
     protected $academy;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Skill", inversedBy="users", cascade={"persist"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     * @Groups({"get"})
+     */
+    protected $skills;
+
+    /**
      * User constructor.
      */
     public function __construct()
     {
         $this->characteristics = new ArrayCollection();
+        $this->skills = new ArrayCollection();
         $this->salt = md5(uniqid(null, true));
         $this->role = 'ROLE_USER';
     }
@@ -333,6 +343,56 @@ class User implements UserInterface
     public function setAcademy(?Academy $academy): self
     {
         $this->academy = $academy;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getSkills(): Collection
+    {
+        return $this->skills;
+    }
+
+    /**
+     * @param Collection $skills
+     *
+     * @return User
+     */
+    public function setSkills(Collection $skills): self
+    {
+        $this->skills = $skills;
+
+        return $this;
+    }
+
+    /**
+     * @param Skill $skill
+     *
+     * @return User
+     */
+    public function addUser(Skill $skill): self
+    {
+        if (!$this->skills->contains($skill)) {
+            $this->skills[] = $skill;
+            $skill->addUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Skill $skill
+     *
+     * @return User
+     */
+    public function removeUser(Skill $skill): self
+    {
+        if ($this->skills->contains($skill)) {
+            $this->skills->removeElement($skill);
+            $skill->removeUser($skill);
+        }
 
         return $this;
     }

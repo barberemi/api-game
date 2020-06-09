@@ -37,14 +37,12 @@ class UserCharacteristic
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="characteristics")
-     * @ORM\JoinColumn(nullable=false)
      * @Groups({"get"})
      */
     protected $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Characteristic", inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
      * @Groups({"get"})
      */
     protected $characteristic;
