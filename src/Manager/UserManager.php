@@ -4,7 +4,7 @@ namespace App\Manager;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
+use JMS\Serializer\SerializerInterface;
 
 class UserManager extends AbstractManager
 {

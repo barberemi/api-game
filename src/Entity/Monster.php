@@ -7,11 +7,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Table(name="monster")
  * @ORM\Entity(repositoryClass="App\Repository\MonsterRepository")
+ *
+ * @Serializer\ExclusionPolicy("all")
  */
 class Monster
 {
@@ -23,7 +25,10 @@ class Monster
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"update"})
      */
     protected $id;
 
@@ -33,7 +38,10 @@ class Monster
      * @ORM\Column(type="string", length=255, unique=true)
      *
      * @Assert\NotBlank
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $name;
 
@@ -42,7 +50,10 @@ class Monster
      *
      * @ORM\OneToMany(targetEntity="App\Entity\MonsterCharacteristic", mappedBy="monster", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\MonsterCharacteristic")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $characteristics;
 
@@ -51,7 +62,10 @@ class Monster
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Academy", inversedBy="monsters", cascade={"persist"})
      * @ORM\JoinColumn(name="academy_id", referencedColumnName="id")
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Academy")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $academy;
 
@@ -61,7 +75,10 @@ class Monster
      * @ORM\ManyToMany(targetEntity="App\Entity\Skill", inversedBy="monsters", cascade={"persist"})
      * @ORM\JoinTable(name="monster_skill")
      * @ORM\OrderBy({"id" = "ASC"})
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Skill")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $skills;
 

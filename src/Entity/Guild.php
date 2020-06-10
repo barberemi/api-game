@@ -5,13 +5,15 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation as Serializer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Table(name="guild")
  * @ORM\Entity(repositoryClass="App\Repository\GuildRepository")
+ *
+ * @Serializer\ExclusionPolicy("all")
  *
  * @UniqueEntity("name")
  */
@@ -25,7 +27,10 @@ class Guild
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"update"})
      */
     protected $id;
 
@@ -33,7 +38,10 @@ class Guild
      * @var string
      *
      * @ORM\Column(type="string", length=255, unique=true)
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $name;
 
@@ -41,7 +49,10 @@ class Guild
      * @var int
      *
      * @ORM\Column(type="integer")
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $nbMembers;
 
@@ -50,7 +61,10 @@ class Guild
      *
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="guild", cascade={"persist"})
      * @ORM\OrderBy({"id" = "ASC"})
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\User")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $users;
 

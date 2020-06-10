@@ -4,7 +4,7 @@ namespace App\Manager;
 
 use App\Entity\Characteristic;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
+use JMS\Serializer\SerializerInterface;
 
 class CharacteristicManager extends AbstractManager
 {

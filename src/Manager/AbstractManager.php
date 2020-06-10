@@ -3,8 +3,9 @@
 namespace App\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\SerializerInterface;
+use JMS\Serializer\DeserializationContext;
+use JMS\Serializer\Exception\ObjectConstructionException;
+use JMS\Serializer\Serializer;
 
 class AbstractManager
 {
@@ -14,7 +15,7 @@ class AbstractManager
     protected $em;
 
     /**
-     * @var SerializerInterface $serializer
+     * @var Serializer $serializer
      */
     protected $serializer;
 
@@ -27,10 +28,10 @@ class AbstractManager
      * AbstractManager constructor.
      *
      * @param EntityManagerInterface $em
-     * @param SerializerInterface    $serializer
+     * @param Serializer             $serializer
      * @param string                 $className
      */
-    public function __construct(EntityManagerInterface $em, $serializer, string $className)
+    public function __construct(EntityManagerInterface $em, Serializer $serializer, string $className)
     {
         $this->em = $em;
         $this->serializer = $serializer;
@@ -59,7 +60,7 @@ class AbstractManager
      */
     public function create(array $data)
     {
-        $entity = $this->deserialize($data);
+        $entity = $this->deserialize($data, ['create']);
         $entity = $this->em->getRepository($this->repositoryNamespace)->create($entity);
 
         return $entity;
@@ -81,7 +82,7 @@ class AbstractManager
 
         if(!array_key_exists('id', $data)) $data['id'] = $id;
 
-        $entity = $this->deserialize($data, [], $exist);
+        $entity = $this->deserialize($data, ['update']);
         $entity = $this->em->getRepository($this->repositoryNamespace)->update($entity);
 
         return $entity;
@@ -108,14 +109,22 @@ class AbstractManager
     /**
      * @param array $data
      * @param array $groups
-     * @param mixed $objectToPopulate
      *
-     * @return array|object
+     * @return array|mixed
+     *
+     * @throws \Exception
      */
-    protected function deserialize(array $data, array $groups = [], $objectToPopulate = null)
+    protected function deserialize(array $data, array $groups)
     {
-        return  $this->serializer->deserialize(json_encode($data), $this->repositoryNamespace, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $objectToPopulate]);
-
+        try {
+            return $this->serializer->fromArray(
+                $data,
+                $this->repositoryNamespace,
+                DeserializationContext::create()->setGroups($groups)
+            );
+        } catch (ObjectConstructionException $e) {
+            throw new \Exception(['message' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -126,7 +135,7 @@ class AbstractManager
      */
     protected function serialize($data, array $groups = [])
     {
-        return  $this->serializer->serialize($data,'json', ['groups' => $groups]);
+        return  $this->serializer->serialize($data,'json');
 
     }
 }

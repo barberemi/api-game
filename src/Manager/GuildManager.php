@@ -4,7 +4,7 @@ namespace App\Manager;
 
 use App\Entity\Guild;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
+use JMS\Serializer\SerializerInterface;
 
 class GuildManager extends AbstractManager
 {

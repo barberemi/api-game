@@ -4,12 +4,14 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Symfony\Component\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="user_characteristic")
  * @ORM\Entity(repositoryClass="App\Repository\UserCharacteristicRepository")
+ *
+ * @Serializer\ExclusionPolicy("all")
  */
 class UserCharacteristic
 {
@@ -21,7 +23,10 @@ class UserCharacteristic
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"update"})
      */
     protected $id;
 
@@ -31,19 +36,28 @@ class UserCharacteristic
      * @ORM\Column(type="integer")
      *
      * @Assert\GreaterThanOrEqual(1)
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $amount;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="characteristics")
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\User")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Characteristic", inversedBy="users")
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Characteristic")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $characteristic;
 

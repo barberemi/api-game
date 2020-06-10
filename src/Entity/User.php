@@ -8,11 +8,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ *
+ * @Serializer\ExclusionPolicy("all")
  */
 class User implements UserInterface
 {
@@ -24,7 +26,10 @@ class User implements UserInterface
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"update"})
      */
     protected $id;
 
@@ -46,6 +51,10 @@ class User implements UserInterface
      * @var null|string
      *
      * @Assert\NotBlank(groups={"registration"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $plainPassword;
 
@@ -56,7 +65,10 @@ class User implements UserInterface
      *
      * @Assert\NotBlank
      * @Assert\Email
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $email;
 
@@ -64,7 +76,10 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(type="string", length=60)
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $role;
 
@@ -72,7 +87,10 @@ class User implements UserInterface
      * @var bool
      *
      * @ORM\Column(type="boolean")
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("boolean")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $isActive = false;
 
@@ -81,7 +99,10 @@ class User implements UserInterface
      *
      * @ORM\OneToMany(targetEntity="App\Entity\UserCharacteristic", mappedBy="user", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\UserCharacteristic")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $characteristics;
 
@@ -90,7 +111,10 @@ class User implements UserInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Academy", inversedBy="users", cascade={"persist"})
      * @ORM\JoinColumn(name="academy_id", referencedColumnName="id")
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Academy")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $academy;
 
@@ -100,7 +124,10 @@ class User implements UserInterface
      * @ORM\ManyToMany(targetEntity="App\Entity\Skill", inversedBy="users", cascade={"persist"})
      * @ORM\JoinTable(name="user_skill")
      * @ORM\OrderBy({"id" = "ASC"})
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Skill")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $skills;
 
@@ -109,7 +136,10 @@ class User implements UserInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Guild", inversedBy="users", cascade={"persist"})
      * @ORM\JoinColumn(name="guild_id", referencedColumnName="id")
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Guild")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $guild;
 

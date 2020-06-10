@@ -7,11 +7,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Table(name="characteristic")
  * @ORM\Entity(repositoryClass="App\Repository\CharacteristicRepository")
+ *
+ * @Serializer\ExclusionPolicy("all")
  *
  * @UniqueEntity("name")
  */
@@ -25,7 +27,10 @@ class Characteristic
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"update"})
      */
     protected $id;
 
@@ -33,7 +38,10 @@ class Characteristic
      * @var string
      *
      * @ORM\Column(type="string", length=255, unique=true)
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $name;
 
@@ -41,7 +49,10 @@ class Characteristic
      * @var string
      *
      * @ORM\Column(type="text")
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $description;
 
@@ -50,7 +61,10 @@ class Characteristic
      *
      * @ORM\OneToMany(targetEntity="App\Entity\UserCharacteristic", mappedBy="characteristic", cascade={"persist"})
      * @ORM\OrderBy({"id" = "ASC"})
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\UserCharacteristic")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $users;
 
@@ -59,7 +73,10 @@ class Characteristic
      *
      * @ORM\OneToMany(targetEntity="App\Entity\MonsterCharacteristic", mappedBy="characteristic", cascade={"persist"})
      * @ORM\OrderBy({"id" = "ASC"})
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\MonsterCharacteristic")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $monsters;
 

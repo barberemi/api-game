@@ -87,6 +87,24 @@
     "gedmo/doctrine-extensions": {
         "version": "v2.4.41"
     },
+    "jms/metadata": {
+        "version": "1.7.0"
+    },
+    "jms/parser-lib": {
+        "version": "1.0.0"
+    },
+    "jms/serializer": {
+        "version": "1.14.1"
+    },
+    "jms/serializer-bundle": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.0",
+            "ref": "fe60ce509ef04a3f40da96e3979bc8d9b13b2372"
+        }
+    },
     "lcobucci/jwt": {
         "version": "3.3.2"
     },
@@ -123,6 +141,9 @@
     "php": {
         "version": "7.1"
     },
+    "phpcollection/phpcollection": {
+        "version": "0.5.0"
+    },
     "phpdocumentor/reflection-common": {
         "version": "2.1.0"
     },
@@ -131,6 +152,9 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "1.0.1"
+    },
+    "phpoption/phpoption": {
+        "version": "1.7.4"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -276,6 +300,9 @@
     "symfony/polyfill-php73": {
         "version": "v1.17.0"
     },
+    "symfony/polyfill-php80": {
+        "version": "v1.17.0"
+    },
     "symfony/profiler-pack": {
         "version": "v1.0.4"
     },
@@ -321,9 +348,6 @@
         "version": "v4.4.8"
     },
     "symfony/security-http": {
-        "version": "v4.4.8"
-    },
-    "symfony/serializer": {
         "version": "v4.4.8"
     },
     "symfony/service-contracts": {

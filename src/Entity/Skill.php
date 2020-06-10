@@ -5,13 +5,15 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation as Serializer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Table(name="skill")
  * @ORM\Entity(repositoryClass="App\Repository\SkillRepository")
+ *
+ * @Serializer\ExclusionPolicy("all")
  *
  * @UniqueEntity("name")
  */
@@ -25,7 +27,10 @@ class Skill
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"update"})
      */
     protected $id;
 
@@ -33,7 +38,10 @@ class Skill
      * @var string
      *
      * @ORM\Column(type="string", length=255, unique=true)
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $name;
 
@@ -41,7 +49,10 @@ class Skill
      * @var string
      *
      * @ORM\Column(type="text")
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $description;
 
@@ -49,7 +60,10 @@ class Skill
      * @var int
      *
      * @ORM\Column(type="integer")
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $cost;
 
@@ -57,7 +71,10 @@ class Skill
      * @var int
      *
      * @ORM\Column(type="integer")
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $cooldown;
 
@@ -65,7 +82,10 @@ class Skill
      * @var int
      *
      * @ORM\Column(type="integer")
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $duration;
 
@@ -74,7 +94,10 @@ class Skill
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="skills", cascade={"persist"})
      * @ORM\OrderBy({"id" = "ASC"})
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\User")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $users;
 
@@ -82,8 +105,10 @@ class Skill
      * @var ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Monster", mappedBy="skills", cascade={"persist"})
-     * @ORM\OrderBy({"id" = "ASC"})
-     * @Groups({"get"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Monster")
+     * @Serializer\Groups({"create", "update"})
      */
     protected $monsters;
 
