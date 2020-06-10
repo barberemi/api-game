@@ -49,7 +49,7 @@ class Monster
     /**
      * @var Academy
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Academy", inversedBy="monsters")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Academy", inversedBy="monsters", cascade={"persist"})
      * @ORM\JoinColumn(name="academy_id", referencedColumnName="id")
      * @Groups({"get"})
      */

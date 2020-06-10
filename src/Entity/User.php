@@ -88,7 +88,7 @@ class User implements UserInterface
     /**
      * @var Academy
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Academy", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Academy", inversedBy="users", cascade={"persist"})
      * @ORM\JoinColumn(name="academy_id", referencedColumnName="id")
      * @Groups({"get"})
      */
@@ -107,7 +107,7 @@ class User implements UserInterface
     /**
      * @var Guild
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Guild", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Guild", inversedBy="users", cascade={"persist"})
      * @ORM\JoinColumn(name="guild_id", referencedColumnName="id")
      * @Groups({"get"})
      */
