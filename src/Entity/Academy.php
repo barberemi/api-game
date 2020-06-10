@@ -55,11 +55,21 @@ class Academy
     protected $users;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Monster", mappedBy="academy", cascade={"persist"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     * @Groups({"get"})
+     */
+    protected $monsters;
+
+    /**
      * Academy constructor.
      */
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->monsters = new ArrayCollection();
     }
 
     /**
@@ -167,6 +177,56 @@ class Academy
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
             $user->setAcademy(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMonsters(): Collection
+    {
+        return $this->monsters;
+    }
+
+    /**
+     * @param ArrayCollection $monsters
+     *
+     * @return Academy
+     */
+    public function setMonsters(ArrayCollection $monsters): self
+    {
+        $this->monsters = $monsters;
+
+        return $this;
+    }
+
+    /**
+     * @param Monster $monster
+     *
+     * @return Academy
+     */
+    public function addMonster(Monster $monster): self
+    {
+        if (!$this->monsters->contains($monster)) {
+            $this->monsters[] = $monster;
+            $monster->setAcademy($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Monster $monster
+     *
+     * @return Academy
+     */
+    public function removeMonster(Monster $monster): self
+    {
+        if ($this->monsters->contains($monster)) {
+            $this->monsters->removeElement($monster);
+            $monster->setAcademy(null);
         }
 
         return $this;

@@ -98,6 +98,7 @@ class User implements UserInterface
      * @var ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Skill", inversedBy="users", cascade={"persist"})
+     * @ORM\JoinTable(name="user_skill")
      * @ORM\OrderBy({"id" = "ASC"})
      * @Groups({"get"})
      */

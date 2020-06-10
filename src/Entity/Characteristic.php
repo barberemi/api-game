@@ -55,11 +55,21 @@ class Characteristic
     protected $users;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\MonsterCharacteristic", mappedBy="characteristic", cascade={"persist"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     * @Groups({"get"})
+     */
+    protected $monsters;
+
+    /**
      * Characteristic constructor.
      */
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->monsters = new ArrayCollection();
     }
 
     /**
@@ -167,6 +177,56 @@ class Characteristic
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
             $user->removeCharacteristic($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMonsters(): Collection
+    {
+        return $this->monsters;
+    }
+
+    /**
+     * @param Collection $monsters
+     *
+     * @return Characteristic
+     */
+    public function setMonsters(Collection $monsters): self
+    {
+        $this->monsters = $monsters;
+
+        return $this;
+    }
+
+    /**
+     * @param Monster $monster
+     *
+     * @return Characteristic
+     */
+    public function addMonster(Monster $monster): self
+    {
+        if (!$this->monsters->contains($monster)) {
+            $this->monsters[] = $monster;
+            $monster->addCharacteristic($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Monster $monster
+     *
+     * @return Characteristic
+     */
+    public function removeMonster(Monster $monster): self
+    {
+        if ($this->monsters->contains($monster)) {
+            $this->monsters->removeElement($monster);
+            $monster->removeCharacteristic($this);
         }
 
         return $this;

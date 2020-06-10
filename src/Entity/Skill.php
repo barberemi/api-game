@@ -72,11 +72,20 @@ class Skill
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="skills", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="skills", cascade={"persist"})
      * @ORM\OrderBy({"id" = "ASC"})
      * @Groups({"get"})
      */
     protected $users;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Monster", mappedBy="skills", cascade={"persist"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     * @Groups({"get"})
+     */
+    protected $monsters;
 
     /**
      * Skill constructor.
@@ -87,6 +96,7 @@ class Skill
         $this->cooldown = 0;
         $this->duration = 0;
         $this->users = new ArrayCollection();
+        $this->monsters = new ArrayCollection();
     }
 
     /**
@@ -255,6 +265,56 @@ class Skill
     public function setDuration(int $duration): self
     {
         $this->duration = $duration;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMonsters(): Collection
+    {
+        return $this->monsters;
+    }
+
+    /**
+     * @param ArrayCollection $monsters
+     *
+     * @return Skill
+     */
+    public function setMonsters(ArrayCollection $monsters): self
+    {
+        $this->monsters = $monsters;
+
+        return $this;
+    }
+
+    /**
+     * @param Monster $monster
+     *
+     * @return Skill
+     */
+    public function addMonster(Monster $monster): self
+    {
+        if (!$this->monsters->contains($monster)) {
+            $this->monsters[] = $monster;
+            $monster->addSkill($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Monster $monster
+     *
+     * @return Skill
+     */
+    public function removeMonster(Monster $monster): self
+    {
+        if ($this->monsters->contains($monster)) {
+            $this->monsters->removeElement($monster);
+            $monster->removeSkill($this);
+        }
 
         return $this;
     }
