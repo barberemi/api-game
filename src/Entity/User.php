@@ -104,6 +104,15 @@ class User implements UserInterface
     protected $skills;
 
     /**
+     * @var Guild
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Guild", inversedBy="users")
+     * @ORM\JoinColumn(name="guild_id", referencedColumnName="id")
+     * @Groups({"get"})
+     */
+    protected $guild;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -393,6 +402,26 @@ class User implements UserInterface
             $this->skills->removeElement($skill);
             $skill->removeUser($skill);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return null|Guild
+     */
+    public function getGuild(): ?Guild
+    {
+        return $this->guild;
+    }
+
+    /**
+     * @param null|Guild $guild
+     *
+     * @return User
+     */
+    public function setGuild(?Guild $guild): self
+    {
+        $this->guild = $guild;
 
         return $this;
     }
