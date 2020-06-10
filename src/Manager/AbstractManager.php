@@ -50,13 +50,15 @@ class AbstractManager
 
         if (!$exist) throw new \Exception(sprintf('Entity id %d doesnt exists.', $id));
 
-        return $this->serialize($exist, ['get']);
+        return $this->serialize($exist);
     }
 
     /**
      * @param array $data
      *
-     * @return array|object
+     * @return array|mixed
+     *
+     * @throws \Exception
      */
     public function create(array $data)
     {
@@ -128,12 +130,11 @@ class AbstractManager
     }
 
     /**
-     * @param       $data
-     * @param array $groups
+     * @param $data
      *
      * @return string
      */
-    protected function serialize($data, array $groups = [])
+    protected function serialize($data)
     {
         return  $this->serializer->serialize($data,'json');
 
