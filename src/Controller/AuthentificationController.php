@@ -87,6 +87,8 @@ class AuthentificationController extends AbstractController
     }
 
     /**
+     * Get a JWT token to connect.
+     *
      * @Route("/login_check", methods={"POST"})
      *
      * @SWG\Response(
