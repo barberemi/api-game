@@ -178,7 +178,7 @@ class Skill
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
-            $user->setSkill($this);
+            $user->addSkill($this);
         }
 
         return $this;
@@ -193,7 +193,7 @@ class Skill
     {
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
-            $user->setSkill(null);
+            $user->removeSkill($this);
         }
 
         return $this;

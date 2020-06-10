@@ -381,7 +381,7 @@ class User implements UserInterface
      *
      * @return User
      */
-    public function addUser(Skill $skill): self
+    public function addSkill(Skill $skill): self
     {
         if (!$this->skills->contains($skill)) {
             $this->skills[] = $skill;
@@ -396,11 +396,11 @@ class User implements UserInterface
      *
      * @return User
      */
-    public function removeUser(Skill $skill): self
+    public function removeSkill(Skill $skill): self
     {
         if ($this->skills->contains($skill)) {
             $this->skills->removeElement($skill);
-            $skill->removeUser($skill);
+            $skill->removeUser($this);
         }
 
         return $this;
