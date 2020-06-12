@@ -95,6 +95,50 @@ class User implements UserInterface
     protected $isActive = false;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $soloXp;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $multiXp;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $money;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $itemSpaceNb;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\UserCharacteristic", mappedBy="user", cascade={"persist", "remove"})
@@ -453,6 +497,86 @@ class User implements UserInterface
     public function setGuild(?Guild $guild): self
     {
         $this->guild = $guild;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSoloXp(): int
+    {
+        return $this->soloXp;
+    }
+
+    /**
+     * @param int $soloXp
+     *
+     * @return User
+     */
+    public function setSoloXp(int $soloXp): self
+    {
+        $this->soloXp = $soloXp;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMultiXp(): int
+    {
+        return $this->multiXp;
+    }
+
+    /**
+     * @param int $multiXp
+     *
+     * @return User
+     */
+    public function setMultiXp(int $multiXp): self
+    {
+        $this->multiXp = $multiXp;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMoney(): int
+    {
+        return $this->money;
+    }
+
+    /**
+     * @param int $money
+     *
+     * @return User
+     */
+    public function setMoney(int $money): self
+    {
+        $this->money = $money;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getItemSpaceNb(): int
+    {
+        return $this->itemSpaceNb;
+    }
+
+    /**
+     * @param int $itemSpaceNb
+     *
+     * @return User
+     */
+    public function setItemSpaceNb(int $itemSpaceNb): self
+    {
+        $this->itemSpaceNb = $itemSpaceNb;
 
         return $this;
     }
