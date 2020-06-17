@@ -46,6 +46,17 @@ class Monster
     protected $name;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $givenXp;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\MonsterCharacteristic", mappedBy="monster", cascade={"persist", "remove"})
@@ -247,6 +258,26 @@ class Monster
             $this->skills->removeElement($skill);
             $skill->removeMonster($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGivenXp(): int
+    {
+        return $this->givenXp;
+    }
+
+    /**
+     * @param int $givenXp
+     *
+     * @return Monster
+     */
+    public function setGivenXp(int $givenXp): self
+    {
+        $this->givenXp = $givenXp;
 
         return $this;
     }

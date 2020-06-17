@@ -139,6 +139,17 @@ class User implements UserInterface
     protected $itemSpaceNb;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("boolean")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $isDead = false;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\UserCharacteristic", mappedBy="user", cascade={"persist", "remove"})
@@ -577,6 +588,26 @@ class User implements UserInterface
     public function setItemSpaceNb(int $itemSpaceNb): self
     {
         $this->itemSpaceNb = $itemSpaceNb;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDead(): bool
+    {
+        return $this->isDead;
+    }
+
+    /**
+     * @param bool $isDead
+     *
+     * @return User
+     */
+    public function setIsDead(bool $isDead): self
+    {
+        $this->isDead = $isDead;
 
         return $this;
     }
