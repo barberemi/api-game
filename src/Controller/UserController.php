@@ -49,7 +49,7 @@ class UserController extends AbstractController
      *
      * @return JsonResponse
      */
-    public function show(int $id)
+    public function index(int $id)
     {
         try {
             $user = $this->userManager->get($id);
@@ -58,6 +58,46 @@ class UserController extends AbstractController
         }
 
         return new JsonResponse($user, JsonResponse::HTTP_CREATED);
+    }
+
+    /**
+     * Get all users.
+     *
+     * @Route(methods={"GET"})
+     * @SWG\Response(
+     *     response=201,
+     *     description="When get all users correctly."
+     * )
+     * @SWG\Response(
+     *     response=400,
+     *     description="When some errors on params."
+     * )
+     * @SWG\Parameter(
+     *     name="page",
+     *     in="query",
+     *     description="Page number.",
+     *     type="integer",
+     * )
+     * @SWG\Tag(name="users")
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function indexAll(Request $request)
+    {
+        try {
+            $page = $request->query->get('page');
+            if(is_null($page) || $page < 1) {
+                $page = 1;
+            }
+
+            $users = $this->userManager->getAll($page);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse($users, JsonResponse::HTTP_CREATED);
     }
 
     /**

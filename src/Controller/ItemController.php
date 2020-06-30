@@ -49,7 +49,7 @@ class ItemController extends AbstractController
      *
      * @return JsonResponse
      */
-    public function show(int $id)
+    public function index(int $id)
     {
         try {
             $item = $this->itemManager->get($id);

@@ -49,7 +49,7 @@ class MonsterController extends AbstractController
      *
      * @return JsonResponse
      */
-    public function show(int $id)
+    public function index(int $id)
     {
         try {
             $monster = $this->monsterManager->get($id);

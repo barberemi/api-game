@@ -49,7 +49,7 @@ class AcademyController extends AbstractController
      *
      * @return JsonResponse
      */
-    public function show(int $id)
+    public function index(int $id)
     {
         try {
             $academy = $this->academyManager->get($id);

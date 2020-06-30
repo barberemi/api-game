@@ -5,6 +5,7 @@ namespace App\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 abstract class AbstractRepository extends ServiceEntityRepository
 {
@@ -24,6 +25,22 @@ abstract class AbstractRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, $entityClass);
         $this->validator = $validator;
+    }
+
+    /**
+     * @param int $page
+     *
+     * @return Paginator
+     */
+    public function findByPageAndLimit(int $page): Paginator
+    {
+        $limit = $_ENV['LIMIT'];
+        $query = $this->createQueryBuilder('p')
+            ->getQuery()
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit);
+
+        return new Paginator($query);
     }
 
     /**

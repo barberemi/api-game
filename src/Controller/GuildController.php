@@ -49,7 +49,7 @@ class GuildController extends AbstractController
      *
      * @return JsonResponse
      */
-    public function show(int $id)
+    public function index(int $id)
     {
         try {
             $guild = $this->guildManager->get($id);
