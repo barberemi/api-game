@@ -72,27 +72,14 @@ class UserController extends AbstractController
      *     response=400,
      *     description="When some errors on params."
      * )
-     * @SWG\Parameter(
-     *     name="page",
-     *     in="query",
-     *     description="Page number.",
-     *     type="integer",
-     * )
      * @SWG\Tag(name="users")
-     *
-     * @param Request $request
      *
      * @return JsonResponse
      */
-    public function indexAll(Request $request)
+    public function indexAll()
     {
         try {
-            $page = $request->query->get('page');
-            if(is_null($page) || $page < 1) {
-                $page = 1;
-            }
-
-            $users = $this->userManager->getAll($page);
+            $users = $this->userManager->getAll();
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }

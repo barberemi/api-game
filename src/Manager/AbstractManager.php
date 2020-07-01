@@ -54,13 +54,11 @@ class AbstractManager
     }
 
     /**
-     * @param int $page
-     *
      * @return array
      */
-    public function getAll(int $page)
+    public function getAll()
     {
-        $entities = $this->em->getRepository($this->repositoryNamespace)->findByPageAndLimit($page);
+        $entities = $this->em->getRepository($this->repositoryNamespace)->findAll();
 
         $data = ['items' => []];
         foreach ($entities as $entity) {
