@@ -61,6 +61,33 @@ class GuildController extends AbstractController
     }
 
     /**
+     * Get all guilds.
+     *
+     * @Route(methods={"GET"})
+     * @SWG\Response(
+     *     response=201,
+     *     description="When get all guilds correctly."
+     * )
+     * @SWG\Response(
+     *     response=400,
+     *     description="When some errors on params."
+     * )
+     * @SWG\Tag(name="guilds")
+     *
+     * @return JsonResponse
+     */
+    public function indexAll()
+    {
+        try {
+            $guilds = $this->guildManager->getAll();
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse($guilds, JsonResponse::HTTP_CREATED);
+    }
+
+    /**
      * Create a guild.
      *
      * @Route(methods={"POST"})
