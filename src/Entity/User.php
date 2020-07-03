@@ -13,8 +13,6 @@ use JMS\Serializer\Annotation as Serializer;
 /**
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- *
- * @Serializer\ExclusionPolicy("all")
  */
 class User implements UserInterface
 {
@@ -37,6 +35,8 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(type="string", length=255)
+     *
+     * @Serializer\Exclude
      */
     protected $password;
 
@@ -44,6 +44,8 @@ class User implements UserInterface
      * @var string
      *
      * @ORM\Column(type="string", length=64, nullable=true)
+     *
+     * @Serializer\Exclude
      */
     protected $salt;
 
@@ -54,7 +56,7 @@ class User implements UserInterface
      *
      * @Serializer\Expose
      * @Serializer\Type("string")
-     * @Serializer\Groups({"create", "update"})
+     * @Serializer\Groups({"create", "update", "registration"})
      */
     protected $plainPassword;
 
@@ -197,6 +199,16 @@ class User implements UserInterface
      * @Serializer\Groups({"create", "update"})
      */
     protected $guild;
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @return int
+     */
+    public function getLevel(): int
+    {
+        // TODO : tableau de correspondance entre XP (solo, multi) et LEVEL
+        return 100;
+    }
 
     /**
      * User constructor.
