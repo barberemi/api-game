@@ -88,6 +88,48 @@ class UserController extends AbstractController
     }
 
     /**
+     * Update a user.
+     *
+     * @Route("/{id}", methods={"PUT"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="When user updated correctly."
+     * )
+     * @SWG\Response(
+     *     response=400,
+     *     description="When some errors on params."
+     * )
+     * @SWG\Parameter(
+     *     name="user",
+     *     in="body",
+     *     required=true,
+     *     description="JSON payload.",
+     *     @SWG\Schema(
+     *         type="object",
+     *         @SWG\Property(property="money", type="number", example=1000),
+     *     )
+     * )
+     * @SWG\Tag(name="users")
+     *
+     * @param int $id
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function update(int $id, Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+
+        try {
+            $this->userManager->update($id, $data);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse([], JsonResponse::HTTP_OK);
+    }
+
+    /**
      * Delete a user.
      *
      * @Route("/{id}", methods={"DELETE"})
