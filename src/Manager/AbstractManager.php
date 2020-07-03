@@ -50,7 +50,7 @@ class AbstractManager
 
         if (!$exist) throw new \Exception(sprintf('Entity id %d doesnt exists.', $id));
 
-        return $this->serialize($exist);
+        return json_decode($this->serialize($exist));
     }
 
     /**
