@@ -36,7 +36,7 @@ class SkillController extends AbstractController
      *
      * @Route("/{id}", methods={"GET"})
      * @SWG\Response(
-     *     response=201,
+     *     response=200,
      *     description="When get skill correctly."
      * )
      * @SWG\Response(
@@ -57,7 +57,34 @@ class SkillController extends AbstractController
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse($skill, JsonResponse::HTTP_CREATED);
+        return new JsonResponse($skill, JsonResponse::HTTP_OK);
+    }
+
+    /**
+     * Get all skills.
+     *
+     * @Route(methods={"GET"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="When get all skills correctly."
+     * )
+     * @SWG\Response(
+     *     response=400,
+     *     description="When some errors on params."
+     * )
+     * @SWG\Tag(name="skills")
+     *
+     * @return JsonResponse
+     */
+    public function indexAll()
+    {
+        try {
+            $skills = $this->skillManager->getAll();
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse($skills, JsonResponse::HTTP_OK);
     }
 
     /**

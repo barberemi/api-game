@@ -36,7 +36,7 @@ class CharacteristicController extends AbstractController
      *
      * @Route("/{id}", methods={"GET"})
      * @SWG\Response(
-     *     response=201,
+     *     response=200,
      *     description="When get characteristic correctly."
      * )
      * @SWG\Response(
@@ -57,7 +57,7 @@ class CharacteristicController extends AbstractController
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse($characteristic, JsonResponse::HTTP_CREATED);
+        return new JsonResponse($characteristic, JsonResponse::HTTP_OK);
     }
 
     /**

@@ -36,7 +36,7 @@ class ItemController extends AbstractController
      *
      * @Route("/{id}", methods={"GET"})
      * @SWG\Response(
-     *     response=201,
+     *     response=200,
      *     description="When get item correctly."
      * )
      * @SWG\Response(
@@ -57,7 +57,7 @@ class ItemController extends AbstractController
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse($item, JsonResponse::HTTP_CREATED);
+        return new JsonResponse($item, JsonResponse::HTTP_OK);
     }
 
     /**

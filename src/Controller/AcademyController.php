@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class AcademyController
  *
- * @Route("/academys")
+ * @Route("/academies")
  */
 class AcademyController extends AbstractController
 {
@@ -36,14 +36,14 @@ class AcademyController extends AbstractController
      *
      * @Route("/{id}", methods={"GET"})
      * @SWG\Response(
-     *     response=201,
+     *     response=200,
      *     description="When get academy correctly."
      * )
      * @SWG\Response(
      *     response=400,
      *     description="When some errors on params."
      * )
-     * @SWG\Tag(name="academys")
+     * @SWG\Tag(name="academies")
      *
      * @param int $id
      *
@@ -57,7 +57,34 @@ class AcademyController extends AbstractController
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse($academy, JsonResponse::HTTP_CREATED);
+        return new JsonResponse($academy, JsonResponse::HTTP_OK);
+    }
+
+    /**
+     * Get all academies.
+     *
+     * @Route(methods={"GET"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="When get all academies correctly."
+     * )
+     * @SWG\Response(
+     *     response=400,
+     *     description="When some errors on params."
+     * )
+     * @SWG\Tag(name="academies")
+     *
+     * @return JsonResponse
+     */
+    public function indexAll()
+    {
+        try {
+            $academies = $this->academyManager->getAll();
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse($academies, JsonResponse::HTTP_OK);
     }
 
     /**
@@ -83,7 +110,7 @@ class AcademyController extends AbstractController
      *         @SWG\Property(property="description", type="string", example="Très résistant, il se bat toujours pour défendre ses frères d'arme."),
      *     )
      * )
-     * @SWG\Tag(name="academys")
+     * @SWG\Tag(name="academies")
      *
      * @param Request $request
      *
@@ -125,7 +152,7 @@ class AcademyController extends AbstractController
      *         @SWG\Property(property="description", type="string", example="Très résistant, il se bat toujours pour défendre ses frères d'arme."),
      *     )
      * )
-     * @SWG\Tag(name="academys")
+     * @SWG\Tag(name="academies")
      *
      * @param int $id
      * @param Request $request
@@ -157,7 +184,7 @@ class AcademyController extends AbstractController
      *     response=400,
      *     description="When some errors on params."
      * )
-     * @SWG\Tag(name="academys")
+     * @SWG\Tag(name="academies")
      *
      * @param int $id
      *

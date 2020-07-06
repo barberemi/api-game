@@ -36,7 +36,7 @@ class MonsterController extends AbstractController
      *
      * @Route("/{id}", methods={"GET"})
      * @SWG\Response(
-     *     response=201,
+     *     response=200,
      *     description="When get monster correctly."
      * )
      * @SWG\Response(
@@ -57,7 +57,7 @@ class MonsterController extends AbstractController
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse($monster, JsonResponse::HTTP_CREATED);
+        return new JsonResponse($monster, JsonResponse::HTTP_OK);
     }
 
     /**

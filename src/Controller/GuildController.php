@@ -36,7 +36,7 @@ class GuildController extends AbstractController
      *
      * @Route("/{id}", methods={"GET"})
      * @SWG\Response(
-     *     response=201,
+     *     response=200,
      *     description="When get guild correctly."
      * )
      * @SWG\Response(
@@ -57,7 +57,7 @@ class GuildController extends AbstractController
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse($guild, JsonResponse::HTTP_CREATED);
+        return new JsonResponse($guild, JsonResponse::HTTP_OK);
     }
 
     /**
@@ -65,7 +65,7 @@ class GuildController extends AbstractController
      *
      * @Route(methods={"GET"})
      * @SWG\Response(
-     *     response=201,
+     *     response=200,
      *     description="When get all guilds correctly."
      * )
      * @SWG\Response(
@@ -84,7 +84,7 @@ class GuildController extends AbstractController
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse($guilds, JsonResponse::HTTP_CREATED);
+        return new JsonResponse($guilds, JsonResponse::HTTP_OK);
     }
 
     /**
