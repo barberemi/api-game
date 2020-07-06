@@ -90,24 +90,24 @@ class Skill
     protected $duration;
 
     /**
-     * @var ArrayCollection
+     * @var Collection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="skills", cascade={"persist"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
      * @Serializer\Expose
-     * @Serializer\Type("App\Entity\User")
+     * @Serializer\Type("ArrayCollection<App\Entity\User>")
      * @Serializer\Groups({"create", "update"})
      */
     protected $users;
 
     /**
-     * @var ArrayCollection
+     * @var Collection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Monster", mappedBy="skills", cascade={"persist"})
      *
      * @Serializer\Expose
-     * @Serializer\Type("App\Entity\Monster")
+     * @Serializer\Type("ArrayCollection<App\Entity\Monster>")
      * @Serializer\Groups({"create", "update"})
      */
     protected $monsters;
@@ -193,11 +193,11 @@ class Skill
     }
 
     /**
-     * @param ArrayCollection $users
+     * @param Collection $users
      *
      * @return Skill
      */
-    public function setUsers(ArrayCollection $users): self
+    public function setUsers(Collection $users): self
     {
         $this->users = $users;
 

@@ -63,7 +63,7 @@ class Monster
      * @ORM\OrderBy({"id" = "ASC"})
      *
      * @Serializer\Expose
-     * @Serializer\Type("App\Entity\MonsterCharacteristic")
+     * @Serializer\Type("ArrayCollection<App\Entity\MonsterCharacteristic>")
      * @Serializer\Groups({"create", "update"})
      */
     protected $characteristics;
@@ -88,7 +88,7 @@ class Monster
      * @ORM\OrderBy({"id" = "ASC"})
      *
      * @Serializer\Expose
-     * @Serializer\Type("App\Entity\Skill")
+     * @Serializer\Type("ArrayCollection<App\Entity\Skill>")
      * @Serializer\Groups({"create", "update"})
      */
     protected $skills;

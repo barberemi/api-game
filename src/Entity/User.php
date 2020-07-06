@@ -158,7 +158,7 @@ class User implements UserInterface
      * @ORM\OrderBy({"id" = "ASC"})
      *
      * @Serializer\Expose
-     * @Serializer\Type("App\Entity\UserCharacteristic")
+     * @Serializer\Type("ArrayCollection<App\Entity\UserCharacteristic>")
      * @Serializer\Groups({"create", "update"})
      */
     protected $characteristics;
@@ -176,14 +176,14 @@ class User implements UserInterface
     protected $academy;
 
     /**
-     * @var ArrayCollection
+     * @var Collection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Skill", inversedBy="users", cascade={"persist"})
      * @ORM\JoinTable(name="user_skill")
      * @ORM\OrderBy({"id" = "ASC"})
      *
      * @Serializer\Expose
-     * @Serializer\Type("App\Entity\Skill")
+     * @Serializer\Type("ArrayCollection<App\Entity\Skill>")
      * @Serializer\Groups({"create", "update"})
      */
     protected $skills;

@@ -63,7 +63,7 @@ class Academy
      * @ORM\OrderBy({"id" = "ASC"})
      *
      * @Serializer\Expose
-     * @Serializer\Type("App\Entity\User")
+     * @Serializer\Type("ArrayCollection<App\Entity\User>")
      * @Serializer\Groups({"create", "update"})
      */
     protected $users;
@@ -75,7 +75,7 @@ class Academy
      * @ORM\OrderBy({"id" = "ASC"})
      *
      * @Serializer\Expose
-     * @Serializer\Type("App\Entity\Monster")
+     * @Serializer\Type("ArrayCollection<App\Entity\Monster>")
      * @Serializer\Groups({"create", "update"})
      */
     protected $monsters;
