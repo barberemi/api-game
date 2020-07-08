@@ -106,18 +106,7 @@ class User implements UserInterface
      * @Serializer\Type("integer")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $soloXp;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     *
-     * @Serializer\Expose
-     * @Serializer\Type("integer")
-     * @Serializer\Groups({"create", "update"})
-     */
-    protected $multiXp;
+    protected $experience;
 
     /**
      * @var int
@@ -218,9 +207,7 @@ class User implements UserInterface
      */
     public function getLevel(): int
     {
-        $totalXp = $this->getSoloXp() + $this->getMultiXp();
-
-        return LevelHelper::levelFromXp($totalXp);
+        return LevelHelper::levelFromXp($this->getExperience());
     }
 
     /**
@@ -538,39 +525,19 @@ class User implements UserInterface
     /**
      * @return int
      */
-    public function getSoloXp(): int
+    public function getExperience(): int
     {
-        return $this->soloXp;
+        return $this->experience;
     }
 
     /**
-     * @param int $soloXp
+     * @param int $experience
      *
      * @return User
      */
-    public function setSoloXp(int $soloXp): self
+    public function setExperience(int $experience): self
     {
-        $this->soloXp = $soloXp;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getMultiXp(): int
-    {
-        return $this->multiXp;
-    }
-
-    /**
-     * @param int $multiXp
-     *
-     * @return User
-     */
-    public function setMultiXp(int $multiXp): self
-    {
-        $this->multiXp = $multiXp;
+        $this->experience = $experience;
 
         return $this;
     }
