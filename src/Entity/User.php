@@ -220,6 +220,15 @@ class User implements UserInterface
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @return int
+     */
+    public function getXpToActualLevel(): int
+    {
+        return LevelHelper::xpToLevel($this->getLevel());
+    }
+
+    /**
      * @return int
      */
     public function getId(): int
