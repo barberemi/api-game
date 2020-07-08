@@ -9,6 +9,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
+use App\Helper\LevelHelper;
 
 /**
  * @ORM\Table(name="user")
@@ -201,16 +202,6 @@ class User implements UserInterface
     protected $guild;
 
     /**
-     * @Serializer\VirtualProperty()
-     * @return int
-     */
-    public function getLevel(): int
-    {
-        // TODO : tableau de correspondance entre XP (solo, multi) et LEVEL
-        return 100;
-    }
-
-    /**
      * User constructor.
      */
     public function __construct()
@@ -219,6 +210,26 @@ class User implements UserInterface
         $this->skills = new ArrayCollection();
         $this->salt = md5(uniqid(null, true));
         $this->role = 'ROLE_USER';
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @return int
+     */
+    public function getLevel(): int
+    {
+        $totalXp = $this->getSoloXp() + $this->getMultiXp();
+
+        return LevelHelper::levelFromXp($totalXp);
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @return int
+     */
+    public function getXpToNextLevel(): int
+    {
+        return LevelHelper::xpToLevel($this->getLevel() + 1);
     }
 
     /**
