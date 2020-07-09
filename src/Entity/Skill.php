@@ -90,6 +90,30 @@ class Skill
     protected $duration;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Skill", mappedBy="parent", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\Skill>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $children;
+
+    /**
+     * @var Skill
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Skill", inversedBy="children", cascade={"persist"})
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Skill")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $parent;
+
+    /**
      * @var Collection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="skills", cascade={"persist"})
@@ -120,6 +144,7 @@ class Skill
         $this->cost = 0;
         $this->cooldown = 0;
         $this->duration = 0;
+        $this->children = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->monsters = new ArrayCollection();
     }
@@ -340,6 +365,76 @@ class Skill
             $this->monsters->removeElement($monster);
             $monster->removeSkill($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getChildren(): ArrayCollection
+    {
+        return $this->children;
+    }
+
+    /**
+     * @param ArrayCollection $children
+     *
+     * @return Skill
+     */
+    public function setChildren(ArrayCollection $children): self
+    {
+        $this->children = $children;
+
+        return $this;
+    }
+
+    /**
+     * @param Skill $child
+     *
+     * @return Skill
+     */
+    public function addChildren(Skill $child): self
+    {
+        if (!$this->children->contains($child)) {
+            $this->children[] = $child;
+            $child->setParent($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Skill $child
+     *
+     * @return Skill
+     */
+    public function removeChildren(Skill $child): self
+    {
+        if ($this->children->contains($child)) {
+            $this->children->removeElement($child);
+            $child->setParent(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return null|Skill
+     */
+    public function getParent(): ?Skill
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param null|Skill $parent
+     *
+     * @return Skill
+     */
+    public function setParent(?Skill $parent): self
+    {
+        $this->parent = $parent;
 
         return $this;
     }
