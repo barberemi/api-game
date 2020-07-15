@@ -90,6 +90,17 @@ class Skill
     protected $duration;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("boolean")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $isActive = true;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Skill", mappedBy="parent", cascade={"persist", "remove"})
@@ -435,6 +446,26 @@ class Skill
     public function setParent(?Skill $parent): self
     {
         $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param bool $isActive
+     *
+     * @return Skill
+     */
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }
