@@ -2,20 +2,20 @@
 
 namespace App\Repository;
 
-use App\Entity\MonsterCharacteristic;
+use App\Entity\BindCharacteristic;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class MonsterCharacteristicRepository extends AbstractRepository
+class BindCharacteristicRepository extends AbstractRepository
 {
     /**
-     * MonsterCharacteristicRepository constructor.
+     * BindCharacteristicRepository constructor.
      *
      * @param ManagerRegistry    $registry
      * @param ValidatorInterface $validator
      */
     public function __construct(ManagerRegistry $registry, ValidatorInterface $validator)
     {
-        parent::__construct($registry, MonsterCharacteristic::class, $validator);
+        parent::__construct($registry, BindCharacteristic::class, $validator);
     }
 }

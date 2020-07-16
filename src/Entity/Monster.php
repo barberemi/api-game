@@ -59,11 +59,11 @@ class Monster
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\MonsterCharacteristic", mappedBy="monster", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="monster", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
      * @Serializer\Expose
-     * @Serializer\Type("ArrayCollection<App\Entity\MonsterCharacteristic>")
+     * @Serializer\Type("ArrayCollection<App\Entity\BindCharacteristic>")
      * @Serializer\Groups({"create", "update"})
      */
     protected $characteristics;

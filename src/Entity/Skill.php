@@ -148,6 +148,18 @@ class Skill
     protected $monsters;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="skill", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\BindCharacteristic>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $characteristics;
+
+    /**
      * Skill constructor.
      */
     public function __construct()
@@ -158,6 +170,7 @@ class Skill
         $this->children = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->monsters = new ArrayCollection();
+        $this->characteristics = new ArrayCollection();
     }
 
     /**
@@ -466,6 +479,56 @@ class Skill
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getCharacteristics(): Collection
+    {
+        return $this->characteristics;
+    }
+
+    /**
+     * @param Collection $characteristics
+     *
+     * @return Skill
+     */
+    public function setCharacteristics(Collection $characteristics): self
+    {
+        $this->characteristics = $characteristics;
+
+        return $this;
+    }
+
+    /**
+     * @param Characteristic $characteristic
+     *
+     * @return Skill
+     */
+    public function addCharacteristic(Characteristic $characteristic): self
+    {
+        if (!$this->characteristics->contains($characteristic)) {
+            $this->characteristics[] = $characteristic;
+            $characteristic->addSkill($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Characteristic $characteristic
+     *
+     * @return Skill
+     */
+    public function removeCharacteristic(Characteristic $characteristic): self
+    {
+        if ($this->characteristics->contains($characteristic)) {
+            $this->characteristics->removeElement($characteristic);
+            $characteristic->removeSkill($this);
+        }
 
         return $this;
     }

@@ -144,11 +144,11 @@ class User implements UserInterface
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\UserCharacteristic", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="user", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
      * @Serializer\Expose
-     * @Serializer\Type("ArrayCollection<App\Entity\UserCharacteristic>")
+     * @Serializer\Type("ArrayCollection<App\Entity\BindCharacteristic>")
      * @Serializer\Groups({"create", "update"})
      */
     protected $characteristics;

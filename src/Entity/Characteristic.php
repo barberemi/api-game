@@ -59,11 +59,11 @@ class Characteristic
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\UserCharacteristic", mappedBy="characteristic", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="characteristic", cascade={"persist"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
      * @Serializer\Expose
-     * @Serializer\Type("ArrayCollection<App\Entity\UserCharacteristic>")
+     * @Serializer\Type("ArrayCollection<App\Entity\BindCharacteristic>")
      * @Serializer\Groups({"create", "update"})
      */
     protected $users;
@@ -71,14 +71,26 @@ class Characteristic
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\MonsterCharacteristic", mappedBy="characteristic", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="characteristic", cascade={"persist"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
      * @Serializer\Expose
-     * @Serializer\Type("ArrayCollection<App\Entity\MonsterCharacteristic>")
+     * @Serializer\Type("ArrayCollection<App\Entity\BindCharacteristic>")
      * @Serializer\Groups({"create", "update"})
      */
     protected $monsters;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="characteristic", cascade={"persist"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\BindCharacteristic>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $skills;
 
     /**
      * Characteristic constructor.
@@ -87,6 +99,7 @@ class Characteristic
     {
         $this->users = new ArrayCollection();
         $this->monsters = new ArrayCollection();
+        $this->skills = new ArrayCollection();
     }
 
     /**
@@ -244,6 +257,56 @@ class Characteristic
         if ($this->monsters->contains($monster)) {
             $this->monsters->removeElement($monster);
             $monster->removeCharacteristic($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getSkills(): Collection
+    {
+        return $this->skills;
+    }
+
+    /**
+     * @param Collection $skills
+     *
+     * @return Characteristic
+     */
+    public function setSkills(Collection $skills): self
+    {
+        $this->skills = $skills;
+
+        return $this;
+    }
+
+    /**
+     * @param Skill $skill
+     *
+     * @return Characteristic
+     */
+    public function addSkill(Skill $skill): self
+    {
+        if (!$this->skills->contains($skill)) {
+            $this->skills[] = $skill;
+            $skill->addCharacteristic($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Skill $skill
+     *
+     * @return Characteristic
+     */
+    public function removeSkill(Skill $skill): self
+    {
+        if ($this->skills->contains($skill)) {
+            $this->skills->removeElement($skill);
+            $skill->removeCharacteristic($this);
         }
 
         return $this;
