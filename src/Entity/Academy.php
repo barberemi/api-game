@@ -81,12 +81,25 @@ class Academy
     protected $monsters;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="academy", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\BindCharacteristic>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $baseCharacteristics;
+
+    /**
      * Academy constructor.
      */
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->monsters = new ArrayCollection();
+        $this->baseCharacteristics = new ArrayCollection();
     }
 
     /**
@@ -244,6 +257,56 @@ class Academy
         if ($this->monsters->contains($monster)) {
             $this->monsters->removeElement($monster);
             $monster->setAcademy(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getBaseCharacteristics(): Collection
+    {
+        return $this->baseCharacteristics;
+    }
+
+    /**
+     * @param Collection $baseCharacteristics
+     *
+     * @return Academy
+     */
+    public function setBaseCharacteristics(Collection $baseCharacteristics): self
+    {
+        $this->baseCharacteristics = $baseCharacteristics;
+
+        return $this;
+    }
+
+    /**
+     * @param Characteristic $baseCharacteristic
+     *
+     * @return Academy
+     */
+    public function addBaseCharacteristic(Characteristic $baseCharacteristic): self
+    {
+        if (!$this->baseCharacteristics->contains($baseCharacteristic)) {
+            $this->baseCharacteristics[] = $baseCharacteristic;
+            $baseCharacteristic->addAcademy($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Characteristic $baseCharacteristic
+     *
+     * @return Academy
+     */
+    public function removeBaseCharacteristic(Characteristic $baseCharacteristic): self
+    {
+        if ($this->baseCharacteristics->contains($baseCharacteristic)) {
+            $this->baseCharacteristics->removeElement($baseCharacteristic);
+            $baseCharacteristic->removeAcademy($this);
         }
 
         return $this;
