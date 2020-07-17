@@ -13,8 +13,6 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Table(name="characteristic")
  * @ORM\Entity(repositoryClass="App\Repository\CharacteristicRepository")
  *
- * @Serializer\ExclusionPolicy("all")
- *
  * @UniqueEntity("name")
  */
 class Characteristic

@@ -11,8 +11,6 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Table(name="item")
  * @ORM\Entity(repositoryClass="App\Repository\ItemRepository")
  *
- * @Serializer\ExclusionPolicy("all")
- *
  * @UniqueEntity("name")
  */
 class Item

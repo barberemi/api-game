@@ -13,8 +13,6 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Table(name="academy")
  * @ORM\Entity(repositoryClass="App\Repository\AcademyRepository")
  *
- * @Serializer\ExclusionPolicy("all")
- *
  * @UniqueEntity("name")
  */
 class Academy

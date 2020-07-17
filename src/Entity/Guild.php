@@ -13,8 +13,6 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Table(name="guild")
  * @ORM\Entity(repositoryClass="App\Repository\GuildRepository")
  *
- * @Serializer\ExclusionPolicy("all")
- *
  * @UniqueEntity("name")
  */
 class Guild

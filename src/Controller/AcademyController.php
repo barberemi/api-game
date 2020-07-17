@@ -164,12 +164,12 @@ class AcademyController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         try {
-            $this->academyManager->update($id, $data);
+            $academy = $this->academyManager->update($id, $data);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse([], JsonResponse::HTTP_OK);
+        return new JsonResponse($academy, JsonResponse::HTTP_OK);
     }
 
     /**

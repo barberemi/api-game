@@ -164,12 +164,12 @@ class GuildController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         try {
-            $this->guildManager->update($id, $data);
+            $guild = $this->guildManager->update($id, $data);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse([], JsonResponse::HTTP_OK);
+        return new JsonResponse($guild, JsonResponse::HTTP_OK);
     }
 
     /**

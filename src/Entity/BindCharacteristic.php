@@ -10,8 +10,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Table(name="bind_characteristic")
  * @ORM\Entity(repositoryClass="App\Repository\BindCharacteristicRepository")
- *
- * @Serializer\ExclusionPolicy("all")
  */
 class BindCharacteristic
 {

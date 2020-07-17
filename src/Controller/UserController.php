@@ -121,12 +121,12 @@ class UserController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         try {
-            $this->userManager->update($id, $data);
+            $user = $this->userManager->update($id, $data);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse([], JsonResponse::HTTP_OK);
+        return new JsonResponse($user, JsonResponse::HTTP_OK);
     }
 
     /**

@@ -137,12 +137,12 @@ class CharacteristicController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         try {
-            $this->characteristicManager->update($id, $data);
+            $characteristic = $this->characteristicManager->update($id, $data);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse([], JsonResponse::HTTP_OK);
+        return new JsonResponse($characteristic, JsonResponse::HTTP_OK);
     }
 
     /**

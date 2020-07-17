@@ -87,8 +87,7 @@ class AbstractManager
      * @param int   $id
      * @param array $data
      *
-     * @return array|object
-     *
+     * @return mixed
      * @throws \Exception
      */
     public function update(int $id, array $data)
@@ -102,7 +101,7 @@ class AbstractManager
         $entity = $this->deserialize($data, ['update']);
         $entity = $this->em->getRepository($this->repositoryNamespace)->update($entity);
 
-        return $entity;
+        return json_decode($this->serialize($entity));
     }
 
     /**

@@ -12,8 +12,6 @@ use JMS\Serializer\Annotation as Serializer;
 /**
  * @ORM\Table(name="monster")
  * @ORM\Entity(repositoryClass="App\Repository\MonsterRepository")
- *
- * @Serializer\ExclusionPolicy("all")
  */
 class Monster
 {

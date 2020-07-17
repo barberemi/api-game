@@ -141,12 +141,12 @@ class ItemController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         try {
-            $this->itemManager->update($id, $data);
+            $item = $this->itemManager->update($id, $data);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse([], JsonResponse::HTTP_OK);
+        return new JsonResponse($item, JsonResponse::HTTP_OK);
     }
 
     /**
