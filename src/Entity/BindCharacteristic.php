@@ -15,7 +15,9 @@ class BindCharacteristic
 {
     use TimestampableEntity;
 
-    const TYPES = ['addition', 'substraction'];
+    const ADDITION = 'addition';
+    const SUBSTRACTION = 'substraction';
+    const TYPES = [self::ADDITION, self::SUBSTRACTION];
 
     /**
      * @var int
@@ -100,6 +102,14 @@ class BindCharacteristic
      * @Serializer\Groups({"create", "update"})
      */
     protected $characteristic;
+
+    /**
+     * Academy constructor.
+     */
+    public function __construct()
+    {
+        $this->type = self::ADDITION;
+    }
 
     /**
      * @return int
