@@ -61,6 +61,33 @@ class CharacteristicController extends AbstractController
     }
 
     /**
+     * Get all characteristics.
+     *
+     * @Route(methods={"GET"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="When get all characteristics correctly."
+     * )
+     * @SWG\Response(
+     *     response=400,
+     *     description="When some errors on params."
+     * )
+     * @SWG\Tag(name="characteristics")
+     *
+     * @return JsonResponse
+     */
+    public function indexAll()
+    {
+        try {
+            $characteristics = $this->characteristicManager->getAll();
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse($characteristics, JsonResponse::HTTP_OK);
+    }
+
+    /**
      * Create a characteristic.
      *
      * @Route(methods={"POST"})

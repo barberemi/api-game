@@ -61,6 +61,33 @@ class MonsterController extends AbstractController
     }
 
     /**
+     * Get all monsters.
+     *
+     * @Route(methods={"GET"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="When get all monsters correctly."
+     * )
+     * @SWG\Response(
+     *     response=400,
+     *     description="When some errors on params."
+     * )
+     * @SWG\Tag(name="monsters")
+     *
+     * @return JsonResponse
+     */
+    public function indexAll()
+    {
+        try {
+            $monsters = $this->monsterManager->getAll();
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse($monsters, JsonResponse::HTTP_OK);
+    }
+
+    /**
      * Create a monster.
      *
      * @Route(methods={"POST"})

@@ -61,6 +61,33 @@ class ItemController extends AbstractController
     }
 
     /**
+     * Get all items.
+     *
+     * @Route(methods={"GET"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="When get all items correctly."
+     * )
+     * @SWG\Response(
+     *     response=400,
+     *     description="When some errors on params."
+     * )
+     * @SWG\Tag(name="items")
+     *
+     * @return JsonResponse
+     */
+    public function indexAll()
+    {
+        try {
+            $items = $this->itemManager->getAll();
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse($items, JsonResponse::HTTP_OK);
+    }
+
+    /**
      * Create a item.
      *
      * @Route(methods={"POST"})
