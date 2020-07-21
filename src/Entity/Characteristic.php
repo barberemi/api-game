@@ -14,6 +14,8 @@ use JMS\Serializer\Annotation as Serializer;
  * @ORM\Entity(repositoryClass="App\Repository\CharacteristicRepository")
  *
  * @UniqueEntity("name")
+ *
+ * @Serializer\ExclusionPolicy("all")
  */
 class Characteristic
 {
@@ -60,11 +62,8 @@ class Characteristic
      * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="characteristic", cascade={"persist"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
-     * @Serializer\Expose
-     * @Serializer\Type("ArrayCollection<App\Entity\BindCharacteristic>")
-     * @Serializer\Groups({"create", "update"})
      */
-    protected $users;
+    protected $userCharacteristics;
 
     /**
      * @var ArrayCollection
@@ -72,11 +71,8 @@ class Characteristic
      * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="characteristic", cascade={"persist"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
-     * @Serializer\Expose
-     * @Serializer\Type("ArrayCollection<App\Entity\BindCharacteristic>")
-     * @Serializer\Groups({"create", "update"})
      */
-    protected $monsters;
+    protected $monsterCharacteristics;
 
     /**
      * @var ArrayCollection
@@ -84,11 +80,8 @@ class Characteristic
      * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="characteristic", cascade={"persist"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
-     * @Serializer\Expose
-     * @Serializer\Type("ArrayCollection<App\Entity\BindCharacteristic>")
-     * @Serializer\Groups({"create", "update"})
      */
-    protected $skills;
+    protected $skillCharacteristics;
 
     /**
      * @var ArrayCollection
@@ -96,21 +89,18 @@ class Characteristic
      * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="characteristic", cascade={"persist"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
-     * @Serializer\Expose
-     * @Serializer\Type("ArrayCollection<App\Entity\BindCharacteristic>")
-     * @Serializer\Groups({"create", "update"})
      */
-    protected $academies;
+    protected $academyCharacteristics;
 
     /**
      * Characteristic constructor.
      */
     public function __construct()
     {
-        $this->users = new ArrayCollection();
-        $this->monsters = new ArrayCollection();
-        $this->skills = new ArrayCollection();
-        $this->academies = new ArrayCollection();
+        $this->userCharacteristics = new ArrayCollection();
+        $this->monsterCharacteristics = new ArrayCollection();
+        $this->skillCharacteristics = new ArrayCollection();
+        $this->academyCharacteristics = new ArrayCollection();
     }
 
     /**
@@ -176,19 +166,19 @@ class Characteristic
     /**
      * @return Collection
      */
-    public function getUsers(): Collection
+    public function getUserCharacteristics(): Collection
     {
-        return $this->users;
+        return $this->userCharacteristics;
     }
 
     /**
-     * @param Collection $users
+     * @param Collection $userCharacteristics
      *
      * @return Characteristic
      */
-    public function setUsers(Collection $users): self
+    public function setUserCharacteristics(Collection $userCharacteristics): self
     {
-        $this->users = $users;
+        $this->userCharacteristics = $userCharacteristics;
 
         return $this;
     }
@@ -200,8 +190,8 @@ class Characteristic
      */
     public function addUser(User $user): self
     {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
+        if (!$this->userCharacteristics->contains($user)) {
+            $this->userCharacteristics[] = $user;
             $user->addCharacteristic($this);
         }
 
@@ -215,8 +205,8 @@ class Characteristic
      */
     public function removeUser(User $user): self
     {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
+        if ($this->userCharacteristics->contains($user)) {
+            $this->userCharacteristics->removeElement($user);
             $user->removeCharacteristic($this);
         }
 
@@ -226,19 +216,19 @@ class Characteristic
     /**
      * @return Collection
      */
-    public function getMonsters(): Collection
+    public function getMonsterCharacteristics(): Collection
     {
-        return $this->monsters;
+        return $this->monsterCharacteristics;
     }
 
     /**
-     * @param Collection $monsters
+     * @param Collection $monsterCharacteristics
      *
      * @return Characteristic
      */
-    public function setMonsters(Collection $monsters): self
+    public function setMonsterCharacteristics(Collection $monsterCharacteristics): self
     {
-        $this->monsters = $monsters;
+        $this->monsterCharacteristics = $monsterCharacteristics;
 
         return $this;
     }
@@ -250,8 +240,8 @@ class Characteristic
      */
     public function addMonster(Monster $monster): self
     {
-        if (!$this->monsters->contains($monster)) {
-            $this->monsters[] = $monster;
+        if (!$this->monsterCharacteristics->contains($monster)) {
+            $this->monsterCharacteristics[] = $monster;
             $monster->addCharacteristic($this);
         }
 
@@ -265,8 +255,8 @@ class Characteristic
      */
     public function removeMonster(Monster $monster): self
     {
-        if ($this->monsters->contains($monster)) {
-            $this->monsters->removeElement($monster);
+        if ($this->monsterCharacteristics->contains($monster)) {
+            $this->monsterCharacteristics->removeElement($monster);
             $monster->removeCharacteristic($this);
         }
 
@@ -276,19 +266,19 @@ class Characteristic
     /**
      * @return Collection
      */
-    public function getSkills(): Collection
+    public function getSkillCharacteristics(): Collection
     {
-        return $this->skills;
+        return $this->skillCharacteristics;
     }
 
     /**
-     * @param Collection $skills
+     * @param Collection $skillCharacteristics
      *
      * @return Characteristic
      */
-    public function setSkills(Collection $skills): self
+    public function setSkillCharacteristics(Collection $skillCharacteristics): self
     {
-        $this->skills = $skills;
+        $this->skillCharacteristics = $skillCharacteristics;
 
         return $this;
     }
@@ -300,8 +290,8 @@ class Characteristic
      */
     public function addSkill(Skill $skill): self
     {
-        if (!$this->skills->contains($skill)) {
-            $this->skills[] = $skill;
+        if (!$this->skillCharacteristics->contains($skill)) {
+            $this->skillCharacteristics[] = $skill;
             $skill->addCharacteristic($this);
         }
 
@@ -315,8 +305,8 @@ class Characteristic
      */
     public function removeSkill(Skill $skill): self
     {
-        if ($this->skills->contains($skill)) {
-            $this->skills->removeElement($skill);
+        if ($this->skillCharacteristics->contains($skill)) {
+            $this->skillCharacteristics->removeElement($skill);
             $skill->removeCharacteristic($this);
         }
 
@@ -326,19 +316,19 @@ class Characteristic
     /**
      * @return Collection
      */
-    public function getAcademies(): Collection
+    public function getAcademyCharacteristics(): Collection
     {
-        return $this->academies;
+        return $this->academyCharacteristics;
     }
 
     /**
-     * @param Collection $academies
+     * @param Collection $academyCharacteristics
      *
      * @return Characteristic
      */
-    public function setAcademies(Collection $academies): self
+    public function setAcademyCharacteristics(Collection $academyCharacteristics): self
     {
-        $this->academies = $academies;
+        $this->academyCharacteristics = $academyCharacteristics;
 
         return $this;
     }
@@ -350,8 +340,8 @@ class Characteristic
      */
     public function addAcademy(Academy $academy): self
     {
-        if (!$this->academies->contains($academy)) {
-            $this->academies[] = $academy;
+        if (!$this->academyCharacteristics->contains($academy)) {
+            $this->academyCharacteristics[] = $academy;
             $academy->addBaseCharacteristic($this);
         }
 
@@ -365,8 +355,8 @@ class Characteristic
      */
     public function removeAcademy(Academy $academy): self
     {
-        if ($this->academies->contains($academy)) {
-            $this->academies->removeElement($academy);
+        if ($this->academyCharacteristics->contains($academy)) {
+            $this->academyCharacteristics->removeElement($academy);
             $academy->removeBaseCharacteristic($this);
         }
 

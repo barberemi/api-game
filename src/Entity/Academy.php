@@ -281,30 +281,30 @@ class Academy
     }
 
     /**
-     * @param Characteristic $baseCharacteristic
+     * @param BindCharacteristic $baseCharacteristic
      *
      * @return Academy
      */
-    public function addBaseCharacteristic(Characteristic $baseCharacteristic): self
+    public function addBaseCharacteristic(BindCharacteristic $baseCharacteristic): self
     {
         if (!$this->baseCharacteristics->contains($baseCharacteristic)) {
             $this->baseCharacteristics[] = $baseCharacteristic;
-            $baseCharacteristic->addAcademy($this);
+            $baseCharacteristic->setAcademy($this);
         }
 
         return $this;
     }
 
     /**
-     * @param Characteristic $baseCharacteristic
+     * @param BindCharacteristic $baseCharacteristic
      *
      * @return Academy
      */
-    public function removeBaseCharacteristic(Characteristic $baseCharacteristic): self
+    public function removeBaseCharacteristic(BindCharacteristic $baseCharacteristic): self
     {
         if ($this->baseCharacteristics->contains($baseCharacteristic)) {
             $this->baseCharacteristics->removeElement($baseCharacteristic);
-            $baseCharacteristic->removeAcademy($this);
+            $baseCharacteristic->setAcademy(null);
         }
 
         return $this;

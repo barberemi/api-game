@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
+use App\Helper\LevelHelper;
 
 /**
  * @ORM\Table(name="monster")
@@ -53,6 +54,17 @@ class Monster
      * @Serializer\Groups({"create", "update"})
      */
     protected $givenXp;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $level;
 
     /**
      * @var ArrayCollection
@@ -278,5 +290,34 @@ class Monster
         $this->givenXp = $givenXp;
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLevel(): int
+    {
+        return $this->level;
+    }
+
+    /**
+     * @param int $level
+     *
+     * @return Monster
+     */
+    public function setLevel(int $level): self
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @return int
+     */
+    public function getXpToNextLevel(): int
+    {
+        return LevelHelper::xpToLevel($this->getLevel() + 1) - LevelHelper::xpToLevel($this->getLevel());
     }
 }

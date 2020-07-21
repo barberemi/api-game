@@ -52,9 +52,6 @@ class BindCharacteristic
      *
      * @Assert\Choice(choices=BindCharacteristic::TYPES)
      *
-     * @Serializer\Expose
-     * @Serializer\Type("string")
-     * @Serializer\Groups({"create", "update"})
      */
     protected $type;
 
@@ -95,7 +92,7 @@ class BindCharacteristic
     protected $academy;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Characteristic", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Characteristic")
      *
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Characteristic")
