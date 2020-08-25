@@ -37,7 +37,7 @@ class AcademyRepository extends AbstractRepository
 
         /** @var BindCharacteristic $characteristic */
         foreach ($baseCharacteristics as $characteristic) {
-            $characteristic->setAcademy($entity);
+            $characteristic->setBaseAcademy($entity);
         }
 
         return parent::update($entity);
@@ -51,7 +51,7 @@ class AcademyRepository extends AbstractRepository
      */
     protected function clearBaseCharacteristics(Academy $academy, array $keepIds): void
     {
-        $bindCharacteristics = $this->_em->getRepository(BindCharacteristic::class)->findBy(['academy' => $academy]);
+        $bindCharacteristics = $this->_em->getRepository(BindCharacteristic::class)->findBy(['baseAcademy' => $academy]);
 
         /** @var BindCharacteristic $characteristic */
         foreach ($bindCharacteristics as $characteristic) {

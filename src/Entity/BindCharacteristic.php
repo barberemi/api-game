@@ -89,7 +89,7 @@ class BindCharacteristic
      * @Serializer\Type("App\Entity\Academy")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $academy;
+    protected $baseAcademy;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Characteristic")
@@ -101,7 +101,7 @@ class BindCharacteristic
     protected $characteristic;
 
     /**
-     * Academy constructor.
+     * BindCharacteristic constructor.
      */
     public function __construct()
     {
@@ -251,19 +251,19 @@ class BindCharacteristic
     /**
      * @return Academy
      */
-    public function getAcademy(): Academy
+    public function getBaseAcademy(): Academy
     {
-        return $this->academy;
+        return $this->baseAcademy;
     }
 
     /**
-     * @param $academy
+     * @param $baseAcademy
      *
      * @return BindCharacteristic
      */
-    public function setAcademy($academy): self
+    public function setBaseAcademy($baseAcademy): self
     {
-        $this->academy = $academy;
+        $this->baseAcademy = $baseAcademy;
 
         return $this;
     }

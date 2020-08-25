@@ -81,7 +81,7 @@ class Academy
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="academy", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="baseAcademy", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
      * @Serializer\Expose

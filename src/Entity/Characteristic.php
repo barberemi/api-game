@@ -90,7 +90,7 @@ class Characteristic
      * @ORM\OrderBy({"id" = "ASC"})
      *
      */
-    protected $academyCharacteristics;
+    protected $baseAcademyCharacteristics;
 
     /**
      * Characteristic constructor.
@@ -100,7 +100,7 @@ class Characteristic
         $this->userCharacteristics = new ArrayCollection();
         $this->monsterCharacteristics = new ArrayCollection();
         $this->skillCharacteristics = new ArrayCollection();
-        $this->academyCharacteristics = new ArrayCollection();
+        $this->baseAcademyCharacteristics = new ArrayCollection();
     }
 
     /**
@@ -316,19 +316,19 @@ class Characteristic
     /**
      * @return Collection
      */
-    public function getAcademyCharacteristics(): Collection
+    public function getBaseAcademyCharacteristics(): Collection
     {
-        return $this->academyCharacteristics;
+        return $this->baseAcademyCharacteristics;
     }
 
     /**
-     * @param Collection $academyCharacteristics
+     * @param Collection $baseAcademyCharacteristics
      *
      * @return Characteristic
      */
-    public function setAcademyCharacteristics(Collection $academyCharacteristics): self
+    public function setBaseAcademyCharacteristics(Collection $baseAcademyCharacteristics): self
     {
-        $this->academyCharacteristics = $academyCharacteristics;
+        $this->baseAcademyCharacteristics = $baseAcademyCharacteristics;
 
         return $this;
     }
@@ -338,10 +338,10 @@ class Characteristic
      *
      * @return Characteristic
      */
-    public function addAcademy(Academy $academy): self
+    public function addBaseAcademy(Academy $academy): self
     {
-        if (!$this->academyCharacteristics->contains($academy)) {
-            $this->academyCharacteristics[] = $academy;
+        if (!$this->baseAcademyCharacteristics->contains($academy)) {
+            $this->baseAcademyCharacteristics[] = $academy;
             $academy->addBaseCharacteristic($this);
         }
 
@@ -353,10 +353,10 @@ class Characteristic
      *
      * @return Characteristic
      */
-    public function removeAcademy(Academy $academy): self
+    public function removeBaseAcademy(Academy $academy): self
     {
-        if ($this->academyCharacteristics->contains($academy)) {
-            $this->academyCharacteristics->removeElement($academy);
+        if ($this->baseAcademyCharacteristics->contains($academy)) {
+            $this->baseAcademyCharacteristics->removeElement($academy);
             $academy->removeBaseCharacteristic($this);
         }
 
