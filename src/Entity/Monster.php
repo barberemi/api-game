@@ -104,6 +104,18 @@ class Monster
     protected $skills;
 
     /**
+     * @var Map
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Map", inversedBy="monsters", cascade={"persist"})
+     * @ORM\JoinColumn(name="map_id", referencedColumnName="id")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Map")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $map;
+
+    /**
      * Monster constructor.
      */
     public function __construct()
@@ -319,5 +331,25 @@ class Monster
     public function getXpToNextLevel(): int
     {
         return LevelHelper::xpToLevel($this->getLevel() + 1) - LevelHelper::xpToLevel($this->getLevel());
+    }
+
+    /**
+     * @return Map
+     */
+    public function getMap(): Map
+    {
+        return $this->map;
+    }
+
+    /**
+     * @param Map|null $map
+     *
+     * @return Monster
+     */
+    public function setMap(?Map $map): self
+    {
+        $this->map = $map;
+
+        return $this;
     }
 }

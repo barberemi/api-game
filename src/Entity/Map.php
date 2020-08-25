@@ -1,0 +1,186 @@
+<?php
+
+namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as Serializer;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
+/**
+ * @ORM\Table(name="map")
+ * @ORM\Entity(repositoryClass="App\Repository\MapRepository")
+ *
+ * @UniqueEntity("name")
+ */
+class Map
+{
+    use TimestampableEntity;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"update"})
+     */
+    protected $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255, unique=true)
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $name;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $level;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Monster", mappedBy="map", cascade={"persist"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\Monster>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $monsters;
+
+    /**
+     * Map constructor.
+     */
+    public function __construct()
+    {
+        $this->monsters = new ArrayCollection();
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param $id
+     *
+     * @return Map
+     */
+    public function setId($id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Map
+     */
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLevel(): int
+    {
+        return $this->level;
+    }
+
+    /**
+     * @param int $level
+     *
+     * @return Map
+     */
+    public function setLevel(int $level): self
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMonsters(): Collection
+    {
+        return $this->monsters;
+    }
+
+    /**
+     * @param ArrayCollection $monsters
+     *
+     * @return Map
+     */
+    public function setMonsters(ArrayCollection $monsters): self
+    {
+        $this->monsters = $monsters;
+
+        return $this;
+    }
+
+    /**
+     * @param Monster $monster
+     *
+     * @return Map
+     */
+    public function addMonster(Monster $monster): self
+    {
+        if (!$this->monsters->contains($monster)) {
+            $this->monsters[] = $monster;
+            $monster->setMap($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Monster $monster
+     *
+     * @return Map
+     */
+    public function removeMonster(Monster $monster): self
+    {
+        if ($this->monsters->contains($monster)) {
+            $this->monsters->removeElement($monster);
+            $monster->setMap(null);
+        }
+
+        return $this;
+    }
+}
