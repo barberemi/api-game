@@ -23,7 +23,7 @@ final class Version20200609152538 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('CREATE TABLE academy (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description LONGTEXT NOT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, UNIQUE INDEX UNIQ_994D0ECB5E237E06 (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE user ADD academy_id INT DEFAULT NULL, DROP user_id');
+        $this->addSql('ALTER TABLE user ADD academy_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D6496D55ACAB FOREIGN KEY (academy_id) REFERENCES academy (id)');
         $this->addSql('CREATE INDEX IDX_8D93D6496D55ACAB ON user (academy_id)');
     }
