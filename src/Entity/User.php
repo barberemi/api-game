@@ -106,7 +106,7 @@ class User implements UserInterface
      * @Serializer\Type("integer")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $experience;
+    protected $experience = 0;
 
     /**
      * @var int
@@ -117,7 +117,7 @@ class User implements UserInterface
      * @Serializer\Type("integer")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $money;
+    protected $money = 0;
 
     /**
      * @var int
@@ -128,7 +128,7 @@ class User implements UserInterface
      * @Serializer\Type("integer")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $itemSpaceNb;
+    protected $itemSpaceNb = 10;
 
     /**
      * @var bool
