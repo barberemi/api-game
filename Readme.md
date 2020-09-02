@@ -12,6 +12,16 @@ Info : sur Windows, faire un "C:\Program Files\OpenSSL-Win64\bin\openssl.exe" au
 
 ## Lancer l'API
 - s'assurer que son MySQL est bien lancé (WAMP ?)
-- php bin/console server:run
+- **php bin/console server:run**
 - se rendre sur http://127.0.0.1:8000/api/doc
--
+
+
+## Pousser ses mises à jours
+- **git pull** (récupération des modifications faire par les autres personnes)
+- **composer install** (installer les nouvelles dépendances si de nouvelles sont présentes)
+- **php bin/console do:mi:mi** (récupérer les nouvelles choses en BDD)
+
+- **git add leNomDeMonFichier** (pour dire à GIT quels sont les fichiers que je veux envoyer)
+- **git status** (permet de visualiser tous les fichiers qui vont être envoyés)
+- **git commit -m "mon message qui dit que est ce que j ai fait"**
+- **git push**
