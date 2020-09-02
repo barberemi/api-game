@@ -52,7 +52,18 @@ class Map
      * @Serializer\Type("integer")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $level;
+    protected $levelMin = 0;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $levelMax = 10;
 
     /**
      * @var ArrayCollection
@@ -117,19 +128,39 @@ class Map
     /**
      * @return int
      */
-    public function getLevel(): int
+    public function getLevelMin(): int
     {
-        return $this->level;
+        return $this->levelMin;
     }
 
     /**
-     * @param int $level
+     * @param int $levelMin
      *
      * @return Map
      */
-    public function setLevel(int $level): self
+    public function setLevelMin(int $levelMin): self
     {
-        $this->level = $level;
+        $this->levelMin = $levelMin;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLevelMax(): int
+    {
+        return $this->levelMax;
+    }
+
+    /**
+     * @param int $levelMax
+     *
+     * @return Map
+     */
+    public function setLevelMax(int $levelMax): self
+    {
+        $this->levelMax = $levelMax;
 
         return $this;
     }
