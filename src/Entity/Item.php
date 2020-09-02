@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -73,6 +75,26 @@ class Item
      * @Serializer\Groups({"create", "update"})
      */
     protected $dropRate;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="item", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\BindCharacteristic>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $characteristics;
+
+    /**
+     * Item constructor.
+     */
+    public function __construct()
+    {
+        $this->characteristics = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -150,6 +172,56 @@ class Item
     public function setLevel(int $level): self
     {
         $this->level = $level;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getCharacteristics(): Collection
+    {
+        return $this->characteristics;
+    }
+
+    /**
+     * @param Collection $characteristics
+     *
+     * @return Item
+     */
+    public function setCharacteristics(Collection $characteristics): self
+    {
+        $this->characteristics = $characteristics;
+
+        return $this;
+    }
+
+    /**
+     * @param Characteristic $characteristic
+     *
+     * @return Item
+     */
+    public function addCharacteristic(Characteristic $characteristic): self
+    {
+        if (!$this->characteristics->contains($characteristic)) {
+            $this->characteristics[] = $characteristic;
+            $characteristic->addItem($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Characteristic $characteristic
+     *
+     * @return Item
+     */
+    public function removeCharacteristic(Characteristic $characteristic): self
+    {
+        if ($this->characteristics->contains($characteristic)) {
+            $this->characteristics->removeElement($characteristic);
+            $characteristic->removeItem($this);
+        }
 
         return $this;
     }

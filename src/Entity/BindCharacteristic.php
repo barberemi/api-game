@@ -92,6 +92,15 @@ class BindCharacteristic
     protected $baseAcademy;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Item", inversedBy="characteristics")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Item")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $item;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Characteristic")
      *
      * @Serializer\Expose
@@ -264,6 +273,26 @@ class BindCharacteristic
     public function setBaseAcademy($baseAcademy): self
     {
         $this->baseAcademy = $baseAcademy;
+
+        return $this;
+    }
+
+    /**
+     * @return Item
+     */
+    public function getItem(): Item
+    {
+        return $this->item;
+    }
+
+    /**
+     * @param $item
+     *
+     * @return BindCharacteristic
+     */
+    public function setItem($item): self
+    {
+        $this->item = $item;
 
         return $this;
     }

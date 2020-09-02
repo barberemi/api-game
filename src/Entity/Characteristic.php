@@ -93,6 +93,15 @@ class Characteristic
     protected $baseAcademyCharacteristics;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="characteristic", cascade={"persist"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     */
+    protected $itemCharacteristics;
+
+    /**
      * Characteristic constructor.
      */
     public function __construct()
@@ -101,6 +110,7 @@ class Characteristic
         $this->monsterCharacteristics = new ArrayCollection();
         $this->skillCharacteristics = new ArrayCollection();
         $this->baseAcademyCharacteristics = new ArrayCollection();
+        $this->itemCharacteristics = new ArrayCollection();
     }
 
     /**
@@ -358,6 +368,56 @@ class Characteristic
         if ($this->baseAcademyCharacteristics->contains($academy)) {
             $this->baseAcademyCharacteristics->removeElement($academy);
             $academy->removeBaseCharacteristic($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getItemCharacteristics(): Collection
+    {
+        return $this->itemCharacteristics;
+    }
+
+    /**
+     * @param Collection $itemCharacteristics
+     *
+     * @return Characteristic
+     */
+    public function setItemCharacteristics(Collection $itemCharacteristics): self
+    {
+        $this->itemCharacteristics = $itemCharacteristics;
+
+        return $this;
+    }
+
+    /**
+     * @param Item $item
+     *
+     * @return Characteristic
+     */
+    public function addItem(Item $item): self
+    {
+        if (!$this->itemCharacteristics->contains($item)) {
+            $this->itemCharacteristics[] = $item;
+            $item->addCharacteristic($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Item $item
+     *
+     * @return Characteristic
+     */
+    public function removeItem(Item $item): self
+    {
+        if ($this->itemCharacteristics->contains($item)) {
+            $this->itemCharacteristics->removeElement($item);
+            $item->removeCharacteristic($this);
         }
 
         return $this;
