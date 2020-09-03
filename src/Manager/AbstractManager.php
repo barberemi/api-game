@@ -54,6 +54,23 @@ class AbstractManager
     }
 
     /**
+     * @param array $criteria
+     *
+     * @return array
+     */
+    public function getAllBy(array $criteria)
+    {
+        $entities = $this->em->getRepository($this->repositoryNamespace)->findBy($criteria);
+
+        $data = ['items' => []];
+        foreach ($entities as $entity) {
+            $data['items'][] = json_decode($this->serialize($entity));
+        }
+
+        return $data;
+    }
+
+    /**
      * @return array
      */
     public function getAll()

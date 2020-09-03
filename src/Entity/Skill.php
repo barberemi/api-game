@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as Serializer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="skill")
@@ -18,6 +19,10 @@ use Doctrine\Common\Collections\Collection;
 class Skill
 {
     use TimestampableEntity;
+
+    const DARK = 'dark';
+    const LIGHT = 'light';
+    const TREE_TYPES = [self::DARK, self::LIGHT];
 
     /**
      * @var int
@@ -88,6 +93,20 @@ class Skill
     protected $duration;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     *
+     * @Assert\Choice(choices=Skill::TREE_TYPES)
+     *
+     */
+    protected $treeType = self::LIGHT;
+
+    /**
      * @var bool
      *
      * @ORM\Column(type="boolean")
@@ -156,6 +175,18 @@ class Skill
      * @Serializer\Groups({"create", "update"})
      */
     protected $characteristics;
+
+    /**
+     * @var Skill
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Academy", inversedBy="skills", cascade={"persist"})
+     * @ORM\JoinColumn(name="academy_id", referencedColumnName="id")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Academy")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $academy;
 
     /**
      * Skill constructor.
@@ -527,6 +558,46 @@ class Skill
             $this->characteristics->removeElement($characteristic);
             $characteristic->removeSkill($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Skill
+     */
+    public function getAcademy(): Skill
+    {
+        return $this->academy;
+    }
+
+    /**
+     * @param null|Academy $academy
+     *
+     * @return Skill
+     */
+    public function setAcademy(?Academy $academy): self
+    {
+        $this->academy = $academy;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTreeType(): string
+    {
+        return $this->treeType;
+    }
+
+    /**
+     * @param string $treeType
+     *
+     * @return Skill
+     */
+    public function setTreeType(string $treeType): self
+    {
+        $this->treeType = $treeType;
 
         return $this;
     }

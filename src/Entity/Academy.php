@@ -91,6 +91,18 @@ class Academy
     protected $baseCharacteristics;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Skill", mappedBy="academy", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\Skill>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $skills;
+
+    /**
      * Academy constructor.
      */
     public function __construct()
@@ -98,6 +110,7 @@ class Academy
         $this->users = new ArrayCollection();
         $this->monsters = new ArrayCollection();
         $this->baseCharacteristics = new ArrayCollection();
+        $this->skills = new ArrayCollection();
     }
 
     /**
@@ -305,6 +318,56 @@ class Academy
         if ($this->baseCharacteristics->contains($baseCharacteristic)) {
             $this->baseCharacteristics->removeElement($baseCharacteristic);
             $baseCharacteristic->setAcademy(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getSkills(): ArrayCollection
+    {
+        return $this->skills;
+    }
+
+    /**
+     * @param ArrayCollection $skills
+     *
+     * @return Academy
+     */
+    public function setSkills(ArrayCollection $skills): self
+    {
+        $this->skills = $skills;
+
+        return $this;
+    }
+
+    /**
+     * @param Skill $skill
+     *
+     * @return Academy
+     */
+    public function addSkill(Skill $skill): self
+    {
+        if (!$this->skills->contains($skill)) {
+            $this->skills[] = $skill;
+            $skill->setAcademy($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Skill $skill
+     *
+     * @return Academy
+     */
+    public function removeSkill(Skill $skill): self
+    {
+        if ($this->skills->contains($skill)) {
+            $this->skills->removeElement($skill);
+            $skill->setAcademy(null);
         }
 
         return $this;
