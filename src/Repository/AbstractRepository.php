@@ -121,7 +121,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     protected function checkCharacteristics($entity) {
-        if ($entity->getCharacteristics()) {
+        if (method_exists($entity, 'getCharacteristics')) {
             $explode = explode('\\', $this->getEntityNameSpace());
             $entityName = end($explode);
 
