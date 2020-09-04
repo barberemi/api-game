@@ -74,12 +74,14 @@ class SkillController extends AbstractController
      * )
      * @SWG\Tag(name="skills")
      *
+     * @param Request $request
+     *
      * @return JsonResponse
      */
-    public function indexAll()
+    public function indexAll(Request $request)
     {
         try {
-            $skills = $this->skillManager->getAll();
+            $skills = $this->skillManager->getAll($request->query->all());
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
@@ -205,35 +207,5 @@ class SkillController extends AbstractController
         }
 
         return new JsonResponse([], JsonResponse::HTTP_OK);
-    }
-
-    /**
-     * Get all skills from specific academy/treeType.
-     *
-     * @Route("/academy/{academyId}/{treeType}", methods={"GET"})
-     * @SWG\Response(
-     *     response=200,
-     *     description="When get all skills correctly."
-     * )
-     * @SWG\Response(
-     *     response=400,
-     *     description="When some errors on params."
-     * )
-     * @SWG\Tag(name="skills")
-     *
-     * @param int    $academyId
-     * @param string $treeType
-     *
-     * @return JsonResponse
-     */
-    public function indexAllByAcademyAndType(int $academyId, string $treeType)
-    {
-        try {
-            $map = $this->skillManager->getAllBy(['academy' => $academyId, 'treeType' => $treeType]);
-        } catch (\Exception $e) {
-            return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
-        }
-
-        return new JsonResponse($map, JsonResponse::HTTP_OK);
     }
 }

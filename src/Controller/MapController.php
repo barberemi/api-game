@@ -74,12 +74,14 @@ class MapController extends AbstractController
      * )
      * @SWG\Tag(name="maps")
      *
+     * @param Request $request
+     *
      * @return JsonResponse
      */
-    public function indexAll()
+    public function indexAll(Request $request)
     {
         try {
-            $maps = $this->mapManager->getAll();
+            $maps = $this->mapManager->getAll($request->query->all());
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }

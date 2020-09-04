@@ -74,12 +74,14 @@ class ItemController extends AbstractController
      * )
      * @SWG\Tag(name="items")
      *
+     * @param Request $request
+     *
      * @return JsonResponse
      */
-    public function indexAll()
+    public function indexAll(Request $request)
     {
         try {
-            $items = $this->itemManager->getAll();
+            $items = $this->itemManager->getAll($request->query->all());
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }

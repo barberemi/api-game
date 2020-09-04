@@ -54,28 +54,22 @@ class AbstractManager
     }
 
     /**
-     * @param array $criteria
+     * @param null|array $criteria
      *
      * @return array
      */
-    public function getAllBy(array $criteria)
+    public function getAll(?array $criteria)
     {
-        $entities = $this->em->getRepository($this->repositoryNamespace)->findBy($criteria);
-
-        $data = ['items' => []];
-        foreach ($entities as $entity) {
-            $data['items'][] = json_decode($this->serialize($entity));
+        if ($criteria) {
+            foreach ($criteria as $key => $value) {
+                if ($value === 'null') {
+                    $criteria[$key] = null;
+                }
+            }
+            $entities = $this->em->getRepository($this->repositoryNamespace)->findBy($criteria);
+        } else {
+            $entities = $this->em->getRepository($this->repositoryNamespace)->findAll();
         }
-
-        return $data;
-    }
-
-    /**
-     * @return array
-     */
-    public function getAll()
-    {
-        $entities = $this->em->getRepository($this->repositoryNamespace)->findAll();
 
         $data = ['items' => []];
         foreach ($entities as $entity) {

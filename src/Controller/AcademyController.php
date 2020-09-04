@@ -74,12 +74,14 @@ class AcademyController extends AbstractController
      * )
      * @SWG\Tag(name="academies")
      *
+     * @param Request $request
+     *
      * @return JsonResponse
      */
-    public function indexAll()
+    public function indexAll(Request $request)
     {
         try {
-            $academies = $this->academyManager->getAll();
+            $academies = $this->academyManager->getAll($request->query->all());
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }

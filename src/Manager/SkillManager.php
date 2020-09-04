@@ -18,21 +18,4 @@ class SkillManager extends AbstractManager
     {
         parent::__construct($em, $serializer, Skill::class);
     }
-
-    /**
-     * @return array
-     */
-    public function getAll()
-    {
-        $entities = $this->em->getRepository(Skill::class)->findBy([
-            'parent' => null,
-        ]);
-
-        $data = ['items' => []];
-        foreach ($entities as $entity) {
-            $data['items'][] = json_decode($this->serialize($entity));
-        }
-
-        return $data;
-    }
 }

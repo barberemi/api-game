@@ -74,12 +74,14 @@ class UserController extends AbstractController
      * )
      * @SWG\Tag(name="users")
      *
+     * @param Request $request
+     *
      * @return JsonResponse
      */
-    public function indexAll()
+    public function indexAll(Request $request)
     {
         try {
-            $users = $this->userManager->getAll();
+            $users = $this->userManager->getAll($request->query->all());
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }

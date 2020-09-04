@@ -74,12 +74,14 @@ class GuildController extends AbstractController
      * )
      * @SWG\Tag(name="guilds")
      *
+     * @param Request $request
+     *
      * @return JsonResponse
      */
-    public function indexAll()
+    public function indexAll(Request $request)
     {
         try {
-            $guilds = $this->guildManager->getAll();
+            $guilds = $this->guildManager->getAll($request->query->all());
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }

@@ -74,12 +74,14 @@ class CharacteristicController extends AbstractController
      * )
      * @SWG\Tag(name="characteristics")
      *
+     * @param Request $request
+     *
      * @return JsonResponse
      */
-    public function indexAll()
+    public function indexAll(Request $request)
     {
         try {
-            $characteristics = $this->characteristicManager->getAll();
+            $characteristics = $this->characteristicManager->getAll($request->query->all());
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
