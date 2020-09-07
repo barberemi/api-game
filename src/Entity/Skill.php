@@ -24,6 +24,13 @@ class Skill
     const LIGHT = 'light';
     const TREE_TYPES = [self::DARK, self::LIGHT];
 
+    const PHYSICAL_DAMAGE = 'physical_damage';
+    const MAGICAL_DAMAGE = 'magical_damage';
+    const HEAL = 'heal';
+    const BUFF = 'buff';
+    const DEBUFF = 'debuff';
+    const SKILL_TYPES = [self::PHYSICAL_DAMAGE, self::MAGICAL_DAMAGE, self::HEAL, self::BUFF, self::DEBUFF];
+
     /**
      * @var int
      *
@@ -107,15 +114,29 @@ class Skill
     protected $treeType = self::LIGHT;
 
     /**
-     * @var bool
+     * @var string
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="string", nullable=true)
      *
      * @Serializer\Expose
-     * @Serializer\Type("boolean")
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     *
+     * @Assert\Choice(choices=Skill::SKILL_TYPES)
+     *
+     */
+    protected $type;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $isActive = true;
+    protected $amount;
 
     /**
      * @var ArrayCollection
@@ -196,6 +217,8 @@ class Skill
         $this->cost = 0;
         $this->cooldown = 0;
         $this->duration = 0;
+        $this->amount = 0;
+        $this->treeType = self::LIGHT;
         $this->children = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->monsters = new ArrayCollection();
@@ -493,26 +516,6 @@ class Skill
     }
 
     /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     *
-     * @return Skill
-     */
-    public function setIsActive(bool $isActive): self
-    {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
      * @return Collection
      */
     public function getCharacteristics(): Collection
@@ -598,6 +601,46 @@ class Skill
     public function setTreeType(string $treeType): self
     {
         $this->treeType = $treeType;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param null|string $type
+     *
+     * @return Skill
+     */
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAmount(): int
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @param int $amount
+     *
+     * @return Skill
+     */
+    public function setAmount(int $amount): self
+    {
+        $this->amount = $amount;
 
         return $this;
     }
