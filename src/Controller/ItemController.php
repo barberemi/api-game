@@ -125,12 +125,12 @@ class ItemController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         try {
-            $this->itemManager->create($data);
+            $item = $this->itemManager->create($data);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse([], JsonResponse::HTTP_CREATED);
+        return new JsonResponse($item, JsonResponse::HTTP_CREATED);
     }
 
     /**

@@ -91,7 +91,7 @@ class AbstractManager
         $entity = $this->deserialize($data, ['create']);
         $entity = $this->em->getRepository($this->repositoryNamespace)->create($entity);
 
-        return $entity;
+        return json_decode($this->serialize($entity));
     }
 
     /**

@@ -122,12 +122,12 @@ class MonsterController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         try {
-            $this->monsterManager->create($data);
+            $monster = $this->monsterManager->create($data);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse([], JsonResponse::HTTP_CREATED);
+        return new JsonResponse($monster, JsonResponse::HTTP_CREATED);
     }
 
     /**

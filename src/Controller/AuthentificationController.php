@@ -78,12 +78,12 @@ class AuthentificationController extends AbstractController
         }
 
         try {
-            $this->userManager->create($data);
+            $user = $this->userManager->create($data);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse([], JsonResponse::HTTP_CREATED);
+        return new JsonResponse($user, JsonResponse::HTTP_CREATED);
     }
 
     /**

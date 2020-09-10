@@ -22,11 +22,11 @@ class UserManager extends AbstractManager
     /**
      * @param array $data
      *
-     * @return User
+     * @return array|mixed
      *
      * @throws \Exception
      */
-    public function create(array $data): User
+    public function create(array $data)
     {
         $exist = $this->em->getRepository(User::class)->findBy(['email' => $data['email']]);
 

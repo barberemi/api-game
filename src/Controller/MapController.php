@@ -123,12 +123,12 @@ class MapController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         try {
-            $this->mapManager->create($data);
+            $map = $this->mapManager->create($data);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse([], JsonResponse::HTTP_CREATED);
+        return new JsonResponse($map, JsonResponse::HTTP_CREATED);
     }
 
     /**
