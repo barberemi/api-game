@@ -15,6 +15,10 @@ Info : sur Windows, faire un "C:\Program Files\OpenSSL-Win64\bin\openssl.exe" au
 - **php bin/console server:run**
 - se rendre sur http://127.0.0.1:8000/api/doc
 
+## Lancer le serveur Mercure (serveur pour le temps réel)
+- aller dans bin/mercure/
+- JWT_KEY='unmercuremaispasque123456%' ADDR='localhost:3001' ALLOW_ANONYMOUS=1 CORS_ALLOWED_ORIGINS='http://localhost:3000' PUBLISH_ALLOWED_ORIGINS="http://localhost:3000" SUBSCRIPTIONS=1 ./mercure
+
 
 ## Pousser ses mises à jours
 - **git pull** (récupération des modifications faire par les autres personnes)

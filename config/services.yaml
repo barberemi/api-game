@@ -34,3 +34,12 @@ services:
 
     jms_serializer.naming_strategy:
         alias: jms_serializer.identical_property_naming_strategy
+
+    App\Helper\MercureCookieGenerator:
+        arguments:
+            $secret: '%env(MERCURE_JWT_KEY)%'
+
+    App\Helper\MercureJWTProvider:
+        arguments:
+            $secret: '%env(MERCURE_JWT_KEY)%'
+            $tokenGenerator: '@security.untracked_token_storage'

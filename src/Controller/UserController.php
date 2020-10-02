@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Helper\MercureCookieGenerator;
 use App\Manager\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,13 +23,20 @@ class UserController extends AbstractController
     protected $userManager;
 
     /**
+     * @var MercureCookieGenerator
+     */
+    protected $mercureCookieGenerator;
+
+    /**
      * UserController constructor.
      *
      * @param UserManager $userManager
+     * @param MercureCookieGenerator $mercureCookieGenerator
      */
-    public function __construct(UserManager $userManager)
+    public function __construct(UserManager $userManager, MercureCookieGenerator $mercureCookieGenerator)
     {
         $this->userManager = $userManager;
+        $this->mercureCookieGenerator = $mercureCookieGenerator;
     }
 
     /**
@@ -158,5 +166,37 @@ class UserController extends AbstractController
         }
 
         return new JsonResponse([], JsonResponse::HTTP_OK);
+    }
+
+
+    /**
+     * Get a Mercure JWT token.
+     *
+     * @Route("/mercure_check", methods={"POST"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="When user get correctly Mercure Token."
+     * )
+     * @SWG\Response(
+     *     response=500,
+     *     description="When some errors on params."
+     * )
+     * @SWG\Tag(name="auth")
+     *
+     * @return JsonResponse
+     */
+    public function getMercureJWTToken(): JsonResponse
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            return new JsonResponse(['error' => 'Cannot get Mercure JWT token anonymously.'], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
+        return new JsonResponse(
+            ['token' => $this->mercureCookieGenerator->generate($user)],
+            JsonResponse::HTTP_CREATED
+        );
     }
 }
