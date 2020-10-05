@@ -191,11 +191,24 @@ class User implements UserInterface
     protected $guild;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\Message>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $messages;
+
+    /**
      * User constructor.
      */
     public function __construct()
     {
         $this->characteristics = new ArrayCollection();
+        $this->messages = new ArrayCollection();
         $this->skills = new ArrayCollection();
         $this->salt = md5(uniqid(null, true));
         $this->role = 'ROLE_USER';
@@ -607,6 +620,56 @@ class User implements UserInterface
     public function setIsDead(bool $isDead): self
     {
         $this->isDead = $isDead;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    /**
+     * @param Collection $messages
+     *
+     * @return User
+     */
+    public function setMessages(Collection $messages): self
+    {
+        $this->messages = $messages;
+
+        return $this;
+    }
+
+    /**
+     * @param Message $message
+     *
+     * @return User
+     */
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Message $message
+     *
+     * @return User
+     */
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->contains($message)) {
+            $this->messages->removeElement($message);
+            $message->setUser(null);
+        }
 
         return $this;
     }

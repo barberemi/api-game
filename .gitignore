@@ -7,6 +7,7 @@
 /vendor/
 .idea/
 .DS_Store
+/bin/mercure_mac_os/updates.db
 
 ###> lexik/jwt-authentication-bundle ###
 /config/jwt/*.pem
