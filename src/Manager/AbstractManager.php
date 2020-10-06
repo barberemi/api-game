@@ -60,13 +60,39 @@ class AbstractManager
      */
     public function getAll(?array $criteria)
     {
+        $order = "ASC";
+        $newOrder = null;
+        $orderBy = null;
+        $limit = null;
+
         if ($criteria) {
             foreach ($criteria as $key => $value) {
+                // Order and Order_by in querystring url
+                if ($key === "order") {
+                    $order = $value;
+                    unset($criteria[$key]);
+                    continue;
+                }
+                if ($key === "order_by") {
+                    $orderBy = $value;
+                    unset($criteria[$key]);
+                    continue;
+                }
+                // Limit in querystring url
+                if ($key === 'limit') {
+                    $limit = $value;
+                    unset($criteria[$key]);
+                    continue;
+                }
                 if ($value === 'null') {
                     $criteria[$key] = null;
                 }
             }
-            $entities = $this->em->getRepository($this->repositoryNamespace)->findBy($criteria);
+            if (isset($order) && isset($orderBy)) {
+                $newOrder = [$orderBy => $order];
+            }
+
+            $entities = $this->em->getRepository($this->repositoryNamespace)->findBy($criteria, $newOrder, $limit);
         } else {
             $entities = $this->em->getRepository($this->repositoryNamespace)->findAll();
         }
