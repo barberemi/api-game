@@ -55,6 +55,28 @@ class Academy
     protected $description;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="text")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $color;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="text")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $role;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="academy", cascade={"persist"})
@@ -169,6 +191,44 @@ class Academy
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor(): string
+    {
+        return $this->color;
+    }
+
+    /**
+     * @param string $color
+     * @return Academy
+     */
+    public function setColor(string $color): self
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param string $role
+     * @return Academy
+     */
+    public function setRole(string $role): self
+    {
+        $this->role = $role;
 
         return $this;
     }
