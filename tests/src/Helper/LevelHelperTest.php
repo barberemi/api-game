@@ -42,4 +42,22 @@ class LogManagerTest extends TestCase
         $xp = LevelHelper::xpToLevel(100);
         $this->assertEquals(1000000, $xp);
     }
+
+    public function testSkillPointsOfLevel()
+    {
+        $skillPoints = LevelHelper::skillPointsOfLevel(1);
+        $this->assertEquals(1, $skillPoints);
+
+        $skillPoints = LevelHelper::skillPointsOfLevel(5);
+        $this->assertEquals(5, $skillPoints);
+
+        $skillPoints = LevelHelper::skillPointsOfLevel(25);
+        $this->assertEquals(10, $skillPoints);
+
+        $skillPoints = LevelHelper::skillPointsOfLevel(99);
+        $this->assertEquals(30, $skillPoints);
+
+        $skillPoints = LevelHelper::skillPointsOfLevel(120);
+        $this->assertEquals(30, $skillPoints);
+    }
 }

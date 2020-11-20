@@ -229,6 +229,25 @@ class User implements UserInterface
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @return int
+     */
+    public function getSkillPoints(): int
+    {
+        return LevelHelper::skillPointsOfLevel($this->getLevel());
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @return int
+     */
+    public function getRemainingSkillPoints(): int
+    {
+        $usedSkillPoints = count($this->getSkills());
+        return LevelHelper::skillPointsOfLevel($this->getLevel()) - $usedSkillPoints;
+    }
+
+    /**
      * @return int
      */
     public function getId(): int
