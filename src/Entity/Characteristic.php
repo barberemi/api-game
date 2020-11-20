@@ -63,15 +63,6 @@ class Characteristic
      * @ORM\OrderBy({"id" = "ASC"})
      *
      */
-    protected $userCharacteristics;
-
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="characteristic", cascade={"persist"})
-     * @ORM\OrderBy({"id" = "ASC"})
-     *
-     */
     protected $monsterCharacteristics;
 
     /**
@@ -106,7 +97,6 @@ class Characteristic
      */
     public function __construct()
     {
-        $this->userCharacteristics = new ArrayCollection();
         $this->monsterCharacteristics = new ArrayCollection();
         $this->skillCharacteristics = new ArrayCollection();
         $this->baseAcademyCharacteristics = new ArrayCollection();
@@ -169,56 +159,6 @@ class Characteristic
     public function setDescription(string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getUserCharacteristics(): Collection
-    {
-        return $this->userCharacteristics;
-    }
-
-    /**
-     * @param Collection $userCharacteristics
-     *
-     * @return Characteristic
-     */
-    public function setUserCharacteristics(Collection $userCharacteristics): self
-    {
-        $this->userCharacteristics = $userCharacteristics;
-
-        return $this;
-    }
-
-    /**
-     * @param User $user
-     *
-     * @return Characteristic
-     */
-    public function addUser(User $user): self
-    {
-        if (!$this->userCharacteristics->contains($user)) {
-            $this->userCharacteristics[] = $user;
-            $user->addCharacteristic($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param User $user
-     *
-     * @return Characteristic
-     */
-    public function removeUser(User $user): self
-    {
-        if ($this->userCharacteristics->contains($user)) {
-            $this->userCharacteristics->removeElement($user);
-            $user->removeCharacteristic($this);
-        }
 
         return $this;
     }

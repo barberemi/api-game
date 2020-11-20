@@ -142,18 +142,6 @@ class User implements UserInterface
     protected $isDead = false;
 
     /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="user", cascade={"persist", "remove"})
-     * @ORM\OrderBy({"id" = "ASC"})
-     *
-     * @Serializer\Expose
-     * @Serializer\Type("ArrayCollection<App\Entity\BindCharacteristic>")
-     * @Serializer\Groups({"create", "update"})
-     */
-    protected $characteristics;
-
-    /**
      * @var Academy
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Academy", inversedBy="users", cascade={"persist"})
@@ -207,7 +195,6 @@ class User implements UserInterface
      */
     public function __construct()
     {
-        $this->characteristics = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->skills = new ArrayCollection();
         $this->salt = md5(uniqid(null, true));
@@ -400,56 +387,6 @@ class User implements UserInterface
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getCharacteristics(): Collection
-    {
-        return $this->characteristics;
-    }
-
-    /**
-     * @param Collection $characteristics
-     *
-     * @return User
-     */
-    public function setCharacteristics(Collection $characteristics): self
-    {
-        $this->characteristics = $characteristics;
-
-        return $this;
-    }
-
-    /**
-     * @param Characteristic $characteristic
-     *
-     * @return User
-     */
-    public function addCharacteristic(Characteristic $characteristic): self
-    {
-        if (!$this->characteristics->contains($characteristic)) {
-            $this->characteristics[] = $characteristic;
-            $characteristic->addUser($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Characteristic $characteristic
-     *
-     * @return User
-     */
-    public function removeCharacteristic(Characteristic $characteristic): self
-    {
-        if ($this->characteristics->contains($characteristic)) {
-            $this->characteristics->removeElement($characteristic);
-            $characteristic->removeUser($this);
-        }
 
         return $this;
     }
