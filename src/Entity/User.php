@@ -191,12 +191,37 @@ class User implements UserInterface
     protected $messages;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="friendsWithMe", cascade={"persist"})
+     * @ORM\JoinTable(name="friends",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="friend_user_id", referencedColumnName="id")}
+     * )
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\User>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $friends;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="friends")
+     */
+    protected $friendsWithMe;
+
+    /**
      * User constructor.
      */
     public function __construct()
     {
         $this->messages = new ArrayCollection();
         $this->skills = new ArrayCollection();
+        $this->friends = new ArrayCollection();
+        $this->friendsWithMe = new ArrayCollection();
         $this->salt = md5(uniqid(null, true));
         $this->role = 'ROLE_USER';
     }
@@ -629,4 +654,43 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getFriends(): ArrayCollection
+    {
+        return $this->friends;
+    }
+
+    /**
+     * @param ArrayCollection $friends
+     * @return User
+     */
+    public function setFriends(ArrayCollection $friends): self
+    {
+        $this->friends = $friends;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getFriendsWithMe(): ArrayCollection
+    {
+        return $this->friendsWithMe;
+    }
+
+    /**
+     * @param ArrayCollection $friendsWithMe
+     * @return User
+     */
+    public function setFriendsWithMe(ArrayCollection $friendsWithMe): self
+    {
+        $this->friendsWithMe = $friendsWithMe;
+
+        return $this;
+    }
+
 }
