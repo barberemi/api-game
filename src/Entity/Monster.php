@@ -116,6 +116,17 @@ class Monster
     protected $map;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $levelTower;
+
+    /**
      * Monster constructor.
      */
     public function __construct()
@@ -349,6 +360,26 @@ class Monster
     public function setMap(?Map $map): self
     {
         $this->map = $map;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLevelTower(): int
+    {
+        return $this->levelTower;
+    }
+
+    /**
+     * @param int $levelTower
+     *
+     * @return Monster
+     */
+    public function setLevelTower(int $levelTower): self
+    {
+        $this->$levelTower = $levelTower;
 
         return $this;
     }
