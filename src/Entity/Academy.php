@@ -46,6 +46,17 @@ class Academy
     /**
      * @var string
      *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $label;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(type="text")
      *
      * @Serializer\Expose
@@ -57,7 +68,7 @@ class Academy
     /**
      * @var string
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=255)
      *
      * @Serializer\Expose
      * @Serializer\Type("string")
@@ -68,7 +79,7 @@ class Academy
     /**
      * @var string
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=255)
      *
      * @Serializer\Expose
      * @Serializer\Type("string")
@@ -229,6 +240,25 @@ class Academy
     public function setRole(string $role): self
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLabel(): string
+    {
+        return $this->label;
+    }
+
+    /**
+     * @param string $label
+     * @return Academy
+     */
+    public function setLabel(string $label): self
+    {
+        $this->label = $label;
 
         return $this;
     }
