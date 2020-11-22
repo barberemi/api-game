@@ -77,6 +77,28 @@ class Item
     protected $dropRate;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $rarity = "common";
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $type = "craft";
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="item", cascade={"persist", "remove"})
@@ -172,6 +194,63 @@ class Item
     public function setLevel(int $level): self
     {
         $this->level = $level;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDropRate(): float
+    {
+        return $this->dropRate;
+    }
+
+    /**
+     * @param float $dropRate
+     * @return Item
+     */
+    public function setDropRate(float $dropRate): self
+    {
+        $this->dropRate = $dropRate;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRarity(): string
+    {
+        return $this->rarity;
+    }
+
+    /**
+     * @param string $rarity
+     * @return Item
+     */
+    public function setRarity(string $rarity): self
+    {
+        $this->rarity = $rarity;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     * @return Item
+     */
+    public function setType(string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
