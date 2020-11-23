@@ -203,6 +203,18 @@ class User implements UserInterface
     protected $messages;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\OwnItem", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\OwnItem>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $items;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -210,6 +222,7 @@ class User implements UserInterface
         $this->characteristics = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->skills = new ArrayCollection();
+        $this->items = new ArrayCollection();
         $this->salt = md5(uniqid(null, true));
         $this->role = 'ROLE_USER';
     }
@@ -670,6 +683,25 @@ class User implements UserInterface
             $this->messages->removeElement($message);
             $message->setUser(null);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getItems(): ArrayCollection
+    {
+        return $this->items;
+    }
+
+    /**
+     * @param ArrayCollection $items
+     * @return User
+     */
+    public function setItems(ArrayCollection $items): self
+    {
+        $this->items = $items;
 
         return $this;
     }

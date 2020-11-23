@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="item")
@@ -18,6 +19,28 @@ use JMS\Serializer\Annotation as Serializer;
 class Item
 {
     use TimestampableEntity;
+
+    const COMMON_RARITY    = 'common';
+    const UNUSUAL_RARITY   = 'unusual';
+    const RARE_RARITY      = 'rare';
+    const EPIC_RARITY      = 'epic';
+    const LEGENDARY_RARITY = 'legendary';
+    const RARITIES = [self::COMMON_RARITY, self::UNUSUAL_RARITY, self::RARE_RARITY, self::EPIC_RARITY, self::LEGENDARY_RARITY];
+
+    const CRAFT_TYPE     = 'craft';
+    const HELMET_TYPE    = 'helmet';
+    const AMULET_TYPE    = 'amulet';
+    const SHOULDERS_TYPE = 'shoulders';
+    const GLOVERS_TYPE   = 'glovers';
+    const ARMOR_TYPE     = 'armor';
+    const BELT_TYPE      = 'belt';
+    const PANTS_TYPE     = 'pants';
+    const SHOES_TYPE     = 'shoes';
+    const WEAPON_TYPE    = 'weapon';
+    const TYPES = [
+        self::CRAFT_TYPE, self::HELMET_TYPE, self::AMULET_TYPE, self::SHOULDERS_TYPE, self::GLOVERS_TYPE,
+        self::ARMOR_TYPE, self::BELT_TYPE, self::PANTS_TYPE, self::SHOES_TYPE, self::WEAPON_TYPE
+    ];
 
     /**
      * @var int
@@ -81,22 +104,26 @@ class Item
      *
      * @ORM\Column(type="string", length=255)
      *
+     * @Assert\Choice(choices=ITEM::RARITIES)
+     *
      * @Serializer\Expose
      * @Serializer\Type("string")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $rarity = "common";
+    protected $rarity = self::COMMON_RARITY;
 
     /**
      * @var string
      *
      * @ORM\Column(type="string", length=255)
      *
+     * @Assert\Choice(choices=Item::TYPES)
+     *
      * @Serializer\Expose
      * @Serializer\Type("string")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $type = "craft";
+    protected $type = self::CRAFT_TYPE;
 
     /**
      * @var ArrayCollection

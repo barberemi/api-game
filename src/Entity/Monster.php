@@ -67,6 +67,17 @@ class Monster
     protected $level;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $levelTower;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="monster", cascade={"persist", "remove"})
@@ -116,15 +127,16 @@ class Monster
     protected $map;
 
     /**
-     * @var int
+     * @var ArrayCollection
      *
-     * @ORM\Column(type="integer")
+     * @ORM\OneToMany(targetEntity="App\Entity\OwnItem", mappedBy="monster", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
      *
      * @Serializer\Expose
-     * @Serializer\Type("integer")
+     * @Serializer\Type("ArrayCollection<App\Entity\OwnItem>")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $levelTower;
+    protected $items;
 
     /**
      * Monster constructor.
@@ -133,6 +145,7 @@ class Monster
     {
         $this->characteristics = new ArrayCollection();
         $this->skills = new ArrayCollection();
+        $this->items = new ArrayCollection();
     }
 
     /**
@@ -379,7 +392,26 @@ class Monster
      */
     public function setLevelTower(int $levelTower): self
     {
-        $this->$levelTower = $levelTower;
+        $this->levelTower = $levelTower;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getItems(): ArrayCollection
+    {
+        return $this->items;
+    }
+
+    /**
+     * @param ArrayCollection $items
+     * @return Monster
+     */
+    public function setItems(ArrayCollection $items): self
+    {
+        $this->items = $items;
 
         return $this;
     }
