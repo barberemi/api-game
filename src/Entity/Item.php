@@ -138,11 +138,37 @@ class Item
     protected $characteristics;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Crafting", mappedBy="itemToCraft", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\Crafting>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $itemsToCraft;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Crafting", mappedBy="itemNeededToCraft", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\Crafting>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $itemsNeededToCraft;
+
+    /**
      * Item constructor.
      */
     public function __construct()
     {
         $this->characteristics = new ArrayCollection();
+        $this->itemsToCraft = new ArrayCollection();
+        $this->itemsNeededToCraft = new ArrayCollection();
     }
 
     /**
@@ -328,6 +354,44 @@ class Item
             $this->characteristics->removeElement($characteristic);
             $characteristic->removeItem($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getItemsToCraft(): ArrayCollection
+    {
+        return $this->itemsToCraft;
+    }
+
+    /**
+     * @param ArrayCollection $itemsToCraft
+     * @return Item
+     */
+    public function setItemsToCraft(ArrayCollection $itemsToCraft): self
+    {
+        $this->itemsToCraft = $itemsToCraft;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getItemsNeededToCraft(): ArrayCollection
+    {
+        return $this->itemsNeededToCraft;
+    }
+
+    /**
+     * @param ArrayCollection $itemsNeededToCraft
+     * @return Item
+     */
+    public function setItemsNeededToCraft(ArrayCollection $itemsNeededToCraft): self
+    {
+        $this->itemsNeededToCraft = $itemsNeededToCraft;
 
         return $this;
     }
