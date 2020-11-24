@@ -48,6 +48,17 @@ class Characteristic
     /**
      * @var string
      *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $label;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(type="text")
      *
      * @Serializer\Expose
@@ -149,6 +160,26 @@ class Characteristic
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLabel(): string
+    {
+        return $this->label;
+    }
+
+    /**
+     * @param string $label
+     *
+     * @return Characteristic
+     */
+    public function setLabel(string $label): self
+    {
+        $this->label = $label;
 
         return $this;
     }
