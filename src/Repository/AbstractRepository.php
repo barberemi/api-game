@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\BindCharacteristic;
+use App\Entity\OwnItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -60,6 +61,9 @@ abstract class AbstractRepository extends ServiceEntityRepository
     {
         // Check if characteristics exist to clean them
         $this->checkCharacteristics($entity);
+
+        // Check if items exist to clean them
+        $this->checkItems($entity);
 
         try{
             $this->validate($entity);
@@ -155,6 +159,53 @@ abstract class AbstractRepository extends ServiceEntityRepository
         foreach ($bindCharacteristics as $characteristic) {
             if (!in_array($characteristic->getId(), $keepIds)) {
                 $this->_em->remove($characteristic);
+            }
+        }
+
+        $this->_em->flush();
+    }
+
+    /**
+     * @param $entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    protected function checkItems($entity) {
+        if (method_exists($entity, 'getItems')) {
+            $explode = explode('\\', $this->getEntityNameSpace());
+            $entityName = end($explode);
+
+            $items = $entity->getItems();
+            $keepIds = array_filter(array_map(function ($item) {
+                return null !== $item->getId() ? $item->getId() : null;
+            }, $items->toArray()));
+
+            $this->clearItems($entity, $entityName, $keepIds);
+
+            /** @var OwnItem $ownItem */
+            foreach ($items as $item) {
+                $item->{'set'.ucwords($entityName)}($entity);
+            }
+        }
+    }
+
+    /**
+     * @param mixed  $entity
+     * @param string $entityName
+     * @param array  $keepIds
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    protected function clearItems($entity, string $entityName, array $keepIds): void
+    {
+        $ownItems = $this->_em->getRepository(OwnItem::class)->findBy([strtolower($entityName) => $entity]);
+
+        /** @var OwnItem $item */
+        foreach ($ownItems as $item) {
+            if (!in_array($item->getId(), $keepIds)) {
+                $this->_em->remove($item);
             }
         }
 

@@ -203,7 +203,7 @@ class User implements UserInterface
     protected $messages;
 
     /**
-     * @var ArrayCollection
+     * @var Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\OwnItem", mappedBy="user", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
@@ -688,18 +688,18 @@ class User implements UserInterface
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getItems(): ArrayCollection
+    public function getItems(): Collection
     {
         return $this->items;
     }
 
     /**
-     * @param ArrayCollection $items
+     * @param Collection $items
      * @return User
      */
-    public function setItems(ArrayCollection $items): self
+    public function setItems(Collection $items): self
     {
         $this->items = $items;
 

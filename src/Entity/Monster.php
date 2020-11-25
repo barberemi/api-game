@@ -127,7 +127,7 @@ class Monster
     protected $map;
 
     /**
-     * @var ArrayCollection
+     * @var Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\OwnItem", mappedBy="monster", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
@@ -398,18 +398,18 @@ class Monster
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getItems(): ArrayCollection
+    public function getItems(): Collection
     {
         return $this->items;
     }
 
     /**
-     * @param ArrayCollection $items
+     * @param Collection $items
      * @return Monster
      */
-    public function setItems(ArrayCollection $items): self
+    public function setItems(Collection $items): self
     {
         $this->items = $items;
 
