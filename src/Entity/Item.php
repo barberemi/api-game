@@ -138,7 +138,7 @@ class Item
     protected $characteristics;
 
     /**
-     * @var ArrayCollection
+     * @var Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Crafting", mappedBy="itemToCraft", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
@@ -150,7 +150,7 @@ class Item
     protected $itemsToCraft;
 
     /**
-     * @var ArrayCollection
+     * @var Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Crafting", mappedBy="itemNeededToCraft", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
@@ -359,18 +359,18 @@ class Item
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getItemsToCraft(): ArrayCollection
+    public function getItemsToCraft(): Collection
     {
         return $this->itemsToCraft;
     }
 
     /**
-     * @param ArrayCollection $itemsToCraft
+     * @param Collection $itemsToCraft
      * @return Item
      */
-    public function setItemsToCraft(ArrayCollection $itemsToCraft): self
+    public function setItemsToCraft(Collection $itemsToCraft): self
     {
         $this->itemsToCraft = $itemsToCraft;
 
@@ -378,18 +378,18 @@ class Item
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getItemsNeededToCraft(): ArrayCollection
+    public function getItemsNeededToCraft(): Collection
     {
         return $this->itemsNeededToCraft;
     }
 
     /**
-     * @param ArrayCollection $itemsNeededToCraft
+     * @param Collection $itemsNeededToCraft
      * @return Item
      */
-    public function setItemsNeededToCraft(ArrayCollection $itemsNeededToCraft): self
+    public function setItemsNeededToCraft(Collection $itemsNeededToCraft): self
     {
         $this->itemsNeededToCraft = $itemsNeededToCraft;
 

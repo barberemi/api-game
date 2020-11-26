@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\BindCharacteristic;
+use App\Entity\Crafting;
 use App\Entity\OwnItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -172,20 +173,28 @@ abstract class AbstractRepository extends ServiceEntityRepository
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     protected function checkItems($entity) {
-        if (method_exists($entity, 'getItems')) {
+        if (method_exists($entity, 'getItems') || method_exists($entity, 'getItemsToCraft')) {
             $explode = explode('\\', $this->getEntityNameSpace());
             $entityName = end($explode);
 
-            $items = $entity->getItems();
+            if (method_exists($entity, 'getItems')) {
+                $items = $entity->getItems();
+            } else {
+                $items = $entity->getItemsToCraft();
+            }
+
             $keepIds = array_filter(array_map(function ($item) {
                 return null !== $item->getId() ? $item->getId() : null;
             }, $items->toArray()));
 
             $this->clearItems($entity, $entityName, $keepIds);
 
-            /** @var OwnItem $ownItem */
             foreach ($items as $item) {
-                $item->{'set'.ucwords($entityName)}($entity);
+                if (method_exists($entity, 'getItems')) {
+                    $item->{'set'.ucwords($entityName)}($entity);
+                } else {
+                    $item->setItemToCraft($entity);
+                }
             }
         }
     }
@@ -200,10 +209,13 @@ abstract class AbstractRepository extends ServiceEntityRepository
      */
     protected function clearItems($entity, string $entityName, array $keepIds): void
     {
-        $ownItems = $this->_em->getRepository(OwnItem::class)->findBy([strtolower($entityName) => $entity]);
+        if (method_exists($entity, 'getItems')) {
+            $items = $this->_em->getRepository(OwnItem::class)->findBy([strtolower($entityName) => $entity]);
+        } else {
+            $items = $this->_em->getRepository(Crafting::class)->findBy(['itemToCraft' => $entity]);
+        }
 
-        /** @var OwnItem $item */
-        foreach ($ownItems as $item) {
+        foreach ($items as $item) {
             if (!in_array($item->getId(), $keepIds)) {
                 $this->_em->remove($item);
             }
