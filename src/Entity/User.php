@@ -142,18 +142,6 @@ class User implements UserInterface
     protected $isDead = false;
 
     /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="user", cascade={"persist", "remove"})
-     * @ORM\OrderBy({"id" = "ASC"})
-     *
-     * @Serializer\Expose
-     * @Serializer\Type("ArrayCollection<App\Entity\BindCharacteristic>")
-     * @Serializer\Groups({"create", "update"})
-     */
-    protected $characteristics;
-
-    /**
      * @var Academy
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Academy", inversedBy="users", cascade={"persist"})
@@ -215,14 +203,38 @@ class User implements UserInterface
     protected $items;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="friendsWithMe", cascade={"persist"})
+     * @ORM\JoinTable(name="friends",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="friend_user_id", referencedColumnName="id")}
+     * )
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\User>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $friends;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="friends")
+     */
+    protected $friendsWithMe;
+
+    /**
      * User constructor.
      */
     public function __construct()
     {
-        $this->characteristics = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->skills = new ArrayCollection();
         $this->items = new ArrayCollection();
+        $this->friends = new ArrayCollection();
+        $this->friendsWithMe = new ArrayCollection();
         $this->salt = md5(uniqid(null, true));
         $this->role = 'ROLE_USER';
     }
@@ -252,6 +264,25 @@ class User implements UserInterface
     public function getXpToActualLevel(): int
     {
         return LevelHelper::xpToLevel($this->getLevel());
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @return int
+     */
+    public function getSkillPoints(): int
+    {
+        return LevelHelper::skillPointsOfLevel($this->getLevel());
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @return int
+     */
+    public function getRemainingSkillPoints(): int
+    {
+        $usedSkillPoints = count($this->getSkills());
+        return LevelHelper::skillPointsOfLevel($this->getLevel()) - $usedSkillPoints;
     }
 
     /**
@@ -413,56 +444,6 @@ class User implements UserInterface
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getCharacteristics(): Collection
-    {
-        return $this->characteristics;
-    }
-
-    /**
-     * @param Collection $characteristics
-     *
-     * @return User
-     */
-    public function setCharacteristics(Collection $characteristics): self
-    {
-        $this->characteristics = $characteristics;
-
-        return $this;
-    }
-
-    /**
-     * @param Characteristic $characteristic
-     *
-     * @return User
-     */
-    public function addCharacteristic(Characteristic $characteristic): self
-    {
-        if (!$this->characteristics->contains($characteristic)) {
-            $this->characteristics[] = $characteristic;
-            $characteristic->addUser($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Characteristic $characteristic
-     *
-     * @return User
-     */
-    public function removeCharacteristic(Characteristic $characteristic): self
-    {
-        if ($this->characteristics->contains($characteristic)) {
-            $this->characteristics->removeElement($characteristic);
-            $characteristic->removeUser($this);
-        }
 
         return $this;
     }
@@ -702,6 +683,44 @@ class User implements UserInterface
     public function setItems(Collection $items): self
     {
         $this->items = $items;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getFriends(): ArrayCollection
+    {
+        return $this->friends;
+    }
+
+    /**
+     * @param ArrayCollection $friends
+     * @return User
+     */
+    public function setFriends(ArrayCollection $friends): self
+    {
+        $this->friends = $friends;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getFriendsWithMe(): ArrayCollection
+    {
+        return $this->friendsWithMe;
+    }
+
+    /**
+     * @param ArrayCollection $friendsWithMe
+     * @return User
+     */
+    public function setFriendsWithMe(ArrayCollection $friendsWithMe): self
+    {
+        $this->friendsWithMe = $friendsWithMe;
 
         return $this;
     }

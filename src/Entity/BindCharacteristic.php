@@ -56,15 +56,6 @@ class BindCharacteristic
     protected $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="characteristics")
-     *
-     * @Serializer\Expose
-     * @Serializer\Type("App\Entity\User")
-     * @Serializer\Groups({"create", "update"})
-     */
-    protected $user;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Monster", inversedBy="characteristics")
      *
      * @Serializer\Expose
@@ -153,26 +144,6 @@ class BindCharacteristic
     public function setAmount(int $amount): self
     {
         $this->amount = $amount;
-
-        return $this;
-    }
-
-    /**
-     * @return User
-     */
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param $user
-     *
-     * @return BindCharacteristic
-     */
-    public function setUser($user): self
-    {
-        $this->user = $user;
 
         return $this;
     }
