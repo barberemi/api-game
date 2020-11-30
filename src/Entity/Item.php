@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="item")
@@ -18,6 +19,28 @@ use JMS\Serializer\Annotation as Serializer;
 class Item
 {
     use TimestampableEntity;
+
+    const COMMON_RARITY    = 'common';
+    const UNUSUAL_RARITY   = 'unusual';
+    const RARE_RARITY      = 'rare';
+    const EPIC_RARITY      = 'epic';
+    const LEGENDARY_RARITY = 'legendary';
+    const RARITIES = [self::COMMON_RARITY, self::UNUSUAL_RARITY, self::RARE_RARITY, self::EPIC_RARITY, self::LEGENDARY_RARITY];
+
+    const CRAFT_TYPE     = 'craft';
+    const HELMET_TYPE    = 'helmet';
+    const AMULET_TYPE    = 'amulet';
+    const SHOULDERS_TYPE = 'shoulders';
+    const GLOVERS_TYPE   = 'glovers';
+    const ARMOR_TYPE     = 'armor';
+    const BELT_TYPE      = 'belt';
+    const PANTS_TYPE     = 'pants';
+    const SHOES_TYPE     = 'shoes';
+    const WEAPON_TYPE    = 'weapon';
+    const TYPES = [
+        self::CRAFT_TYPE, self::HELMET_TYPE, self::AMULET_TYPE, self::SHOULDERS_TYPE, self::GLOVERS_TYPE,
+        self::ARMOR_TYPE, self::BELT_TYPE, self::PANTS_TYPE, self::SHOES_TYPE, self::WEAPON_TYPE
+    ];
 
     /**
      * @var int
@@ -77,6 +100,32 @@ class Item
     protected $dropRate;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\Choice(choices=ITEM::RARITIES)
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $rarity = self::COMMON_RARITY;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\Choice(choices=Item::TYPES)
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $type = self::CRAFT_TYPE;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="item", cascade={"persist", "remove"})
@@ -89,11 +138,37 @@ class Item
     protected $characteristics;
 
     /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Crafting", mappedBy="itemToCraft", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\Crafting>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $itemsToCraft;
+
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Crafting", mappedBy="itemNeededToCraft", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\Crafting>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $itemsNeededToCraft;
+
+    /**
      * Item constructor.
      */
     public function __construct()
     {
         $this->characteristics = new ArrayCollection();
+        $this->itemsToCraft = new ArrayCollection();
+        $this->itemsNeededToCraft = new ArrayCollection();
     }
 
     /**
@@ -177,6 +252,63 @@ class Item
     }
 
     /**
+     * @return float
+     */
+    public function getDropRate(): float
+    {
+        return $this->dropRate;
+    }
+
+    /**
+     * @param float $dropRate
+     * @return Item
+     */
+    public function setDropRate(float $dropRate): self
+    {
+        $this->dropRate = $dropRate;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRarity(): string
+    {
+        return $this->rarity;
+    }
+
+    /**
+     * @param string $rarity
+     * @return Item
+     */
+    public function setRarity(string $rarity): self
+    {
+        $this->rarity = $rarity;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     * @return Item
+     */
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
      * @return Collection
      */
     public function getCharacteristics(): Collection
@@ -222,6 +354,44 @@ class Item
             $this->characteristics->removeElement($characteristic);
             $characteristic->removeItem($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getItemsToCraft(): Collection
+    {
+        return $this->itemsToCraft;
+    }
+
+    /**
+     * @param Collection $itemsToCraft
+     * @return Item
+     */
+    public function setItemsToCraft(Collection $itemsToCraft): self
+    {
+        $this->itemsToCraft = $itemsToCraft;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getItemsNeededToCraft(): Collection
+    {
+        return $this->itemsNeededToCraft;
+    }
+
+    /**
+     * @param Collection $itemsNeededToCraft
+     * @return Item
+     */
+    public function setItemsNeededToCraft(Collection $itemsNeededToCraft): self
+    {
+        $this->itemsNeededToCraft = $itemsNeededToCraft;
 
         return $this;
     }

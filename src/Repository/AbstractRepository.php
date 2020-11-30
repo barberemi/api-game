@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\BindCharacteristic;
+use App\Entity\Crafting;
+use App\Entity\OwnItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -60,6 +62,9 @@ abstract class AbstractRepository extends ServiceEntityRepository
     {
         // Check if characteristics exist to clean them
         $this->checkCharacteristics($entity);
+
+        // Check if items exist to clean them
+        $this->checkItems($entity);
 
         try{
             $this->validate($entity);
@@ -155,6 +160,64 @@ abstract class AbstractRepository extends ServiceEntityRepository
         foreach ($bindCharacteristics as $characteristic) {
             if (!in_array($characteristic->getId(), $keepIds)) {
                 $this->_em->remove($characteristic);
+            }
+        }
+
+        $this->_em->flush();
+    }
+
+    /**
+     * @param $entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    protected function checkItems($entity) {
+        if (method_exists($entity, 'getItems') || method_exists($entity, 'getItemsToCraft')) {
+            $explode = explode('\\', $this->getEntityNameSpace());
+            $entityName = end($explode);
+
+            if (method_exists($entity, 'getItems')) {
+                $items = $entity->getItems();
+            } else {
+                $items = $entity->getItemsToCraft();
+            }
+
+            $keepIds = array_filter(array_map(function ($item) {
+                return null !== $item->getId() ? $item->getId() : null;
+            }, $items->toArray()));
+
+            $this->clearItems($entity, $entityName, $keepIds);
+
+            foreach ($items as $item) {
+                if (method_exists($entity, 'getItems')) {
+                    $item->{'set'.ucwords($entityName)}($entity);
+                } else {
+                    $item->setItemToCraft($entity);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param mixed  $entity
+     * @param string $entityName
+     * @param array  $keepIds
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    protected function clearItems($entity, string $entityName, array $keepIds): void
+    {
+        if (method_exists($entity, 'getItems')) {
+            $items = $this->_em->getRepository(OwnItem::class)->findBy([strtolower($entityName) => $entity]);
+        } else {
+            $items = $this->_em->getRepository(Crafting::class)->findBy(['itemToCraft' => $entity]);
+        }
+
+        foreach ($items as $item) {
+            if (!in_array($item->getId(), $keepIds)) {
+                $this->_em->remove($item);
             }
         }
 

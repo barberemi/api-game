@@ -191,6 +191,18 @@ class User implements UserInterface
     protected $messages;
 
     /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\OwnItem", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\OwnItem>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $items;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="friendsWithMe", cascade={"persist"})
@@ -220,6 +232,7 @@ class User implements UserInterface
     {
         $this->messages = new ArrayCollection();
         $this->skills = new ArrayCollection();
+        $this->items = new ArrayCollection();
         $this->friends = new ArrayCollection();
         $this->friendsWithMe = new ArrayCollection();
         $this->salt = md5(uniqid(null, true));
@@ -656,6 +669,25 @@ class User implements UserInterface
     }
 
     /**
+     * @return Collection
+     */
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    /**
+     * @param Collection $items
+     * @return User
+     */
+    public function setItems(Collection $items): self
+    {
+        $this->items = $items;
+
+        return $this;
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getFriends(): ArrayCollection
@@ -692,5 +724,4 @@ class User implements UserInterface
 
         return $this;
     }
-
 }
