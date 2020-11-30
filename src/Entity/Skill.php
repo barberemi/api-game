@@ -139,6 +139,17 @@ class Skill
     protected $amount;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $level = 1;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Skill", mappedBy="parent", cascade={"persist", "remove"})
@@ -641,6 +652,25 @@ class Skill
     public function setAmount(int $amount): self
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLevel(): int
+    {
+        return $this->level;
+    }
+
+    /**
+     * @param int $level
+     * @return Skill
+     */
+    public function setLevel(int $level): self
+    {
+        $this->level = $level;
 
         return $this;
     }
