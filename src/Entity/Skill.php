@@ -75,7 +75,7 @@ class Skill
      * @Serializer\Type("integer")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $cost;
+    protected $cooldown = 0;
 
     /**
      * @var int
@@ -86,18 +86,7 @@ class Skill
      * @Serializer\Type("integer")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $cooldown;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     *
-     * @Serializer\Expose
-     * @Serializer\Type("integer")
-     * @Serializer\Groups({"create", "update"})
-     */
-    protected $duration;
+    protected $duration = 0;
 
     /**
      * @var string
@@ -136,7 +125,18 @@ class Skill
      * @Serializer\Type("integer")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $amount;
+    protected $amount = 0;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(type="float")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("float")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $rate = 1;
 
     /**
      * @var int
@@ -148,30 +148,6 @@ class Skill
      * @Serializer\Groups({"create", "update"})
      */
     protected $level = 1;
-
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Skill", mappedBy="parent", cascade={"persist", "remove"})
-     * @ORM\OrderBy({"id" = "ASC"})
-     *
-     * @Serializer\Expose
-     * @Serializer\Type("ArrayCollection<App\Entity\Skill>")
-     * @Serializer\Groups({"create", "update"})
-     */
-    protected $children;
-
-    /**
-     * @var Skill
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Skill", inversedBy="children", cascade={"persist"})
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-     *
-     * @Serializer\Expose
-     * @Serializer\Type("App\Entity\Skill")
-     * @Serializer\Groups({"create", "update"})
-     */
-    protected $parent;
 
     /**
      * @var Collection
@@ -225,12 +201,7 @@ class Skill
      */
     public function __construct()
     {
-        $this->cost = 0;
-        $this->cooldown = 0;
-        $this->duration = 0;
-        $this->amount = 0;
         $this->treeType = self::LIGHT;
-        $this->children = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->monsters = new ArrayCollection();
         $this->characteristics = new ArrayCollection();
@@ -349,26 +320,6 @@ class Skill
     /**
      * @return int
      */
-    public function getCost(): int
-    {
-        return $this->cost;
-    }
-
-    /**
-     * @param int $cost
-     *
-     * @return Skill
-     */
-    public function setCost(int $cost): self
-    {
-        $this->cost = $cost;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
     public function getCooldown(): int
     {
         return $this->cooldown;
@@ -452,76 +403,6 @@ class Skill
             $this->monsters->removeElement($monster);
             $monster->removeSkill($this);
         }
-
-        return $this;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getChildren(): ArrayCollection
-    {
-        return $this->children;
-    }
-
-    /**
-     * @param ArrayCollection $children
-     *
-     * @return Skill
-     */
-    public function setChildren(ArrayCollection $children): self
-    {
-        $this->children = $children;
-
-        return $this;
-    }
-
-    /**
-     * @param Skill $child
-     *
-     * @return Skill
-     */
-    public function addChildren(Skill $child): self
-    {
-        if (!$this->children->contains($child)) {
-            $this->children[] = $child;
-            $child->setParent($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Skill $child
-     *
-     * @return Skill
-     */
-    public function removeChildren(Skill $child): self
-    {
-        if ($this->children->contains($child)) {
-            $this->children->removeElement($child);
-            $child->setParent(null);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return null|Skill
-     */
-    public function getParent(): ?Skill
-    {
-        return $this->parent;
-    }
-
-    /**
-     * @param null|Skill $parent
-     *
-     * @return Skill
-     */
-    public function setParent(?Skill $parent): self
-    {
-        $this->parent = $parent;
 
         return $this;
     }
@@ -671,6 +552,25 @@ class Skill
     public function setLevel(int $level): self
     {
         $this->level = $level;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRate(): float
+    {
+        return $this->rate;
+    }
+
+    /**
+     * @param float $rate
+     * @return Skill
+     */
+    public function setRate(float $rate): self
+    {
+        $this->rate = $rate;
 
         return $this;
     }
