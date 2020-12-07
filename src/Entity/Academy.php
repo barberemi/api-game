@@ -126,6 +126,18 @@ class Academy
     /**
      * @var ArrayCollection
      *
+     * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="academy", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\BindCharacteristic>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $characteristicsByLevel;
+
+    /**
+     * @var ArrayCollection
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Skill", mappedBy="academy", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
@@ -143,6 +155,7 @@ class Academy
         $this->users = new ArrayCollection();
         $this->monsters = new ArrayCollection();
         $this->baseCharacteristics = new ArrayCollection();
+        $this->characteristicsByLevel = new ArrayCollection();
         $this->skills = new ArrayCollection();
     }
 
@@ -409,6 +422,26 @@ class Academy
             $this->baseCharacteristics->removeElement($baseCharacteristic);
             $baseCharacteristic->setAcademy(null);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getCharacteristics(): Collection
+    {
+        return $this->characteristicsByLevel;
+    }
+
+    /**
+     * @param Collection $characteristicsByLevel
+     *
+     * @return Academy
+     */
+    public function setCharacteristics(Collection $characteristicsByLevel): self
+    {
+        $this->characteristicsByLevel = $characteristicsByLevel;
 
         return $this;
     }

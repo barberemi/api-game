@@ -101,6 +101,15 @@ class Characteristic
      * @ORM\OrderBy({"id" = "ASC"})
      *
      */
+    protected $academyCharacteristics;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="characteristic", cascade={"persist"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     */
     protected $itemCharacteristics;
 
     /**
@@ -111,6 +120,7 @@ class Characteristic
         $this->monsterCharacteristics = new ArrayCollection();
         $this->skillCharacteristics = new ArrayCollection();
         $this->baseAcademyCharacteristics = new ArrayCollection();
+        $this->academyCharacteristics = new ArrayCollection();
         $this->itemCharacteristics = new ArrayCollection();
     }
 
@@ -340,6 +350,26 @@ class Characteristic
             $this->baseAcademyCharacteristics->removeElement($academy);
             $academy->removeBaseCharacteristic($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getAcademyCharacteristics(): Collection
+    {
+        return $this->academyCharacteristics;
+    }
+
+    /**
+     * @param Collection $academyCharacteristics
+     *
+     * @return Characteristic
+     */
+    public function setAcademyCharacteristics(Collection $academyCharacteristics): self
+    {
+        $this->academyCharacteristics = $academyCharacteristics;
 
         return $this;
     }

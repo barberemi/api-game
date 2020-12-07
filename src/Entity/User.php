@@ -286,6 +286,25 @@ class User implements UserInterface
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @return Collection
+     */
+    public function getCharacteristics(): Collection
+    {
+        /** @var BindCharacteristic $baseCharacteristic */
+        foreach ($this->getAcademy()->getBaseCharacteristics() as $baseCharacteristic) {
+            /** @var BindCharacteristic $byLevelCharacteristic */
+            foreach ($this->getAcademy()->getCharacteristics() as $byLevelCharacteristic) {
+                if ($baseCharacteristic->getCharacteristic() === $byLevelCharacteristic->getCharacteristic()) {
+                    $baseCharacteristic->setAmount($baseCharacteristic->getAmount() + $byLevelCharacteristic->getAmount());
+                }
+            }
+        }
+
+        return $this->getAcademy()->getBaseCharacteristics();
+    }
+
+    /**
      * @return int
      */
     public function getId(): int
