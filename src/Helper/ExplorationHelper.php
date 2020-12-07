@@ -1,0 +1,193 @@
+<?php
+
+namespace App\Helper;
+
+use App\Entity\Map;
+use App\Entity\Monster;
+use App\Entity\User;
+
+class ExplorationHelper
+{
+    /**
+     * @var array
+     */
+    static protected $floors = [];
+
+    /**
+     * @var int
+     */
+    static protected $lastRoomId = 1;
+
+    /**
+     * @var bool
+     */
+    static protected $randomRoomsByFloor;
+
+    /**
+     * @param User $user
+     * @param Map $map
+     * @param bool $randomRoomsByFloor
+     * @return array
+     */
+    static public function generate(User $user, Map $map, $randomRoomsByFloor = true)
+    {
+        ExplorationHelper::$randomRoomsByFloor = $randomRoomsByFloor;
+        ExplorationHelper::generateBoss($map->getBoss());
+
+        for ($i = 2; $i <= $map->getNbFloors() + 1; $i++) {
+            ExplorationHelper::generateFloor($i);
+        }
+        ExplorationHelper::$floors[][] = ExplorationHelper::generateRoom(count(ExplorationHelper::$floors) + 1, 1, 1);
+        ExplorationHelper::generateUser($user);
+
+        return ExplorationHelper::$floors;
+    }
+
+    /**
+     * @param array $exploration
+     * @param int $position
+     * @return array
+     */
+    static public function moveToPosition(array $exploration, int $position): array
+    {
+        $exploration[array_key_last($exploration)]['position'] = $position;
+
+        return $exploration;
+    }
+
+    /**
+     * @param User $user
+     */
+    static protected function generateUser(User $user): void
+    {
+        ExplorationHelper::$floors[count(ExplorationHelper::$floors) + 1] = [
+            'name'   => $user->getEmail(),
+            'image'  => 'warrior.png',
+            'position' => ExplorationHelper::$lastRoomId,
+        ];
+    }
+
+    /**
+     * @param Monster $boss
+     */
+    static protected function generateBoss(Monster $boss): void
+    {
+        ExplorationHelper::$floors[ExplorationHelper::$lastRoomId] = [
+            'id'    => ExplorationHelper::$lastRoomId,
+            'name'  => $boss->getName(),
+            'image' => 'boss1-portrait.png',
+        ];
+    }
+
+    /**
+     * @param int $idFloor
+     */
+    static protected function generateFloor(int $idFloor): void
+    {
+        $position = 1;
+        $nbRooms = ExplorationHelper::$randomRoomsByFloor ? rand(2, 4) : 2; // Testing without random
+
+        for ($i = 1; $i <= $nbRooms; $i++){
+            ExplorationHelper::$floors[$idFloor][] = ExplorationHelper::generateRoom($idFloor, $nbRooms, $position);
+            $position = $position + 1;
+        }
+    }
+
+    /**
+     * @param int $idFloor
+     * @param int $nbRooms
+     * @param int $position
+     * @return array
+     */
+    static protected function generateRoom(int $idFloor, int $nbRooms, int $position): array
+    {
+        ExplorationHelper::$lastRoomId = ExplorationHelper::$lastRoomId + 1;
+
+        return [
+            'id'   => ExplorationHelper::$lastRoomId,
+            'next' => ExplorationHelper::getNextRoomId($idFloor, $nbRooms, $position),
+        ];
+    }
+
+    /**
+     * @param int $idFloor
+     * @param int $nbRooms
+     * @param int $position
+     * @return array
+     */
+    static protected function getNextRoomId(int $idFloor, int $nbRooms, int $position): array
+    {
+        $keepNextIds = [];
+
+        if ($idFloor === 2) return [1];
+
+        $tabPossibleNext = [
+            2 => [ // 2 top ranks
+                1 => [ // 2 bottom ranks
+                    1 => [1, 2], // pos 1
+                ],
+                2 => [ // 2 bottom ranks
+                    1 => [1, 2], // pos 1
+                    2 => [1, 2], // pos 2
+                ],
+                3 => [ // 3 bottom ranks
+                    1 => [1], // pos 1
+                    2 => [1, 2], // pos 2
+                    3 => [2], // pos 3
+                ],
+                4 => [ // 4 bottom ranks
+                    1 => [1], // pos 1
+                    2 => [1], // pos 2
+                    3 => [2], // pos 3
+                    4 => [2], // pos 4
+                ],
+            ],
+            3 => [ // 3 top ranks
+                1 => [ // 2 bottom ranks
+                    1 => [1, 2, 3], // pos 1
+                ],
+                2 => [ // 2 bottom ranks
+                    1 => [1, 2], // pos 1
+                    2 => [2, 3], // pos 2
+                ],
+                3 => [ // 3 bottom ranks
+                    1 => [1, 2], // pos 1
+                    2 => [1, 2, 3], // pos 2
+                    3 => [2, 3], // pos 3
+                ],
+                4 => [ // 4 bottom ranks
+                    1 => [1], // pos 1
+                    2 => [1, 2], // pos 2
+                    3 => [2, 3], // pos 3
+                    4 => [3], // pos 4
+                ],
+            ],
+            4 => [ // 4 top ranks
+                1 => [ // 2 bottom ranks
+                    1 => [1, 2, 3, 4], // pos 1
+                ],
+                2 => [ // 2 bottom ranks
+                    1 => [1, 2], // pos 1
+                    2 => [3, 4], // pos 2
+                ],
+                3 => [ // 3 bottom ranks
+                    1 => [1, 2], // pos 1
+                    2 => [2, 3], // pos 2
+                    3 => [3, 4], // pos 3
+                ],
+                4 => [ // 4 bottom ranks
+                    1 => [1, 2], // pos 1
+                    2 => [1, 2, 3], // pos 2
+                    3 => [2, 3, 4], // pos 3
+                    4 => [3, 4], // pos 4
+                ],
+            ],
+        ];
+
+        foreach ($tabPossibleNext[count(ExplorationHelper::$floors[$idFloor - 1])][$nbRooms][$position] as $next) {
+            $keepNextIds[] = ExplorationHelper::$floors[$idFloor - 1][$next - 1]['id'];
+        }
+
+        return $keepNextIds;
+    }
+}

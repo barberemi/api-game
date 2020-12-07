@@ -199,4 +199,66 @@ class UserController extends AbstractController
             JsonResponse::HTTP_CREATED
         );
     }
+
+    /**
+     * Generate exploration Json of the user.
+     *
+     * @Route("/{idUser}/map/{idMap}", methods={"POST"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="When correctly generate the exploration Json."
+     * )
+     * @SWG\Response(
+     *     response=500,
+     *     description="When some errors on params."
+     * )
+     * @SWG\Tag(name="users")
+     *
+     * @param int $idUser
+     * @param int $idMap
+     *
+     * @return JsonResponse
+     */
+    public function generateExploration(int $idUser, int $idMap): JsonResponse
+    {
+        try {
+            $exploration = $this->userManager->generateExploration($idUser, $idMap);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse($exploration, JsonResponse::HTTP_OK);
+    }
+
+    /**
+     * Move user in exploration.
+     *
+     * @Route("/{idUser}/exploration/{position}", methods={"PUT"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="When correctly generate the exploration Json."
+     * )
+     * @SWG\Response(
+     *     response=500,
+     *     description="When some errors on params."
+     * )
+     * @SWG\Tag(name="users")
+     *
+     * @param int $idUser
+     * @param int $position
+     *
+     * @return JsonResponse
+     */
+    public function moveToExploration(int $idUser, int $position): JsonResponse
+    {
+        try {
+            $exploration = $this->userManager->moveFromExploration($idUser, $position);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse($exploration, JsonResponse::HTTP_OK);
+    }
 }
