@@ -74,6 +74,7 @@ class ExplorationHelper
     {
         ExplorationHelper::$floors[ExplorationHelper::$lastRoomId] = [
             'id'    => ExplorationHelper::$lastRoomId,
+            'type'  => ExplorationHelper::getRoomType(1),
             'name'  => $boss->getName(),
             'image' => 'boss1-portrait.png',
         ];
@@ -105,6 +106,7 @@ class ExplorationHelper
 
         return [
             'id'   => ExplorationHelper::$lastRoomId,
+            'type' => ExplorationHelper::getRoomType($position),
             'next' => ExplorationHelper::getNextRoomId($idFloor, $nbRooms, $position),
         ];
     }
@@ -189,5 +191,22 @@ class ExplorationHelper
         }
 
         return $keepNextIds;
+    }
+
+    /**
+     * @param int $position
+     * @return string
+     */
+    static protected function getRoomType(int $position): string
+    {
+        $types = ['arene-boss', 'arene', 'dealer', 'healer'];
+
+        if (count(ExplorationHelper::$floors) === 0) return $types[0]; // Boss
+        if (
+            ($position === 1 && count(ExplorationHelper::$floors) === 1) ||
+            ($position !== 1 && count(ExplorationHelper::$floors) === 2)
+        ) return $types[3]; // Healer after boss
+
+        return $types[ExplorationHelper::$randomRoomsByFloor ? rand(0, 3) : 1];  // Testing without random
     }
 }
