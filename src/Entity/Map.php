@@ -63,7 +63,7 @@ class Map
      * @Serializer\Type("integer")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $levelMax = 10;
+    protected $nbFloors = 10;
 
     /**
      * @var ArrayCollection
@@ -146,26 +146,6 @@ class Map
     }
 
     /**
-     * @return int
-     */
-    public function getLevelMax(): int
-    {
-        return $this->levelMax;
-    }
-
-    /**
-     * @param int $levelMax
-     *
-     * @return Map
-     */
-    public function setLevelMax(int $levelMax): self
-    {
-        $this->levelMax = $levelMax;
-
-        return $this;
-    }
-
-    /**
      * @return Collection
      */
     public function getMonsters(): Collection
@@ -213,5 +193,39 @@ class Map
         }
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNbFloors(): int
+    {
+        return $this->nbFloors;
+    }
+
+    /**
+     * @param int $nbFloors
+     * @return Map
+     */
+    public function setNbFloors(int $nbFloors): self
+    {
+        $this->nbFloors = $nbFloors;
+
+        return $this;
+    }
+
+    /**
+     * @return Monster|null
+     */
+    public function getBoss(): ?Monster
+    {
+        /** @var Monster $monster */
+        foreach ($this->getMonsters() as $monster) {
+            if ($monster->getLevelTower()) {
+                return $monster;
+            }
+        }
+
+        return null;
     }
 }

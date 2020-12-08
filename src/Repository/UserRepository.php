@@ -51,4 +51,26 @@ class UserRepository extends AbstractRepository
 
         return $user;
     }
+
+    /**
+     * @param $user
+     *
+     * @return mixed
+     *
+     * @throws \Exception
+     */
+    public function softUpdate(User $user)
+    {
+        try{
+            $this->validate($user);
+
+            $this->_em->merge($user);
+            $this->_em->flush();
+
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        return $user;
+    }
 }

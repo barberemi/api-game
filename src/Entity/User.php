@@ -131,15 +131,11 @@ class User implements UserInterface
     protected $itemSpaceNb = 10;
 
     /**
-     * @var bool
+     * @var array|null
      *
-     * @ORM\Column(type="boolean")
-     *
-     * @Serializer\Expose
-     * @Serializer\Type("boolean")
-     * @Serializer\Groups({"create", "update"})
+     * @ORM\Column(type="json", nullable=true)
      */
-    protected $isDead = false;
+    protected $exploration;
 
     /**
      * @var Academy
@@ -618,26 +614,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return bool
-     */
-    public function isDead(): bool
-    {
-        return $this->isDead;
-    }
-
-    /**
-     * @param bool $isDead
-     *
-     * @return User
-     */
-    public function setIsDead(bool $isDead): self
-    {
-        $this->isDead = $isDead;
-
-        return $this;
-    }
-
-    /**
      * @return Collection
      */
     public function getMessages(): Collection
@@ -740,6 +716,25 @@ class User implements UserInterface
     public function setFriendsWithMe(ArrayCollection $friendsWithMe): self
     {
         $this->friendsWithMe = $friendsWithMe;
+
+        return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getExploration(): ?array
+    {
+        return $this->exploration;
+    }
+
+    /**
+     * @param array|null $exploration
+     * @return User
+     */
+    public function setExploration(?array $exploration): self
+    {
+        $this->exploration = $exploration;
 
         return $this;
     }

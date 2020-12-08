@@ -6,9 +6,9 @@ use PHPUnit\Framework\TestCase;
 use App\Helper\LevelHelper;
 
 /**
- * Class LogManagerTest
+ * Class LevelHelperTest
  */
-class LogManagerTest extends TestCase
+class LevelHelperTest extends TestCase
 {
     public function testLevelFromXp()
     {
