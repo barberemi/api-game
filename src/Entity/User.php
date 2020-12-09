@@ -138,6 +138,18 @@ class User implements UserInterface
     protected $exploration;
 
     /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Fight", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\Fight>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $fights;
+
+    /**
      * @var Academy
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Academy", inversedBy="users", cascade={"persist"})
@@ -231,6 +243,7 @@ class User implements UserInterface
         $this->items = new ArrayCollection();
         $this->friends = new ArrayCollection();
         $this->friendsWithMe = new ArrayCollection();
+        $this->fights = new ArrayCollection();
         $this->salt = md5(uniqid(null, true));
         $this->role = 'ROLE_USER';
     }
@@ -292,7 +305,7 @@ class User implements UserInterface
             /** @var BindCharacteristic $byLevelCharacteristic */
             foreach ($this->getAcademy()->getCharacteristics() as $byLevelCharacteristic) {
                 if ($baseCharacteristic->getCharacteristic() === $byLevelCharacteristic->getCharacteristic()) {
-                    $baseCharacteristic->setAmount($baseCharacteristic->getAmount() + $byLevelCharacteristic->getAmount());
+                    $baseCharacteristic->setAmount($baseCharacteristic->getAmount() + $byLevelCharacteristic->getAmount() * $this->getLevel());
                 }
             }
         }
@@ -672,6 +685,16 @@ class User implements UserInterface
     }
 
     /**
+     * @return Collection
+     */
+    public function getEquippedItems(): Collection
+    {
+        return $this->items->filter(function (OwnItem $own) {
+            return $own->isEquipped();
+        });
+    }
+
+    /**
      * @param Collection $items
      * @return User
      */
@@ -737,5 +760,71 @@ class User implements UserInterface
         $this->exploration = $exploration;
 
         return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getFights(): Collection
+    {
+        return $this->fights;
+    }
+
+    /**
+     * @param Collection $fights
+     * @return User
+     */
+    public function setFights(Collection $fights): self
+    {
+        $this->fights = $fights;
+
+        return $this;
+    }
+
+    /**
+     * @param Fight $fight
+     *
+     * @return User
+     */
+    public function addFight(Fight $fight): self
+    {
+        if (!$this->fights->contains($fight)) {
+            $this->fights[] = $fight;
+            $fight->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Fight $fight
+     *
+     * @return User
+     */
+    public function removeFight(Fight $fight): self
+    {
+        if ($this->fights->contains($fight)) {
+            $this->fights->removeElement($fight);
+            $fight->setUser(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Collection $bindCharacteristics
+     * @param string $characteristicName
+     * @return int
+     */
+    public function getSpecificCharacteristic(Collection $bindCharacteristics, string $characteristicName): int
+    {
+        $amount = 0;
+        foreach ($bindCharacteristics as $bind) {
+            if ($bind->getCharacteristic()->getName() === $characteristicName) {
+                $amount = $amount + $bind->getAmount();
+            }
+        }
+
+        return $amount;
     }
 }

@@ -139,6 +139,18 @@ class Monster
     protected $items;
 
     /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Fight", mappedBy="monster", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\Fight>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $fights;
+
+    /**
      * Monster constructor.
      */
     public function __construct()
@@ -146,6 +158,7 @@ class Monster
         $this->characteristics = new ArrayCollection();
         $this->skills = new ArrayCollection();
         $this->items = new ArrayCollection();
+        $this->fights = new ArrayCollection();
     }
 
     /**
@@ -414,5 +427,41 @@ class Monster
         $this->items = $items;
 
         return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getFights(): Collection
+    {
+        return $this->fights;
+    }
+
+    /**
+     * @param Collection $fights
+     * @return Monster
+     */
+    public function setFights(Collection $fights): self
+    {
+        $this->fights = $fights;
+
+        return $this;
+    }
+
+    /**
+     * @param Collection $bindCharacteristics
+     * @param string $characteristicName
+     * @return int
+     */
+    public function getSpecificCharacteristic(Collection $bindCharacteristics, string $characteristicName): int
+    {
+        $amount = 0;
+        foreach ($bindCharacteristics as $bind) {
+            if ($bind->getCharacteristic()->getName() === $characteristicName) {
+                $amount = $amount + $bind->getAmount();
+            }
+        }
+
+        return $amount;
     }
 }

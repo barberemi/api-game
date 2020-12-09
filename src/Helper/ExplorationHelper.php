@@ -4,6 +4,7 @@ namespace App\Helper;
 
 use App\Entity\Map;
 use App\Entity\Monster;
+use App\Entity\OwnItem;
 use App\Entity\User;
 
 class ExplorationHelper
@@ -60,9 +61,18 @@ class ExplorationHelper
      */
     static protected function generateUser(User $user): void
     {
+        $health = $user->getSpecificCharacteristic($user->getCharacteristics(), 'health');
+
+        /** @var OwnItem $equippedItem */
+        foreach ($user->getEquippedItems() as $equippedItem) {
+            $health = $health + $user->getSpecificCharacteristic($equippedItem->getItem()->getCharacteristics(), 'health');
+        }
+
         ExplorationHelper::$floors[count(ExplorationHelper::$floors) + 1] = [
-            'name'   => $user->getEmail(),
-            'image'  => 'warrior.png',
+            'name'     => $user->getEmail(),
+            'image'    => 'warrior.png',
+            'hp'       => $health,
+            'maxHp'    => $health,
             'position' => ExplorationHelper::$lastRoomId,
         ];
     }

@@ -2,8 +2,13 @@
 
 namespace App\Tests\src\Helper;
 
+use App\Entity\Academy;
+use App\Entity\BindCharacteristic;
+use App\Entity\Characteristic;
+use App\Entity\Item;
 use App\Entity\Map;
 use App\Entity\Monster;
+use App\Entity\OwnItem;
 use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
@@ -16,9 +21,24 @@ class ExplorationHelperTest extends TestCase
 {
     public function testGetExploration()
     {
-        $user = (new User())->setId(1)->setEmail('totodanslasavane@gmail.com');
-        $boss = (new Monster())->setId(1)->setName('Elephant Man')->setLevelTower(1);
-        $map  = (new Map())->setId(1)->setNbFloors(3)->setMonsters(new ArrayCollection([$boss]));
+        $health  = (new Characteristic())->setId(1)->setName('health');
+
+        // Academy
+        $bind    = (new BindCharacteristic())->setId(1)->setAmount(200)->setCharacteristic($health);
+        $bind3   = (new BindCharacteristic())->setId(3)->setAmount(50)->setCharacteristic($health);
+        $academy = (new Academy())->setId(1)->setName('Guerrier')->setBaseCharacteristics(new ArrayCollection([$bind]))->setCharacteristics(new ArrayCollection([$bind3]));
+
+        // Item
+        $bind2 = (new BindCharacteristic())->setId(2)->setAmount(200)->setCharacteristic($health);
+        $item  = (new Item())->setId(1)->setName('Marteau')->setCharacteristics(new ArrayCollection([$bind2]));
+        // EQUIPPED => count in the charactaristic
+        $own1  = (new OwnItem())->setId(1)->setItem($item)->setIsEquipped(true);
+        // NOT EQUIPPED => doesnt count in the charactaristic
+        $own2  = (new OwnItem())->setId(1)->setItem($item)->setIsEquipped(false);
+
+        $user    = (new User())->setId(1)->setEmail('totodanslasavane@gmail.com')->setAcademy($academy)->setExperience(3000)->setItems(new ArrayCollection([$own1, $own2]));
+        $boss    = (new Monster())->setId(1)->setName('Elephant Man')->setLevelTower(1);
+        $map     = (new Map())->setId(1)->setNbFloors(3)->setMonsters(new ArrayCollection([$boss]));
 
         $exploration = ExplorationHelper::generate($user, $map, false);
 
@@ -95,6 +115,8 @@ class ExplorationHelperTest extends TestCase
                 "name" => "totodanslasavane@gmail.com",
                 "image" => "warrior.png",
                 "position" => 8,
+                'hp' => 500,
+                'maxHp' => 500,
             ]
         ];
 
