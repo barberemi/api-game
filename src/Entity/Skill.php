@@ -20,16 +20,23 @@ class Skill
 {
     use TimestampableEntity;
 
-    const DARK = 'dark';
+    const DARK  = 'dark';
     const LIGHT = 'light';
     const TREE_TYPES = [self::DARK, self::LIGHT];
 
-    const PHYSICAL_DAMAGE = 'physical_damage';
-    const MAGICAL_DAMAGE = 'magical_damage';
-    const HEAL = 'heal';
-    const BUFF = 'buff';
-    const DEBUFF = 'debuff';
-    const SKILL_TYPES = [self::PHYSICAL_DAMAGE, self::MAGICAL_DAMAGE, self::HEAL, self::BUFF, self::DEBUFF];
+    const MELEE = 'melee';
+    const RANGE = 'range';
+    const HEAL  = 'heal';
+    const HOT   = 'hot';
+    const DOT   = 'dot';
+    const SKILL_TYPES = [self::MELEE, self::RANGE, self::HEAL, self::HOT, self::DOT];
+
+    const HEALTH_TYPE       = 'health';
+    const STRENGTH_TYPE     = 'strength';
+    const INTELLIGENCE_TYPE = 'intelligence';
+    const HASTE_TYPE        = 'haste';
+    const FOCUS_TYPE        = 'focus';
+    const SCALE_TYPES = [self::HEALTH_TYPE, self::STRENGTH_TYPE, self::INTELLIGENCE_TYPE, self::HASTE_TYPE, self::FOCUS_TYPE];
 
     /**
      * @var int
@@ -114,7 +121,7 @@ class Skill
      * @Assert\Choice(choices=Skill::SKILL_TYPES)
      *
      */
-    protected $type;
+    protected $type = self::MELEE;
 
     /**
      * @var int
@@ -137,6 +144,19 @@ class Skill
      * @Serializer\Groups({"create", "update"})
      */
     protected $rate = 1;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\Choice(choices=Skill::SCALE_TYPES)
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $scaleType = self::STRENGTH_TYPE;
 
     /**
      * @var int
@@ -173,18 +193,6 @@ class Skill
     protected $monsters;
 
     /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="skill", cascade={"persist", "remove"})
-     * @ORM\OrderBy({"id" = "ASC"})
-     *
-     * @Serializer\Expose
-     * @Serializer\Type("ArrayCollection<App\Entity\BindCharacteristic>")
-     * @Serializer\Groups({"create", "update"})
-     */
-    protected $characteristics;
-
-    /**
      * @var Skill
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Academy", inversedBy="skills", cascade={"persist"})
@@ -204,7 +212,6 @@ class Skill
         $this->treeType = self::LIGHT;
         $this->users = new ArrayCollection();
         $this->monsters = new ArrayCollection();
-        $this->characteristics = new ArrayCollection();
     }
 
     /**
@@ -408,56 +415,6 @@ class Skill
     }
 
     /**
-     * @return Collection
-     */
-    public function getCharacteristics(): Collection
-    {
-        return $this->characteristics;
-    }
-
-    /**
-     * @param Collection $characteristics
-     *
-     * @return Skill
-     */
-    public function setCharacteristics(Collection $characteristics): self
-    {
-        $this->characteristics = $characteristics;
-
-        return $this;
-    }
-
-    /**
-     * @param Characteristic $characteristic
-     *
-     * @return Skill
-     */
-    public function addCharacteristic(Characteristic $characteristic): self
-    {
-        if (!$this->characteristics->contains($characteristic)) {
-            $this->characteristics[] = $characteristic;
-            $characteristic->addSkill($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Characteristic $characteristic
-     *
-     * @return Skill
-     */
-    public function removeCharacteristic(Characteristic $characteristic): self
-    {
-        if ($this->characteristics->contains($characteristic)) {
-            $this->characteristics->removeElement($characteristic);
-            $characteristic->removeSkill($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Skill
      */
     public function getAcademy(): Skill
@@ -571,6 +528,25 @@ class Skill
     public function setRate(float $rate): self
     {
         $this->rate = $rate;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScaleType(): string
+    {
+        return $this->scaleType;
+    }
+
+    /**
+     * @param string $scaleType
+     * @return Skill
+     */
+    public function setScaleType(string $scaleType): self
+    {
+        $this->scaleType = $scaleType;
 
         return $this;
     }

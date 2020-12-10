@@ -15,10 +15,6 @@ class BindCharacteristic
 {
     use TimestampableEntity;
 
-    const ADDITION = 'addition';
-    const SUBSTRACTION = 'substraction';
-    const TYPES = [self::ADDITION, self::SUBSTRACTION];
-
     /**
      * @var int
      *
@@ -46,16 +42,6 @@ class BindCharacteristic
     protected $amount;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string")
-     *
-     * @Assert\Choice(choices=BindCharacteristic::TYPES)
-     *
-     */
-    protected $type;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Monster", inversedBy="characteristics")
      *
      * @Serializer\Expose
@@ -63,15 +49,6 @@ class BindCharacteristic
      * @Serializer\Groups({"create", "update"})
      */
     protected $monster;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\SKill", inversedBy="characteristics")
-     *
-     * @Serializer\Expose
-     * @Serializer\Type("App\Entity\Skill")
-     * @Serializer\Groups({"create", "update"})
-     */
-    protected $skill;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Academy", inversedBy="baseCharacteristics")
@@ -108,14 +85,6 @@ class BindCharacteristic
      * @Serializer\Groups({"create", "update"})
      */
     protected $characteristic;
-
-    /**
-     * BindCharacteristic constructor.
-     */
-    public function __construct()
-    {
-        $this->type = self::ADDITION;
-    }
 
     /**
      * @return null|int
@@ -178,26 +147,6 @@ class BindCharacteristic
     }
 
     /**
-     * @return Skill
-     */
-    public function getSkill(): Skill
-    {
-        return $this->skill;
-    }
-
-    /**
-     * @param $skill
-     *
-     * @return BindCharacteristic
-     */
-    public function setSkill($skill): self
-    {
-        $this->skill = $skill;
-
-        return $this;
-    }
-
-    /**
      * @return Characteristic
      */
     public function getCharacteristic(): Characteristic
@@ -213,26 +162,6 @@ class BindCharacteristic
     public function setCharacteristic($characteristic): self
     {
         $this->characteristic = $characteristic;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param string $type
-     *
-     * @return BindCharacteristic
-     */
-    public function setType(string $type): self
-    {
-        $this->type = $type;
 
         return $this;
     }

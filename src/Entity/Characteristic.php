@@ -83,15 +83,6 @@ class Characteristic
      * @ORM\OrderBy({"id" = "ASC"})
      *
      */
-    protected $skillCharacteristics;
-
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="characteristic", cascade={"persist"})
-     * @ORM\OrderBy({"id" = "ASC"})
-     *
-     */
     protected $baseAcademyCharacteristics;
 
     /**
@@ -118,7 +109,6 @@ class Characteristic
     public function __construct()
     {
         $this->monsterCharacteristics = new ArrayCollection();
-        $this->skillCharacteristics = new ArrayCollection();
         $this->baseAcademyCharacteristics = new ArrayCollection();
         $this->academyCharacteristics = new ArrayCollection();
         $this->itemCharacteristics = new ArrayCollection();
@@ -249,56 +239,6 @@ class Characteristic
         if ($this->monsterCharacteristics->contains($monster)) {
             $this->monsterCharacteristics->removeElement($monster);
             $monster->removeCharacteristic($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getSkillCharacteristics(): Collection
-    {
-        return $this->skillCharacteristics;
-    }
-
-    /**
-     * @param Collection $skillCharacteristics
-     *
-     * @return Characteristic
-     */
-    public function setSkillCharacteristics(Collection $skillCharacteristics): self
-    {
-        $this->skillCharacteristics = $skillCharacteristics;
-
-        return $this;
-    }
-
-    /**
-     * @param Skill $skill
-     *
-     * @return Characteristic
-     */
-    public function addSkill(Skill $skill): self
-    {
-        if (!$this->skillCharacteristics->contains($skill)) {
-            $this->skillCharacteristics[] = $skill;
-            $skill->addCharacteristic($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Skill $skill
-     *
-     * @return Characteristic
-     */
-    public function removeSkill(Skill $skill): self
-    {
-        if ($this->skillCharacteristics->contains($skill)) {
-            $this->skillCharacteristics->removeElement($skill);
-            $skill->removeCharacteristic($this);
         }
 
         return $this;
