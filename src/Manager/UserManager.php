@@ -42,8 +42,8 @@ class UserManager extends AbstractManager
     }
 
     /**
-     * @param int int $idUser
-     * @param $idMap
+     * @param int $idUser
+     * @param int $idMap
      *
      * @return null|array
      *

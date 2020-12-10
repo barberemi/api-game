@@ -104,7 +104,7 @@ class Item
      *
      * @ORM\Column(type="string", length=255)
      *
-     * @Assert\Choice(choices=ITEM::RARITIES)
+     * @Assert\Choice(choices=Item::RARITIES)
      *
      * @Serializer\Expose
      * @Serializer\Type("string")
