@@ -296,21 +296,25 @@ class User implements UserInterface
 
     /**
      * @Serializer\VirtualProperty()
-     * @return Collection
+     * @return null|Collection
      */
-    public function getCharacteristics(): Collection
+    public function getCharacteristics(): ?Collection
     {
-        /** @var BindCharacteristic $baseCharacteristic */
-        foreach ($this->getAcademy()->getBaseCharacteristics() as $baseCharacteristic) {
-            /** @var BindCharacteristic $byLevelCharacteristic */
-            foreach ($this->getAcademy()->getCharacteristics() as $byLevelCharacteristic) {
-                if ($baseCharacteristic->getCharacteristic() === $byLevelCharacteristic->getCharacteristic()) {
-                    $baseCharacteristic->setAmount($baseCharacteristic->getAmount() + $byLevelCharacteristic->getAmount() * $this->getLevel());
+        if ($this->getAcademy()) {
+            /** @var BindCharacteristic $baseCharacteristic */
+            foreach ($this->getAcademy()->getBaseCharacteristics() as $baseCharacteristic) {
+                /** @var BindCharacteristic $byLevelCharacteristic */
+                foreach ($this->getAcademy()->getCharacteristics() as $byLevelCharacteristic) {
+                    if ($baseCharacteristic->getCharacteristic() === $byLevelCharacteristic->getCharacteristic()) {
+                        $baseCharacteristic->setAmount($baseCharacteristic->getAmount() + $byLevelCharacteristic->getAmount() * $this->getLevel());
+                    }
                 }
             }
+
+            return $this->getAcademy()->getBaseCharacteristics();
         }
 
-        return $this->getAcademy()->getBaseCharacteristics();
+        return null;
     }
 
     /**
