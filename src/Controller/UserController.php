@@ -43,6 +43,7 @@ class UserController extends AbstractController
      * Get a user.
      *
      * @Route("/{id}", methods={"GET"})
+     * @Route("/me", methods={"GET"})
      * @SWG\Response(
      *     response=200,
      *     description="When get user correctly."
@@ -53,12 +54,15 @@ class UserController extends AbstractController
      * )
      * @SWG\Tag(name="users")
      *
-     * @param int $id
+     * @param mixed $id
      *
      * @return JsonResponse
      */
-    public function index(int $id)
+    public function index($id)
     {
+        if ($id === "me") {
+            $id = $this->getUser()->getId();
+        }
         try {
             $user = $this->userManager->get($id);
         } catch (\Exception $e) {
