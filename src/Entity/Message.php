@@ -62,6 +62,18 @@ class Message
     protected $user;
 
     /**
+     * @var Guild
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Guild", inversedBy="messages", cascade={"persist"})
+     * @ORM\JoinColumn(name="guild_id", referencedColumnName="id")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Guild")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $guild;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -137,6 +149,25 @@ class Message
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Guild
+     */
+    public function getGuild(): Guild
+    {
+        return $this->guild;
+    }
+
+    /**
+     * @param Guild $guild
+     * @return Message
+     */
+    public function setGuild(Guild $guild): self
+    {
+        $this->guild = $guild;
 
         return $this;
     }
