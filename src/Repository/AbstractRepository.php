@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\BindCharacteristic;
 use App\Entity\Crafting;
 use App\Entity\OwnItem;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -126,7 +127,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     protected function checkCharacteristics($entity) {
-        if (method_exists($entity, 'getCharacteristics')) {
+        if (method_exists($entity, 'getCharacteristics') && get_class($entity) !== User::class) {
             $explode = explode('\\', $this->getEntityNameSpace());
             $entityName = end($explode);
 
