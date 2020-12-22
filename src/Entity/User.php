@@ -78,6 +78,17 @@ class User implements UserInterface
     /**
      * @var string
      *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $name;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=60)
      *
      * @Serializer\Expose
@@ -423,6 +434,25 @@ class User implements UserInterface
     public function getUsername(): string
     {
         return $this->getEmail();//Use by JWT for authenticate user
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return User
+     */
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     /**
