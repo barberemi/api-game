@@ -109,15 +109,16 @@ class MessageController extends AbstractController
 
         $data = json_decode($request->getContent(), true);
 
-        $update = new Update($data['topic'], json_encode(array_merge($data, ["created_at" => (new \DateTime())->format('Y-m-d H:i:s')]), true));
-        $publisher($update);
+//        $update = new Update($data['topic'], json_encode(array_merge($data, ["created_at" => (new \DateTime())->format('Y-m-d H:i:s')]), true));
+//        $publisher($update);
 
-        $this->messageManager->create([
+        $message = $this->messageManager->create([
             "user" => [ "id" => $user->getId()],
-            "topic" => $data['topic'],
+            "topic" => array_key_exists('topic', $data) ? $data['topic'] : null,
             "message" => $data['message'],
+            "guild" => array_key_exists('guild', $data) ? $data['guild'] : null,
         ]);
 
-        return new JsonResponse([], JsonResponse::HTTP_CREATED);
+        return new JsonResponse($message, JsonResponse::HTTP_CREATED);
     }
 }
