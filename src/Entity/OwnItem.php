@@ -39,7 +39,7 @@ class OwnItem
      * @Serializer\Type("integer")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $amount;
+    protected $amount = 0;
 
     /**
      * @var bool
