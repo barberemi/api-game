@@ -69,8 +69,9 @@ class ExplorationHelper
         }
 
         ExplorationHelper::$floors[count(ExplorationHelper::$floors) + 1] = [
-            'name'     => $user->getEmail(),
-            'image'    => 'warrior.png',
+            'id'       => $user->getId(),
+            'name'     => $user->getName(),
+            'image'    => $user->getAcademy()->getName(),
             'hp'       => $health,
             'maxHp'    => $health,
             'position' => ExplorationHelper::$lastRoomId,
@@ -217,6 +218,6 @@ class ExplorationHelper
             ($position !== 1 && count(ExplorationHelper::$floors) === 2)
         ) return $types[3]; // Healer after boss
 
-        return $types[ExplorationHelper::$randomRoomsByFloor ? rand(0, 3) : 1];  // Testing without random
+        return $types[ExplorationHelper::$randomRoomsByFloor ? rand(1, 3) : 1];  // Testing without random
     }
 }

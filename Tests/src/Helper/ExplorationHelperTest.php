@@ -26,7 +26,7 @@ class ExplorationHelperTest extends TestCase
         // Academy
         $bind    = (new BindCharacteristic())->setId(1)->setAmount(200)->setCharacteristic($health);
         $bind3   = (new BindCharacteristic())->setId(3)->setAmount(50)->setCharacteristic($health);
-        $academy = (new Academy())->setId(1)->setName('Guerrier')->setBaseCharacteristics(new ArrayCollection([$bind]))->setCharacteristics(new ArrayCollection([$bind3]));
+        $academy = (new Academy())->setId(1)->setName('warrior')->setLabel("Guerrier")->setBaseCharacteristics(new ArrayCollection([$bind]))->setCharacteristics(new ArrayCollection([$bind3]));
 
         // Item
         $bind2 = (new BindCharacteristic())->setId(2)->setAmount(200)->setCharacteristic($health);
@@ -36,7 +36,7 @@ class ExplorationHelperTest extends TestCase
         // NOT EQUIPPED => doesnt count in the charactaristic
         $own2  = (new OwnItem())->setId(1)->setItem($item)->setIsEquipped(false);
 
-        $user    = (new User())->setId(1)->setEmail('totodanslasavane@gmail.com')->setAcademy($academy)->setExperience(3000)->setItems(new ArrayCollection([$own1, $own2]));
+        $user    = (new User())->setId(1)->setEmail('totodanslasavane@gmail.com')->setName('Rem le chocorem')->setAcademy($academy)->setExperience(3000)->setItems(new ArrayCollection([$own1, $own2]));
         $boss    = (new Monster())->setId(1)->setName('Elephant Man')->setLevelTower(1);
         $map     = (new Map())->setId(1)->setNbFloors(3)->setMonsters(new ArrayCollection([$boss]));
 
@@ -112,8 +112,9 @@ class ExplorationHelperTest extends TestCase
                 ],
             ],
             6 => [
-                "name" => "totodanslasavane@gmail.com",
-                "image" => "warrior.png",
+                "id" => 1,
+                "name" => "Rem le chocorem",
+                "image" => "warrior",
                 "position" => 8,
                 'hp' => 500,
                 'maxHp' => 500,
