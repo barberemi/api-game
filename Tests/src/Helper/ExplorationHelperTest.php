@@ -36,7 +36,7 @@ class ExplorationHelperTest extends TestCase
         // NOT EQUIPPED => doesnt count in the charactaristic
         $own2  = (new OwnItem())->setId(1)->setItem($item)->setIsEquipped(false);
 
-        $user    = (new User())->setId(1)->setEmail('totodanslasavane@gmail.com')->setName('Rem le chocorem')->setAcademy($academy)->setExperience(3000)->setItems(new ArrayCollection([$own1, $own2]));
+        $user    = (new User())->setId(1)->setEmail('totodanslasavane@gmail.com')->setName('Rem le chocorem')->setAcademy($academy)->setExperience(3000)->setMoney(2544)->setItems(new ArrayCollection([$own1, $own2]));
         $boss    = (new Monster())->setId(1)->setName('Elephant Man')->setLevelTower(1);
         $map     = (new Map())->setId(1)->setNbFloors(3)->setMonsters(new ArrayCollection([$boss]));
 
@@ -114,7 +114,10 @@ class ExplorationHelperTest extends TestCase
             6 => [
                 "id" => 1,
                 "name" => "Rem le chocorem",
-                "image" => "warrior",
+                "money" => 2544,
+                "academy" => [
+                    "name" => "warrior",
+                ],
                 "position" => 8,
                 'hp' => 500,
                 'maxHp' => 500,

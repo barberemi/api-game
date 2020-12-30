@@ -43,7 +43,10 @@ class FightHelperTest extends TestCase
             ],
             3 => [
                 "name" => "totodanslasavane@gmail.com",
-                "image" => "warrior.png",
+                "money" => 2544,
+                "academy" => [
+                    "name" => "warrior",
+                ],
                 "position" => 8,
                 'hp' => 500,
                 'maxHp' => 500,
@@ -83,8 +86,8 @@ class FightHelperTest extends TestCase
                             'id'             => 1,
                             'name'           => "Premier skill",
                             'description'    => "Premier skill description",
-                            'amount'         => 25,
-                            'effect'         => null,
+                            'amount'         => 25.0,
+                            'effect'         => "melee",
                             'duration'       => 0,
                             'nbBlockedTurns' => 0
                         ],
@@ -92,8 +95,8 @@ class FightHelperTest extends TestCase
                             'id'             => 2,
                             'name'           => "Second skill",
                             'description'    => "Second skill description",
-                            'amount'         => 70,
-                            'effect'         => null,
+                            'amount'         => 70.0,
+                            'effect'         => "melee",
                             'duration'       => 0,
                             'nbBlockedTurns' => 0
                         ],
@@ -111,8 +114,8 @@ class FightHelperTest extends TestCase
                         'id'             => 1,
                         'name'           => "Premier skill",
                         'description'    => "Premier skill description",
-                        'amount'         => 25,
-                        'effect'         => null,
+                        'amount'         => 25.0,
+                        'effect'         => "melee",
                         'duration'       => 0,
                         'nbBlockedTurns' => 0
                     ],
