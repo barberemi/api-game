@@ -36,24 +36,12 @@ class ExplorationHelper
         ExplorationHelper::generateBoss($map->getBoss());
 
         for ($i = 2; $i <= $map->getNbFloors() + 1; $i++) {
-            ExplorationHelper::generateFloor($i);
+            ExplorationHelper::generateFloor($i, $map);
         }
         ExplorationHelper::$floors[][] = ExplorationHelper::generateRoom(count(ExplorationHelper::$floors) + 1, 1, 1);
         ExplorationHelper::generateUser($user);
 
         return ExplorationHelper::$floors;
-    }
-
-    /**
-     * @param array $exploration
-     * @param int $position
-     * @return array
-     */
-    static public function moveToPosition(array $exploration, int $position): array
-    {
-        $exploration[array_key_last($exploration)]['position'] = $position;
-
-        return $exploration;
     }
 
     /**
@@ -96,14 +84,15 @@ class ExplorationHelper
 
     /**
      * @param int $idFloor
+     * @param Map $map
      */
-    static protected function generateFloor(int $idFloor): void
+    static protected function generateFloor(int $idFloor, Map $map): void
     {
         $position = 1;
         $nbRooms = ExplorationHelper::$randomRoomsByFloor ? rand(2, 4) : 2; // Testing without random
 
         for ($i = 1; $i <= $nbRooms; $i++){
-            ExplorationHelper::$floors[$idFloor][] = ExplorationHelper::generateRoom($idFloor, $nbRooms, $position);
+            ExplorationHelper::$floors[$idFloor][] = ExplorationHelper::generateRoom($idFloor, $nbRooms, $position, $map);
             $position = $position + 1;
         }
     }
@@ -112,17 +101,49 @@ class ExplorationHelper
      * @param int $idFloor
      * @param int $nbRooms
      * @param int $position
+     * @param Map|null $map
      * @return array
      */
-    static protected function generateRoom(int $idFloor, int $nbRooms, int $position): array
+    static protected function generateRoom(int $idFloor, int $nbRooms, int $position, Map $map = null): array
     {
         ExplorationHelper::$lastRoomId = ExplorationHelper::$lastRoomId + 1;
+        $type = ExplorationHelper::getRoomType($position);
 
-        return [
-            'id'   => ExplorationHelper::$lastRoomId,
-            'type' => ExplorationHelper::getRoomType($position),
-            'next' => ExplorationHelper::getNextRoomId($idFloor, $nbRooms, $position),
-        ];
+        $monsters = [];
+        if ($type === 'arene' && $map !== null) {
+            /** @var Monster $monster */
+            foreach ($map->getMonsters() as $monster) {
+                if ($monster->getLevelTower() === 0) {
+                    $monsters[] = $monster->getId();
+                }
+            }
+            if (count($monsters) > 0) {
+                $result['monster'] = $monsters[rand(0, count($monsters) - 1)];
+            }
+        }
+
+        $items = [];
+        if ($type === 'dealer' && $map !== null) {
+            /** @var Monster $monster */
+            foreach ($map->getMonsters() as $monster) {
+                if ($monster->getLevelTower() === 0) {
+                    /** @var OwnItem $ownItem */
+                    foreach ($monster->getItems() as $ownItem) {
+                        $items[] = $ownItem->getItem();
+                    }
+                }
+            }
+            if (count($items) > 0) {
+                $result['item'] = $items[rand(0, count($items) - 1)]->getId();
+                $result['cost'] = $items[rand(0, count($items) - 1)]->getCost();
+            }
+        }
+
+        $result['id'] = ExplorationHelper::$lastRoomId;
+        $result['type'] = $type;
+        $result['next'] = ExplorationHelper::getNextRoomId($idFloor, $nbRooms, $position);
+
+        return $result;
     }
 
     /**

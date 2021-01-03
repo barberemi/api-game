@@ -35,10 +35,12 @@ class ExplorationHelperTest extends TestCase
         $own1  = (new OwnItem())->setId(1)->setItem($item)->setIsEquipped(true);
         // NOT EQUIPPED => doesnt count in the charactaristic
         $own2  = (new OwnItem())->setId(1)->setItem($item)->setIsEquipped(false);
+        $own3  = (new OwnItem())->setId(1)->setItem($item)->setIsEquipped(false);
 
         $user    = (new User())->setId(1)->setEmail('totodanslasavane@gmail.com')->setName('Rem le chocorem')->setAcademy($academy)->setExperience(3000)->setMoney(2544)->setItems(new ArrayCollection([$own1, $own2]));
         $boss    = (new Monster())->setId(1)->setName('Elephant Man')->setLevelTower(1);
-        $map     = (new Map())->setId(1)->setNbFloors(3)->setMonsters(new ArrayCollection([$boss]));
+        $mob     = (new Monster())->setId(2)->setName('Mob 1')->setLevelTower(0)->setItems(new ArrayCollection([$own3]));
+        $map     = (new Map())->setId(1)->setNbFloors(3)->setMonsters(new ArrayCollection([$boss, $mob]));
 
         $exploration = ExplorationHelper::generate($user, $map, false);
 
@@ -73,6 +75,7 @@ class ExplorationHelperTest extends TestCase
                         1 => 3,
                     ],
                     "type" => "arene",
+                    'monster' => 2
                 ],
                 1 => [
                     "id" => 5,
@@ -81,6 +84,7 @@ class ExplorationHelperTest extends TestCase
                         1 => 3,
                     ],
                     "type" => "arene",
+                    'monster' => 2
                 ],
             ],
             4 => [
@@ -91,6 +95,7 @@ class ExplorationHelperTest extends TestCase
                         1 => 5,
                     ],
                     "type" => "arene",
+                    'monster' => 2
                 ],
                 1 => [
                     "id" => 7,
@@ -99,6 +104,7 @@ class ExplorationHelperTest extends TestCase
                         1 => 5,
                     ],
                     "type" => "arene",
+                    'monster' => 2
                 ],
             ],
             5 => [
@@ -125,8 +131,5 @@ class ExplorationHelperTest extends TestCase
         ];
 
         $this->assertEquals($expetedResult, $exploration);
-
-        $exploration = ExplorationHelper::moveToPosition($exploration, 7);
-        $this->assertEquals(7, $exploration[array_key_last($exploration)]['position']);
     }
 }

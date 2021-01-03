@@ -69,27 +69,4 @@ class UserManager extends AbstractManager
 
         return $user->getExploration();
     }
-
-    /**
-     * @param int $idUser
-     * @param int $position
-     *
-     * @return null|array
-     *
-     * @throws \Exception
-     */
-    public function moveFromExploration(int $idUser, int $position): ?array
-    {
-        /** @var User $user */
-        $user = $this->em->getRepository(User::class)->find($idUser);
-        if (!$user) {
-            throw new \Exception('User doesnt exists.');
-        }
-
-        $exploration = ExplorationHelper::moveToPosition($user->getExploration(), $position);
-        $user->setExploration($exploration);
-        $user = $this->em->getRepository(User::class)->softUpdate($user);
-
-        return $user->getExploration();
-    }
 }

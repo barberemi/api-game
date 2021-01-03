@@ -145,6 +145,10 @@ class User implements UserInterface
      * @var array|null
      *
      * @ORM\Column(type="json", nullable=true)
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("array")
+     * @Serializer\Groups({"update"})
      */
     protected $exploration;
 
