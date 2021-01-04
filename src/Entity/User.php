@@ -156,7 +156,7 @@ class User implements UserInterface
      * @var Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Fight", mappedBy="user", cascade={"persist", "remove"})
-     * @ORM\OrderBy({"id" = "ASC"})
+     * @ORM\OrderBy({"id" = "DESC"})
      *
      * @Serializer\Expose
      * @Serializer\Type("ArrayCollection<App\Entity\Fight>")

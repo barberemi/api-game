@@ -33,7 +33,7 @@ class ExplorationHelper
     static public function generate(User $user, Map $map, $randomRoomsByFloor = true)
     {
         ExplorationHelper::$randomRoomsByFloor = $randomRoomsByFloor;
-        ExplorationHelper::generateBoss($map->getBoss());
+        ExplorationHelper::generateBoss($map);
 
         for ($i = 2; $i <= $map->getNbFloors() + 1; $i++) {
             ExplorationHelper::generateFloor($i, $map);
@@ -70,15 +70,17 @@ class ExplorationHelper
     }
 
     /**
-     * @param Monster $boss
+     * @param Map $map
      */
-    static protected function generateBoss(Monster $boss): void
+    static protected function generateBoss(Map $map): void
     {
+        $boss = $map->getBoss();
         ExplorationHelper::$floors[ExplorationHelper::$lastRoomId] = [
             'id'    => ExplorationHelper::$lastRoomId,
             'type'  => ExplorationHelper::getRoomType(1),
             'name'  => $boss->getName(),
-            'image' => 'boss1-portrait.png',
+            'image' => $boss->getImage(),
+            'map'   => $map->getId(),
         ];
     }
 

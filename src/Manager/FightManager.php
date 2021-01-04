@@ -2,8 +2,6 @@
 
 namespace App\Manager;
 
-use App\Entity\Monster;
-use App\Entity\User;
 use App\Entity\Fight;
 use App\Helper\FightHelper;
 use Doctrine\ORM\EntityManagerInterface;
