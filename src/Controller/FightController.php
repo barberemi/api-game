@@ -34,7 +34,7 @@ class FightController extends AbstractController
     /**
      * Get a fight.
      *
-     * @Route("/{id}", methods={"GET"})
+     * @Route("/{id}/{toFight}", methods={"GET"})
      * @SWG\Response(
      *     response=200,
      *     description="When get fight correctly."
@@ -46,19 +46,24 @@ class FightController extends AbstractController
      * @SWG\Tag(name="fights")
      *
      * @param int $id
+     * @param bool $toFight
      *
      * @return JsonResponse
      */
-    public function index(int $id)
+    public function index(int $id, bool $toFight)
     {
         try {
-            $fight = $this->fightManager->get($id);
-            $fightTab = $this->fightManager->generateFight($fight);
+            if ($toFight) {
+                $fightTab = $this->fightManager->getObject($id);
+                $fight = $this->fightManager->generateFight($fightTab);
+            } else {
+                $fight = $this->fightManager->get($id);
+            }
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse($fightTab, JsonResponse::HTTP_OK);
+        return new JsonResponse($fight, JsonResponse::HTTP_OK);
     }
 
     /**

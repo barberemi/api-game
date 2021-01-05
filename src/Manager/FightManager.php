@@ -26,7 +26,7 @@ class FightManager extends AbstractManager
      * @return mixed
      * @throws \Exception
      */
-    public function get(int $id)
+    public function getObject(int $id)
     {
         $fight  = $this->em->getRepository($this->repositoryNamespace)->find($id);
 
