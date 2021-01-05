@@ -77,6 +77,17 @@ class Monster
      * @Serializer\Type("integer")
      * @Serializer\Groups({"create", "update"})
      */
+    protected $givenMoney = 0;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
     protected $level;
 
     /**
@@ -369,6 +380,25 @@ class Monster
     public function setGivenXp(int $givenXp): self
     {
         $this->givenXp = $givenXp;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGivenMoney(): int
+    {
+        return $this->givenMoney;
+    }
+
+    /**
+     * @param int $givenMoney
+     * @return Monster
+     */
+    public function setGivenMoney(int $givenMoney): self
+    {
+        $this->givenMoney = $givenMoney;
 
         return $this;
     }
