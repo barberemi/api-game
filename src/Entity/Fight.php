@@ -47,6 +47,17 @@ class Fight
     protected $type = self::WAITING_TYPE;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("boolean")
+     * @Serializer\Groups({"update"})
+     */
+    protected $isRewarded = false;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Monster", inversedBy="fights")
      *
      * @Serializer\Expose
@@ -100,6 +111,25 @@ class Fight
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRewarded(): bool
+    {
+        return $this->isRewarded;
+    }
+
+    /**
+     * @param bool $isRewarded
+     * @return Fight
+     */
+    public function setIsRewarded(bool $isRewarded): self
+    {
+        $this->isRewarded = $isRewarded;
 
         return $this;
     }
