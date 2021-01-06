@@ -71,6 +71,15 @@ class OwnItem
     protected $monster;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Fight", inversedBy="items")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Fight")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $fight;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Item")
      *
      * @Serializer\Expose
@@ -88,7 +97,7 @@ class OwnItem
     }
 
     /**
-     * @param $id
+     * @param null|$id
      *
      * @return OwnItem
      */
@@ -174,6 +183,25 @@ class OwnItem
     public function setMonster($monster): self
     {
         $this->monster = $monster;
+
+        return $this;
+    }
+
+    /**
+     * @return Fight
+     */
+    public function getFight(): Fight
+    {
+        return $this->fight;
+    }
+
+    /**
+     * @param $fight
+     * @return OwnItem
+     */
+    public function setFight($fight): self
+    {
+        $this->fight = $fight;
 
         return $this;
     }

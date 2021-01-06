@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Table(name="fight")
@@ -74,6 +76,26 @@ class Fight
      * @Serializer\Groups({"create", "update"})
      */
     protected $user;
+
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\OwnItem", mappedBy="fight", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\OwnItem>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $items;
+
+    /**
+     * Fight constructor.
+     */
+    public function __construct()
+    {
+        $this->items = new ArrayCollection();
+    }
 
 
     /**
@@ -169,6 +191,38 @@ class Fight
     public function setUser(User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    /**
+     * @param Collection $items
+     * @return Fight
+     */
+    public function setItems(Collection $items): self
+    {
+        $this->items = $items;
+
+        return $this;
+    }
+
+    /**
+     * @param OwnItem $item
+     *
+     * @return Fight
+     */
+    public function addItem(OwnItem $item): self
+    {
+        $this->items[] = $item;
+        $item->setFight($this);
 
         return $this;
     }

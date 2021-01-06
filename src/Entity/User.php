@@ -744,6 +744,19 @@ class User implements UserInterface
     }
 
     /**
+     * @param OwnItem $item
+     *
+     * @return User
+     */
+    public function addItem(OwnItem $item): self
+    {
+        $this->items[] = $item;
+        $item->setUser($this);
+
+        return $this;
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getFriends(): ArrayCollection
