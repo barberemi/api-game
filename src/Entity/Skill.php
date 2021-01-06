@@ -24,12 +24,15 @@ class Skill
     const LIGHT = 'light';
     const TREE_TYPES = [self::DARK, self::LIGHT];
 
-    const MELEE = 'melee';
-    const RANGE = 'range';
-    const HEAL  = 'heal';
-    const HOT   = 'hot';
-    const DOT   = 'dot';
-    const SKILL_TYPES = [self::MELEE, self::RANGE, self::HEAL, self::HOT, self::DOT];
+    const MELEE       = 'melee';
+    const RANGE       = 'range';
+    const HEAL        = 'heal';
+    const HOT         = 'hot';
+    const DOT         = 'dot';
+    const MOVEMENT    = 'movement';
+    const SKILL_BLOCK = 'skill_block';
+    const UNKNOWN     = 'unknown';
+    const SKILL_TYPES = [self::MELEE, self::RANGE, self::HEAL, self::HOT, self::DOT, self::MOVEMENT, self::SKILL_BLOCK, self::UNKNOWN];
 
     const HEALTH_TYPE       = 'health';
     const STRENGTH_TYPE     = 'strength';
