@@ -5,7 +5,6 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use JMS\Serializer\Annotation as Serializer;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="owm_item")
@@ -32,8 +31,6 @@ class OwnItem
      * @var int
      *
      * @ORM\Column(type="integer")
-     *
-     * @Assert\GreaterThanOrEqual(1)
      *
      * @Serializer\Expose
      * @Serializer\Type("integer")

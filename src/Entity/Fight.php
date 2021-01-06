@@ -60,6 +60,17 @@ class Fight
     protected $isRewarded = false;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $round = 0;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Monster", inversedBy="fights")
      *
      * @Serializer\Expose
@@ -152,6 +163,25 @@ class Fight
     public function setIsRewarded(bool $isRewarded): self
     {
         $this->isRewarded = $isRewarded;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRound(): int
+    {
+        return $this->round;
+    }
+
+    /**
+     * @param int $round
+     * @return Fight
+     */
+    public function setRound(int $round): self
+    {
+        $this->round = $round;
 
         return $this;
     }
