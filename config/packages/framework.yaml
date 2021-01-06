@@ -45,6 +45,11 @@ nelmio_api_doc:
             - ^/api(?!/doc$)
 
 jms_serializer:
+    default_context:
+        serialization:
+            enable_max_depth_checks: true
+        deserialization:
+            enable_max_depth_checks: true
     object_constructors:
         doctrine:
             fallback_strategy: "exception"
