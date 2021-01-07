@@ -52,6 +52,7 @@ class OwnItem
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="items")
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\User")
      * @Serializer\Groups({"create", "update"})
@@ -61,6 +62,7 @@ class OwnItem
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Monster", inversedBy="items")
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Monster")
      * @Serializer\Groups({"create", "update"})
@@ -70,6 +72,7 @@ class OwnItem
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Fight", inversedBy="items")
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Fight")
      * @Serializer\Groups({"create", "update"})

@@ -71,7 +71,7 @@ class Map
      * @ORM\OneToMany(targetEntity="App\Entity\Monster", mappedBy="map", cascade={"persist"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
-     * @Serializer\MaxDepth(2)
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("ArrayCollection<App\Entity\Monster>")
      * @Serializer\Groups({"create", "update"})

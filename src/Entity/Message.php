@@ -55,6 +55,7 @@ class Message
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages", cascade={"persist"})
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\User")
      * @Serializer\Groups({"create", "update"})
@@ -67,6 +68,7 @@ class Message
      * @ORM\ManyToOne(targetEntity="App\Entity\Guild", inversedBy="messages", cascade={"persist"})
      * @ORM\JoinColumn(name="guild_id", referencedColumnName="id")
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Guild")
      * @Serializer\Groups({"create", "update"})

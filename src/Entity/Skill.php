@@ -146,7 +146,7 @@ class Skill
      * @Serializer\Type("float")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $rate = 1;
+    protected $rate = 0;
 
     /**
      * @var string
@@ -178,6 +178,7 @@ class Skill
      * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="skills", cascade={"persist"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("ArrayCollection<App\Entity\User>")
      * @Serializer\Groups({"create", "update"})
@@ -189,6 +190,7 @@ class Skill
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Monster", mappedBy="skills", cascade={"persist"})
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("ArrayCollection<App\Entity\Monster>")
      * @Serializer\Groups({"create", "update"})
@@ -196,11 +198,12 @@ class Skill
     protected $monsters;
 
     /**
-     * @var Skill
+     * @var Academy
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Academy", inversedBy="skills", cascade={"persist"})
      * @ORM\JoinColumn(name="academy_id", referencedColumnName="id")
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Academy")
      * @Serializer\Groups({"create", "update"})

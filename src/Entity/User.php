@@ -158,6 +158,7 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Fight", mappedBy="user", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "DESC"})
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("ArrayCollection<App\Entity\Fight>")
      * @Serializer\Groups({"create", "update"})
@@ -170,6 +171,7 @@ class User implements UserInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Academy", inversedBy="users", cascade={"persist"})
      * @ORM\JoinColumn(name="academy_id", referencedColumnName="id")
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Academy")
      * @Serializer\Groups({"create", "update"})
@@ -183,6 +185,7 @@ class User implements UserInterface
      * @ORM\JoinTable(name="user_skill")
      * @ORM\OrderBy({"id" = "ASC"})
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("ArrayCollection<App\Entity\Skill>")
      * @Serializer\Groups({"create", "update"})
@@ -195,6 +198,7 @@ class User implements UserInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Guild", inversedBy="users", cascade={"persist"})
      * @ORM\JoinColumn(name="guild_id", referencedColumnName="id")
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Guild")
      * @Serializer\Groups({"create", "update"})
@@ -204,6 +208,7 @@ class User implements UserInterface
     /**
      * @var ArrayCollection
      *
+     * @Serializer\MaxDepth(3)
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="user", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
@@ -216,6 +221,7 @@ class User implements UserInterface
     /**
      * @var Collection
      *
+     * @Serializer\MaxDepth(3)
      * @ORM\OneToMany(targetEntity="App\Entity\OwnItem", mappedBy="user", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
@@ -235,6 +241,7 @@ class User implements UserInterface
      * )
      * @ORM\OrderBy({"id" = "ASC"})
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("ArrayCollection<App\Entity\User>")
      * @Serializer\Groups({"create", "update"})

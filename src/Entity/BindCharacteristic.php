@@ -44,6 +44,7 @@ class BindCharacteristic
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Monster", inversedBy="characteristics")
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Monster")
      * @Serializer\Groups({"create", "update"})
@@ -53,6 +54,7 @@ class BindCharacteristic
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Academy", inversedBy="baseCharacteristics")
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Academy")
      * @Serializer\Groups({"create", "update"})
@@ -62,6 +64,7 @@ class BindCharacteristic
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Academy", inversedBy="characteristicsByLevel")
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Academy")
      * @Serializer\Groups({"create", "update"})
@@ -71,6 +74,7 @@ class BindCharacteristic
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Item", inversedBy="characteristics")
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Item")
      * @Serializer\Groups({"create", "update"})
@@ -80,6 +84,7 @@ class BindCharacteristic
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Characteristic")
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Characteristic")
      * @Serializer\Groups({"create", "update"})

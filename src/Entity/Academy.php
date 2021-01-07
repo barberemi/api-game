@@ -93,7 +93,7 @@ class Academy
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="academy", cascade={"persist"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
-     * @Serializer\MaxDepth(2)
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("ArrayCollection<App\Entity\User>")
      * @Serializer\Groups({"create", "update"})
@@ -106,7 +106,7 @@ class Academy
      * @ORM\OneToMany(targetEntity="App\Entity\Monster", mappedBy="academy", cascade={"persist"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
-     * @Serializer\MaxDepth(2)
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("ArrayCollection<App\Entity\Monster>")
      * @Serializer\Groups({"create", "update"})
@@ -119,6 +119,7 @@ class Academy
      * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="baseAcademy", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("ArrayCollection<App\Entity\BindCharacteristic>")
      * @Serializer\Groups({"create", "update"})
@@ -131,6 +132,7 @@ class Academy
      * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="academy", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("ArrayCollection<App\Entity\BindCharacteristic>")
      * @Serializer\Groups({"create", "update"})
@@ -143,6 +145,7 @@ class Academy
      * @ORM\OneToMany(targetEntity="App\Entity\Skill", mappedBy="academy", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("ArrayCollection<App\Entity\Skill>")
      * @Serializer\Groups({"create", "update"})

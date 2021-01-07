@@ -44,6 +44,7 @@ class Crafting
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Item", inversedBy="itemsToCraft")
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Item")
      * @Serializer\Groups({"create", "update"})
@@ -53,6 +54,7 @@ class Crafting
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Item", inversedBy="itemsNeededToCraft")
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Item")
      * @Serializer\Groups({"create", "update"})

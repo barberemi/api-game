@@ -73,6 +73,7 @@ class Fight
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Monster", inversedBy="fights")
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Monster")
      * @Serializer\Groups({"create", "update"})
@@ -82,6 +83,7 @@ class Fight
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="fights")
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\User")
      * @Serializer\Groups({"create", "update"})
@@ -94,6 +96,7 @@ class Fight
      * @ORM\OneToMany(targetEntity="App\Entity\OwnItem", mappedBy="fight", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("ArrayCollection<App\Entity\OwnItem>")
      * @Serializer\Groups({"create", "update"})

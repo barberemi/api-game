@@ -107,6 +107,7 @@ class Monster
      * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="monster", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("ArrayCollection<App\Entity\BindCharacteristic>")
      * @Serializer\Groups({"create", "update"})
@@ -119,6 +120,7 @@ class Monster
      * @ORM\ManyToOne(targetEntity="App\Entity\Academy", inversedBy="monsters", cascade={"persist"})
      * @ORM\JoinColumn(name="academy_id", referencedColumnName="id")
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Academy")
      * @Serializer\Groups({"create", "update"})
@@ -132,6 +134,7 @@ class Monster
      * @ORM\JoinTable(name="monster_skill")
      * @ORM\OrderBy({"id" = "ASC"})
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("ArrayCollection<App\Entity\Skill>")
      * @Serializer\Groups({"create", "update"})
@@ -144,6 +147,7 @@ class Monster
      * @ORM\ManyToOne(targetEntity="App\Entity\Map", inversedBy="monsters", cascade={"persist"})
      * @ORM\JoinColumn(name="map_id", referencedColumnName="id")
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Map")
      * @Serializer\Groups({"create", "update"})
@@ -168,6 +172,7 @@ class Monster
      * @ORM\OneToMany(targetEntity="App\Entity\Fight", mappedBy="monster", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
+     * @Serializer\MaxDepth(3)
      * @Serializer\Expose
      * @Serializer\Type("ArrayCollection<App\Entity\Fight>")
      * @Serializer\Groups({"create", "update"})
