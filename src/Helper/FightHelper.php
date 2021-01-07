@@ -2,6 +2,7 @@
 
 namespace App\Helper;
 
+use App\Entity\Fight;
 use App\Entity\Monster;
 use App\Entity\Skill;
 use App\Entity\User;
@@ -10,69 +11,75 @@ use Doctrine\Common\Collections\Collection;
 class FightHelper
 {
     /**
-     * @param User $user
-     * @param Monster $monster
+     * @param Fight $fight
      * @return array
      */
-    static public function generate(User $user, Monster $monster)
+    static public function generate(Fight $fight)
     {
         return [
-            'users' => [
-                FightHelper::generateUser($user),
-            ],
-            'monster' => FightHelper::generateMonster($monster),
+            'user'    => FightHelper::generateUser($fight),
+            'monster' => FightHelper::generateMonster($fight),
         ];
     }
 
     /**
-     * @param User $user
+     * @param Fight $fight
      * @return array
      */
-    static protected function generateUser(User $user): array
+    static protected function generateUser(Fight $fight): array
     {
         return [
-            'id'     => $user->getId(),
-            'name'   => $user->getEmail(),
+            'id'     => $fight->getUser()->getId(),
+            'name'   => $fight->getUser()->getName(),
+            'image'  => $fight->getUser()->getAcademy()->getName(),
             'me'     => true,
-            'level'  => $user->getLevel(),
-            'hp'     => $user->getExploration() ? $user->getExploration()[array_key_last($user->getExploration())]['hp'] : 100,
-            'maxHp'  => $user->getExploration() ? $user->getExploration()[array_key_last($user->getExploration())]['maxHp'] : 100,
-            'skills' => FightHelper::getSkills($user->getSkills()),
+            'level'  => $fight->getUser()->getLevel(),
+            'hp'     => $fight->getUser()->getExploration()
+                ? $fight->getUser()->getExploration()[array_key_last($fight->getUser()->getExploration())]['hp']
+                : 100,
+            'maxHp'  => $fight->getUser()->getExploration()
+                ? $fight->getUser()->getExploration()[array_key_last($fight->getUser()->getExploration())]['maxHp']
+                : 100,
+            'skills' => FightHelper::getSkills($fight->getUser()),
         ];
     }
 
     /**
-     * @param Monster $monster
+     * @param Fight $fight
      * @return array
      */
-    static protected function generateMonster(Monster $monster): array
+    static protected function generateMonster(Fight $fight): array
     {
-        $health = $monster->getSpecificCharacteristic($monster->getCharacteristics(), 'health');
+        $health = $fight->getMonster()->getSpecificCharacteristic($fight->getMonster()->getCharacteristics(), 'health');
 
         return [
-            'id'     => $monster->getId(),
-            'name'   => $monster->getName(),
-            'level'  => $monster->getLevel(),
+            'id'     => $fight->getMonster()->getId(),
+            'name'   => $fight->getMonster()->getName(),
+            'image'  => $fight->getMonster()->getImage(),
+            'level'  => $fight->getMonster()->getLevel(),
             'hp'     => $health,
             'maxHp'  => $health,
-            'skills' => FightHelper::getSkills($monster->getSkills()),
+            'skills' => FightHelper::getSkills($fight->getMonster()),
         ];
     }
 
     /**
-     * @param Collection $skills
+     * @param User|Monster $entity
      * @return array
      */
-    static protected function getSkills(Collection $skills): array
+    static protected function getSkills($entity): array
     {
         $results = [];
         /** @var Skill $skill */
-        foreach ($skills as $skill) {
+        foreach ($entity->getSkills() as $skill) {
             $results[] = [
                 'id'             => $skill->getId(),
                 'name'           => $skill->getName(),
                 'description'    => $skill->getDescription(),
-                'amount'         => $skill->getAmount() * $skill->getRate(),
+                'amount'         => $skill->getAmount() + ($skill->getScaleType()
+                        ? $skill->getRate() * $entity->getSpecificCharacteristic($entity->getCharacteristics(), $skill->getScaleType())
+                        : 0
+                ),
                 'effect'         => $skill->getType(),
                 'duration'       => $skill->getDuration(),
                 'nbBlockedTurns' => 0

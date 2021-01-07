@@ -54,8 +54,8 @@ class FightController extends AbstractController
     {
         try {
             if ($toFight) {
-                $fightTab = $this->fightManager->getObject($id);
-                $fight = $this->fightManager->generateFight($fightTab);
+                $fightEntity = $this->fightManager->getObject($id);
+                $fight = $this->fightManager->generateFight($fightEntity);
             } else {
                 $fight = $this->fightManager->get($id);
             }

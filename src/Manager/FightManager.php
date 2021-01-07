@@ -90,6 +90,6 @@ class FightManager extends AbstractManager
      */
     public function generateFight(Fight $fight): ?array
     {
-        return FightHelper::generate($fight->getUser(), $fight->getMonster());
+        return FightHelper::generate($fight);
     }
 }

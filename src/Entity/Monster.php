@@ -511,16 +511,18 @@ class Monster
     }
 
     /**
-     * @param Collection $bindCharacteristics
+     * @param null|Collection $bindCharacteristics
      * @param string $characteristicName
      * @return int
      */
-    public function getSpecificCharacteristic(Collection $bindCharacteristics, string $characteristicName): int
+    public function getSpecificCharacteristic(?Collection $bindCharacteristics, string $characteristicName): int
     {
         $amount = 0;
-        foreach ($bindCharacteristics as $bind) {
-            if ($bind->getCharacteristic()->getName() === $characteristicName) {
-                $amount = $amount + $bind->getAmount();
+        if ($bindCharacteristics) {
+            foreach ($bindCharacteristics as $bind) {
+                if ($bind->getCharacteristic()->getName() === $characteristicName) {
+                    $amount = $amount + $bind->getAmount();
+                }
             }
         }
 
