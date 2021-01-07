@@ -6,7 +6,6 @@ use App\Entity\Fight;
 use App\Entity\Monster;
 use App\Entity\Skill;
 use App\Entity\User;
-use Doctrine\Common\Collections\Collection;
 
 class FightHelper
 {
@@ -17,6 +16,7 @@ class FightHelper
     static public function generate(Fight $fight)
     {
         return [
+            'type'    => $fight->getType(),
             'user'    => FightHelper::generateUser($fight),
             'monster' => FightHelper::generateMonster($fight),
         ];
@@ -30,6 +30,7 @@ class FightHelper
     {
         return [
             'id'     => $fight->getUser()->getId(),
+            'email'  => $fight->getUser()->getEmail(),
             'name'   => $fight->getUser()->getName(),
             'image'  => $fight->getUser()->getAcademy()->getName(),
             'me'     => true,

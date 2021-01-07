@@ -40,6 +40,14 @@ class FightManager extends AbstractManager
         /** @var Fight $entity */
         $entity = $this->deserialize($data, ['update']);
 
+        // 1 - Fight lost
+        if ($entity->getType() === Fight::LOST_TYPE) {
+            $user = $entity->getUser();
+            $user->setExploration(null);
+            $this->em->getRepository(User::class)->update($user);
+        }
+
+        // 2 - Fight won + reward not given
         if (!$entity->isRewarded() && $entity->getType() === Fight::WON_TYPE) {
             $user    = $entity->getUser();
             $monster = $entity->getMonster();
@@ -60,6 +68,11 @@ class FightManager extends AbstractManager
             // 2 - Add money & experience & items on User
             $user->setMoney(($user->getMoney() + $monster->getGivenMoney()));
             $user->setExperience(($user->getExperience() + $monster->getGivenXp()));
+
+            // 3 - Boss fight : reset exploration
+            if ($monster->getLevelTower() > 0) {
+                $user->setExploration(null);
+            }
 
             $this->em->getRepository(User::class)->update($user);
         }

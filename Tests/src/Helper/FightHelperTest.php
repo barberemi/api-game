@@ -80,8 +80,10 @@ class FightHelperTest extends TestCase
         $fight = FightHelper::generate($fight);
 
         $expetedResult = [
+            "type" => "waiting",
             "user" => [
                 "id" => 1,
+                "email" => "totodanslasavane@gmail.com",
                 "name" => "Gros joueur",
                 "image" => "warrior",
                 "me" => true,
