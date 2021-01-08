@@ -69,4 +69,38 @@ class UserManager extends AbstractManager
 
         return $user->getExploration();
     }
+
+    /**
+     * @param int $id
+     * @param array $data
+     * @param string @type
+     *
+     * @return mixed
+     *
+     * @throws \Exception
+     */
+    public function addAndRemoveFriend(int $id, array $data, string $type)
+    {
+        $user = $this->em->getRepository(User::class)->find($id);
+
+        if (!$user) {
+            throw new \Exception('User with this id doesnt exists.');
+        }
+
+        $friend = $this->em->getRepository(User::class)->findOneBy(['email' => $data['email']]);
+
+        if (!$friend) {
+            throw new \Exception('User with this email doesnt exists.');
+        }
+
+        if ($type === "add") {
+            $user->addFriend($friend);
+        } else {
+            $user->removeFriend($friend);
+        }
+
+        $this->em->getRepository($this->repositoryNamespace)->update($user);
+
+        return json_decode($this->serialize($user));
+    }
 }

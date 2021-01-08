@@ -234,4 +234,88 @@ class UserController extends AbstractController
 
         return new JsonResponse($exploration, JsonResponse::HTTP_OK);
     }
+
+    /**
+     * Add a friend.
+     *
+     * @Route("/{id}/friends", methods={"POST"})
+     * @SWG\Response(
+     *     response=201,
+     *     description="When friend added correctly."
+     * )
+     * @SWG\Response(
+     *     response=400,
+     *     description="When some errors on params."
+     * )
+     * @SWG\Parameter(
+     *     name="user",
+     *     in="body",
+     *     required=true,
+     *     description="JSON payload.",
+     *     @SWG\Schema(
+     *         type="object",
+     *         @SWG\Property(property="email", type="string", example="phil@gmail.com"),
+     *     )
+     * )
+     * @SWG\Tag(name="users")
+     *
+     * @param Request $request
+     * @param int $id
+     *
+     * @return JsonResponse
+     */
+    public function addFriend(int $id, Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+
+        try {
+            $user = $this->userManager->addAndRemoveFriend($id, $data, "add");
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse($user, JsonResponse::HTTP_CREATED);
+    }
+
+    /**
+     * Remove a friend.
+     *
+     * @Route("/{id}/friends", methods={"PUT"})
+     * @SWG\Response(
+     *     response=201,
+     *     description="When friend deleted correctly."
+     * )
+     * @SWG\Response(
+     *     response=400,
+     *     description="When some errors on params."
+     * )
+     * @SWG\Parameter(
+     *     name="user",
+     *     in="body",
+     *     required=true,
+     *     description="JSON payload.",
+     *     @SWG\Schema(
+     *         type="object",
+     *         @SWG\Property(property="email", type="string", example="phil@gmail.com"),
+     *     )
+     * )
+     * @SWG\Tag(name="users")
+     *
+     * @param Request $request
+     * @param int $id
+     *
+     * @return JsonResponse
+     */
+    public function removeFriend(int $id, Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+
+        try {
+            $user = $this->userManager->addAndRemoveFriend($id, $data, "remove");
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse($user, JsonResponse::HTTP_CREATED);
+    }
 }

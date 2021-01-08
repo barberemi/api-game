@@ -783,6 +783,32 @@ class User implements UserInterface
     }
 
     /**
+     * @param User $friend
+     * @return User
+     */
+    public function addFriend(User $friend): self
+    {
+        if (!$this->friends->contains($friend) && $friend->getId() !== $this->getId()) {
+            $this->friends[] = $friend;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param User $friend
+     * @return User
+     */
+    public function removeFriend(User $friend): self
+    {
+        if ($this->friends->contains($friend)) {
+            $this->friends->removeElement($friend);
+        }
+
+        return $this;
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getFriendsWithMe(): ArrayCollection
