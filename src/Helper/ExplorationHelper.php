@@ -59,7 +59,6 @@ class ExplorationHelper
         ExplorationHelper::$floors[count(ExplorationHelper::$floors) + 1] = [
             'id'       => $user->getId(),
             'name'     => $user->getName(),
-            'money'    => $user->getMoney(),
             'academy'  => [
                 'name' => $user->getAcademy()->getName()
             ],

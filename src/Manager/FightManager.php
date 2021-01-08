@@ -31,11 +31,17 @@ class FightManager extends AbstractManager
      */
     public function update(int $id, array $data)
     {
+        $hp = null;
         $exist = $this->em->getRepository($this->repositoryNamespace)->find($id);
 
         if (!$exist) throw new \Exception(sprintf('Entity id %d doesnt exists.', $id));
 
         if (!array_key_exists('id', $data)) $data['id'] = $id;
+
+        if (array_key_exists('hp', $data)) {
+            $hp = $data['hp'];
+            unset($data['hp']);
+        }
 
         /** @var Fight $entity */
         $entity = $this->deserialize($data, ['update']);
@@ -65,13 +71,18 @@ class FightManager extends AbstractManager
                 }
             }
 
-            // 2 - Add money & experience & items on User
+            // 2 - Add money & experience
             $user->setMoney(($user->getMoney() + $monster->getGivenMoney()));
             $user->setExperience(($user->getExperience() + $monster->getGivenXp()));
 
             // 3 - Boss fight : reset exploration
             if ($monster->getLevelTower() > 0) {
                 $user->setExploration(null);
+            } else {
+                // 4 - Hp user exploration
+                $exploration = $user->getExploration();
+                $exploration[array_key_last($exploration)]['hp'] = $hp;
+                $user->setExploration($exploration);
             }
 
             $this->em->getRepository(User::class)->update($user);

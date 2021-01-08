@@ -121,7 +121,6 @@ class ExplorationHelperTest extends TestCase
             6 => [
                 "id" => 1,
                 "name" => "Rem le chocorem",
-                "money" => 2544,
                 "academy" => [
                     "name" => "warrior",
                 ],

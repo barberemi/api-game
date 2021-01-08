@@ -45,7 +45,7 @@ class FightHelperTest extends TestCase
             ],
             3 => [
                 "name" => "totodanslasavane@gmail.com",
-                "money" => 2544,
+                "email" => "Gros joueur",
                 "academy" => [
                     "name" => "warrior",
                 ],
