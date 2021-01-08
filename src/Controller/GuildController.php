@@ -202,4 +202,46 @@ class GuildController extends AbstractController
 
         return new JsonResponse([], JsonResponse::HTTP_OK);
     }
+
+    /**
+     * Add or delete a member.
+     *
+     * @Route("/{id}/members", methods={"PUT"})
+     * @SWG\Response(
+     *     response=201,
+     *     description="When member added/deleted correctly."
+     * )
+     * @SWG\Response(
+     *     response=400,
+     *     description="When some errors on params."
+     * )
+     * @SWG\Parameter(
+     *     name="guild",
+     *     in="body",
+     *     required=true,
+     *     description="JSON payload.",
+     *     @SWG\Schema(
+     *         type="object",
+     *         @SWG\Property(property="email", type="string", example="phil@gmail.com"),
+     *     )
+     * )
+     * @SWG\Tag(name="guilds")
+     *
+     * @param Request $request
+     * @param int $id
+     *
+     * @return JsonResponse
+     */
+    public function putMember(int $id, Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+
+        try {
+            $guild = $this->guildManager->addOrRemoveMember($this->getUser(), $id, $data);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse($guild, JsonResponse::HTTP_CREATED);
+    }
 }
