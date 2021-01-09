@@ -221,7 +221,7 @@ class User implements UserInterface
     /**
      * @var Collection
      *
-     * @Serializer\MaxDepth(3)
+     * @Serializer\MaxDepth(6)
      * @ORM\OneToMany(targetEntity="App\Entity\OwnItem", mappedBy="user", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      *

@@ -74,7 +74,7 @@ class BindCharacteristic
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Item", inversedBy="characteristics")
      *
-     * @Serializer\MaxDepth(3)
+     * @Serializer\MaxDepth(6)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Item")
      * @Serializer\Groups({"create", "update"})
@@ -84,7 +84,7 @@ class BindCharacteristic
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Characteristic")
      *
-     * @Serializer\MaxDepth(3)
+     * @Serializer\MaxDepth(6)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Characteristic")
      * @Serializer\Groups({"create", "update"})
