@@ -239,7 +239,7 @@ class User implements UserInterface
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="friend_user_id", referencedColumnName="id")}
      * )
-     * @ORM\OrderBy({"id" = "ASC"})
+     * @ORM\OrderBy({"name" = "ASC"})
      *
      * @Serializer\MaxDepth(3)
      * @Serializer\Expose
