@@ -161,12 +161,12 @@ class ExplorationHelper
 
         $tabPossibleNext = [
             2 => [ // 2 top ranks
-                1 => [ // 2 bottom ranks
+                1 => [ // 1 bottom ranks
                     1 => [1, 2], // pos 1
                 ],
                 2 => [ // 2 bottom ranks
-                    1 => [1, 2], // pos 1
-                    2 => [1, 2], // pos 2
+                    1 => [1], // pos 1
+                    2 => [2], // pos 2
                 ],
                 3 => [ // 3 bottom ranks
                     1 => [1], // pos 1
@@ -189,9 +189,9 @@ class ExplorationHelper
                     2 => [2, 3], // pos 2
                 ],
                 3 => [ // 3 bottom ranks
-                    1 => [1, 2], // pos 1
+                    1 => [1], // pos 1
                     2 => [1, 2, 3], // pos 2
-                    3 => [2, 3], // pos 3
+                    3 => [3], // pos 3
                 ],
                 4 => [ // 4 bottom ranks
                     1 => [1], // pos 1
@@ -214,10 +214,10 @@ class ExplorationHelper
                     3 => [3, 4], // pos 3
                 ],
                 4 => [ // 4 bottom ranks
-                    1 => [1, 2], // pos 1
-                    2 => [1, 2, 3], // pos 2
-                    3 => [2, 3, 4], // pos 3
-                    4 => [3, 4], // pos 4
+                    1 => [1], // pos 1
+                    2 => [1, 2], // pos 2
+                    3 => [3, 4], // pos 3
+                    4 => [4], // pos 4
                 ],
             ],
         ];
