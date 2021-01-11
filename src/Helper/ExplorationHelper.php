@@ -75,11 +75,12 @@ class ExplorationHelper
     {
         $boss = $map->getBoss();
         ExplorationHelper::$floors[ExplorationHelper::$lastRoomId] = [
-            'id'    => ExplorationHelper::$lastRoomId,
-            'type'  => ExplorationHelper::getRoomType(1),
-            'name'  => $boss->getName(),
-            'image' => $boss->getImage(),
-            'map'   => $map->getId(),
+            'id'     => ExplorationHelper::$lastRoomId,
+            'idBoss' => $boss->getId(),
+            'type'   => ExplorationHelper::getRoomType(1),
+            'name'   => $boss->getName(),
+            'image'  => $boss->getImage(),
+            'map'    => $map->getId(),
         ];
     }
 

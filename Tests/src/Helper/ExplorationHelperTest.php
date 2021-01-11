@@ -47,6 +47,7 @@ class ExplorationHelperTest extends TestCase
         $expetedResult = [
             1 => [
                 "id" => 1,
+                "idBoss" => 1,
                 "type" => "arene-boss",
                 "name" => "Elephant Man",
                 "image" => "boss.png",
@@ -73,7 +74,6 @@ class ExplorationHelperTest extends TestCase
                     "id" => 4,
                     "next" => [
                         0 => 2,
-                        1 => 3,
                     ],
                     "type" => "arene",
                     'monster' => 2
@@ -81,8 +81,7 @@ class ExplorationHelperTest extends TestCase
                 1 => [
                     "id" => 5,
                     "next" => [
-                        0 => 2,
-                        1 => 3,
+                        0 => 3,
                     ],
                     "type" => "arene",
                     'monster' => 2
@@ -93,7 +92,6 @@ class ExplorationHelperTest extends TestCase
                     "id" => 6,
                     "next" => [
                         0 => 4,
-                        1 => 5,
                     ],
                     "type" => "arene",
                     'monster' => 2
@@ -101,8 +99,7 @@ class ExplorationHelperTest extends TestCase
                 1 => [
                     "id" => 7,
                     "next" => [
-                        0 => 4,
-                        1 => 5,
+                        0 => 5,
                     ],
                     "type" => "arene",
                     'monster' => 2
