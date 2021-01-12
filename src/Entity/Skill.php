@@ -421,9 +421,9 @@ class Skill
     }
 
     /**
-     * @return Skill
+     * @return Academy
      */
-    public function getAcademy(): Skill
+    public function getAcademy(): Academy
     {
         return $this->academy;
     }

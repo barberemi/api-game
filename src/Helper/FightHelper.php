@@ -76,6 +76,7 @@ class FightHelper
             $results[] = [
                 'id'             => $skill->getId(),
                 'name'           => $skill->getName(),
+                'color'          => $skill->getAcademy()->getColor(),
                 'description'    => $skill->getDescription(),
                 'amount'         => $skill->getAmount() + ($skill->getScaleType()
                         ? $skill->getRate() * $entity->getSpecificCharacteristic($entity->getCharacteristics(), $skill->getScaleType())
@@ -83,6 +84,7 @@ class FightHelper
                 ),
                 'effect'         => $skill->getType(),
                 'duration'       => $skill->getDuration(),
+                'cooldown'       => $skill->getCooldown(),
                 'nbBlockedTurns' => 0
             ];
         }

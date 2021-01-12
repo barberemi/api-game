@@ -60,14 +60,14 @@ class FightHelperTest extends TestCase
         $bind   = (new BindCharacteristic())->setId(1)->setAmount(500)->setCharacteristic($health);
         $bind2  = (new BindCharacteristic())->setId(2)->setAmount(200)->setCharacteristic($health);
 
+        // Academy
+        $warrior = (new Academy())->setId(1)->setName('warrior')->setBaseCharacteristics(new ArrayCollection([$bind2]))->setColor('#ffffff');
+
         // Skills
         $skill1 = (new Skill())->setId(1)->setName('Premier skill')->setDescription('Premier skill description')
-            ->setAmount(50);
+            ->setAmount(50)->setAcademy($warrior);
         $skill2 = (new Skill())->setId(2)->setName('Second skill')->setDescription('Second skill description')
-            ->setAmount(100)->setRate(0.7)->setScaleType('health');
-
-        // Academy
-        $warrior = (new Academy())->setId(1)->setName('warrior')->setBaseCharacteristics(new ArrayCollection([$bind2]));
+            ->setAmount(100)->setRate(0.7)->setScaleType('health')->setAcademy($warrior);
 
         $user = (new User())
             ->setId(1)->setEmail('totodanslasavane@gmail.com')->setName('Gros joueur')->setExperience(3000)
@@ -98,7 +98,9 @@ class FightHelperTest extends TestCase
                         'amount'         => 50.0,
                         'effect'         => "melee",
                         'duration'       => 0,
-                        'nbBlockedTurns' => 0
+                        'nbBlockedTurns' => 0,
+                        'color'          => '#ffffff',
+                        'cooldown'       => 0
                     ],
                     [
                         'id'             => 2,
@@ -107,7 +109,9 @@ class FightHelperTest extends TestCase
                         'amount'         => 240.0,
                         'effect'         => "melee",
                         'duration'       => 0,
-                        'nbBlockedTurns' => 0
+                        'nbBlockedTurns' => 0,
+                        'color'          => '#ffffff',
+                        'cooldown'       => 0
                     ],
                 ],
             ],
@@ -126,7 +130,9 @@ class FightHelperTest extends TestCase
                         'amount'         => 50.0,
                         'effect'         => "melee",
                         'duration'       => 0,
-                        'nbBlockedTurns' => 0
+                        'nbBlockedTurns' => 0,
+                        'color'          => '#ffffff',
+                        'cooldown'       => 0
                     ],
                 ],
             ]
