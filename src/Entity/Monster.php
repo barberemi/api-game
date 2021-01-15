@@ -91,15 +91,15 @@ class Monster
     protected $level;
 
     /**
-     * @var int
+     * @var bool
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="boolean")
      *
      * @Serializer\Expose
-     * @Serializer\Type("integer")
+     * @Serializer\Type("boolean")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $levelTower;
+    protected $isBoss = false;
 
     /**
      * @var ArrayCollection
@@ -458,21 +458,20 @@ class Monster
     }
 
     /**
-     * @return int
+     * @return bool
      */
-    public function getLevelTower(): int
+    public function isBoss(): bool
     {
-        return $this->levelTower;
+        return $this->isBoss;
     }
 
     /**
-     * @param int $levelTower
-     *
+     * @param bool $isBoss
      * @return Monster
      */
-    public function setLevelTower(int $levelTower): self
+    public function setIsBoss(bool $isBoss): self
     {
-        $this->levelTower = $levelTower;
+        $this->isBoss = $isBoss;
 
         return $this;
     }

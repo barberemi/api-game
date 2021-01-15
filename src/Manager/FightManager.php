@@ -76,7 +76,7 @@ class FightManager extends AbstractManager
             $user->setExperience(($user->getExperience() + $monster->getGivenXp()));
 
             // 3 - Boss fight : reset exploration
-            if ($monster->getLevelTower() > 0) {
+            if ($monster->isBoss()) {
                 $user->setExploration(null);
             } else {
                 // 4 - Hp user exploration

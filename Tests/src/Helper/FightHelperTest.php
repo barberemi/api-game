@@ -74,7 +74,7 @@ class FightHelperTest extends TestCase
             ->setExploration($exploration)->setSkills(new ArrayCollection([$skill1, $skill2]))->setAcademy($warrior);
         $monster = (new Monster())
             ->setId(1)->setName('Elephant Man')->setImage('elephant-man')->setSkills(new ArrayCollection([$skill1]))
-            ->setLevel(44)->setLevelTower(1)->setCharacteristics(new ArrayCollection([$bind]));
+            ->setLevel(44)->setIsBoss(true)->setCharacteristics(new ArrayCollection([$bind]));
         $fight = (new Fight())->setId(1)->setUser($user)->setMonster($monster)->setType(Fight::WAITING_TYPE);
 
         $fight = FightHelper::generate($fight);

@@ -222,7 +222,7 @@ class Map
     {
         /** @var Monster $monster */
         foreach ($this->getMonsters() as $monster) {
-            if ($monster->getLevelTower()) {
+            if ($monster->isBoss()) {
                 return $monster;
             }
         }

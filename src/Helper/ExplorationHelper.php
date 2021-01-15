@@ -115,7 +115,7 @@ class ExplorationHelper
         if ($type === 'arene' && $map !== null) {
             /** @var Monster $monster */
             foreach ($map->getMonsters() as $monster) {
-                if ($monster->getLevelTower() === 0) {
+                if (!$monster->isBoss()) {
                     $monsters[] = $monster->getId();
                 }
             }
@@ -128,7 +128,7 @@ class ExplorationHelper
         if ($type === 'dealer' && $map !== null) {
             /** @var Monster $monster */
             foreach ($map->getMonsters() as $monster) {
-                if ($monster->getLevelTower() === 0) {
+                if (!$monster->isBoss()) {
                     /** @var OwnItem $ownItem */
                     foreach ($monster->getItems() as $ownItem) {
                         $items[] = $ownItem->getItem();
