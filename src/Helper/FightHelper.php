@@ -4,6 +4,7 @@ namespace App\Helper;
 
 use App\Entity\Fight;
 use App\Entity\Monster;
+use App\Entity\OwnItem;
 use App\Entity\Skill;
 use App\Entity\User;
 
@@ -28,6 +29,23 @@ class FightHelper
      */
     static protected function generateUser(Fight $fight): array
     {
+        $health = $fight->getUser()->getExploration()
+            ? $fight->getUser()->getExploration()[array_key_last($fight->getUser()->getExploration())]['hp']
+            : 100;
+        $maxHealth = $fight->getUser()->getExploration()
+            ? $fight->getUser()->getExploration()[array_key_last($fight->getUser()->getExploration())]['maxHp']
+            : 100;
+
+        if ($fight->getMonster()->isGuildBoss()) {
+            $health = $fight->getUser()->getSpecificCharacteristic($fight->getUser()->getCharacteristics(), 'health');
+
+            /** @var OwnItem $equippedItem */
+            foreach ($fight->getUser()->getEquippedItems() as $equippedItem) {
+                $health = $health + $fight->getUser()->getSpecificCharacteristic($equippedItem->getItem()->getCharacteristics(), 'health');
+            }
+            $maxHealth = $health;
+        }
+
         return [
             'id'     => $fight->getUser()->getId(),
             'email'  => $fight->getUser()->getEmail(),
@@ -35,12 +53,8 @@ class FightHelper
             'image'  => $fight->getUser()->getAcademy()->getName(),
             'me'     => true,
             'level'  => $fight->getUser()->getLevel(),
-            'hp'     => $fight->getUser()->getExploration()
-                ? $fight->getUser()->getExploration()[array_key_last($fight->getUser()->getExploration())]['hp']
-                : 100,
-            'maxHp'  => $fight->getUser()->getExploration()
-                ? $fight->getUser()->getExploration()[array_key_last($fight->getUser()->getExploration())]['maxHp']
-                : 100,
+            'hp'     => $health,
+            'maxHp'  => $maxHealth,
             'skills' => FightHelper::getSkills($fight->getUser()),
         ];
     }
