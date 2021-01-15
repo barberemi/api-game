@@ -102,6 +102,17 @@ class Monster
     protected $isBoss = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("boolean")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $isGuildBoss = false;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="monster", cascade={"persist", "remove"})
@@ -472,6 +483,25 @@ class Monster
     public function setIsBoss(bool $isBoss): self
     {
         $this->isBoss = $isBoss;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGuildBoss(): bool
+    {
+        return $this->isGuildBoss;
+    }
+
+    /**
+     * @param bool $isGuildBoss
+     * @return Monster
+     */
+    public function setIsGuildBoss(bool $isGuildBoss): self
+    {
+        $this->isGuildBoss = $isGuildBoss;
 
         return $this;
     }
