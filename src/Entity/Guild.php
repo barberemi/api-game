@@ -81,6 +81,19 @@ class Guild
     protected $messages;
 
     /**
+     * @var Monster
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Monster", inversedBy="guilds", cascade={"persist"})
+     * @ORM\JoinColumn(name="monster_id", referencedColumnName="id")
+     *
+     * @Serializer\MaxDepth(3)
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Monster")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $monster;
+
+    /**
      * Guild constructor.
      */
     public function __construct()
@@ -246,6 +259,25 @@ class Guild
             $this->messages->removeElement($message);
             $message->setGuild(null);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Monster
+     */
+    public function getMonster(): Monster
+    {
+        return $this->monster;
+    }
+
+    /**
+     * @param Monster $monster
+     * @return Guild
+     */
+    public function setMonster(Monster $monster): self
+    {
+        $this->monster = $monster;
 
         return $this;
     }

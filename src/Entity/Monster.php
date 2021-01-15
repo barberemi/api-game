@@ -191,6 +191,19 @@ class Monster
     protected $fights;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Guild", mappedBy="monster", cascade={"persist"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\MaxDepth(3)
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\Guild>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $guilds;
+
+    /**
      * Monster constructor.
      */
     public function __construct()
@@ -199,6 +212,7 @@ class Monster
         $this->skills = new ArrayCollection();
         $this->items = new ArrayCollection();
         $this->fights = new ArrayCollection();
+        $this->guilds = new ArrayCollection();
     }
 
     /**
@@ -561,5 +575,24 @@ class Monster
         }
 
         return $amount;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getGuilds(): ArrayCollection
+    {
+        return $this->guilds;
+    }
+
+    /**
+     * @param ArrayCollection $guilds
+     * @return Monster
+     */
+    public function setGuilds(ArrayCollection $guilds): self
+    {
+        $this->guilds = $guilds;
+
+        return $this;
     }
 }
