@@ -264,18 +264,18 @@ class Guild
     }
 
     /**
-     * @return Monster
+     * @return null|Monster
      */
-    public function getMonster(): Monster
+    public function getMonster(): ?Monster
     {
         return $this->monster;
     }
 
     /**
-     * @param Monster $monster
+     * @param null|Monster $monster
      * @return Guild
      */
-    public function setMonster(Monster $monster): self
+    public function setMonster(?Monster $monster): self
     {
         $this->monster = $monster;
 
