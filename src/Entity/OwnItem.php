@@ -80,6 +80,16 @@ class OwnItem
     protected $fight;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Guild", inversedBy="items")
+     *
+     * @Serializer\MaxDepth(3)
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Guild")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $guild;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Item")
      *
      * @Serializer\Expose
@@ -222,6 +232,25 @@ class OwnItem
     public function setItem($item): self
     {
         $this->item = $item;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGuild()
+    {
+        return $this->guild;
+    }
+
+    /**
+     * @param $guild
+     * @return OwnItem
+     */
+    public function setGuild($guild): self
+    {
+        $this->guild = $guild;
 
         return $this;
     }

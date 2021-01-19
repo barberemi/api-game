@@ -94,6 +94,19 @@ class Guild
     protected $monster;
 
     /**
+     * @var Collection
+     *
+     * @Serializer\MaxDepth(5)
+     * @ORM\OneToMany(targetEntity="App\Entity\OwnItem", mappedBy="guild", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\OwnItem>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $items;
+
+    /**
      * Guild constructor.
      */
     public function __construct()
@@ -101,6 +114,7 @@ class Guild
         $this->nbMembers = 5;
         $this->users = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->items = new ArrayCollection();
     }
 
     /**
@@ -278,6 +292,38 @@ class Guild
     public function setMonster(?Monster $monster): self
     {
         $this->monster = $monster;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    /**
+     * @param $items
+     * @return Guild
+     */
+    public function setItems($items): self
+    {
+        $this->items = $items;
+
+        return $this;
+    }
+
+    /**
+     * @param OwnItem $item
+     *
+     * @return Guild
+     */
+    public function addItem(OwnItem $item): self
+    {
+        $this->items[] = $item;
+        $item->setGuild($this);
 
         return $this;
     }
