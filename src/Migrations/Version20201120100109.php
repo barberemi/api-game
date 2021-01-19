@@ -27,7 +27,7 @@ final class Version20201120100109 extends AbstractMigration
 
         // Default datas
         $this->addSql('UPDATE academy SET color = "#dc3545", label = name, role = "Dégats physiques,Corps à corps" WHERE name = "Guerrier"');
-        $this->addSql('UPDATE academy SET color = "#dc3545", label = name, role = "Dégats physiques,Distance" WHERE name = "Archer"');
+        $this->addSql('UPDATE academy SET color = "#ec9b3b", label = name, role = "Dégats physiques,Distance" WHERE name = "Archer"');
         $this->addSql('UPDATE academy SET color = "#007bff", label = name, role = "Dégats magiques,Distance" WHERE name = "Mage"');
         $this->addSql('UPDATE academy SET color = "#28a745", label = name, role = "Encaisser les dégats,Corps à corps" WHERE name = "Protecteur"');
         $this->addSql('UPDATE academy SET color = "#28a745", label = name, role = "Soutien,Soin" WHERE name = "Prêtre"');

@@ -60,7 +60,7 @@ class Guild
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="guild", cascade={"persist"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
-     * @Serializer\MaxDepth(3)
+     * @Serializer\MaxDepth(5)
      * @Serializer\Expose
      * @Serializer\Type("ArrayCollection<App\Entity\User>")
      * @Serializer\Groups({"create", "update"})

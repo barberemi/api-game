@@ -158,7 +158,7 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Fight", mappedBy="user", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "DESC"})
      *
-     * @Serializer\MaxDepth(3)
+     * @Serializer\MaxDepth(5)
      * @Serializer\Expose
      * @Serializer\Type("ArrayCollection<App\Entity\Fight>")
      * @Serializer\Groups({"create", "update"})
@@ -334,6 +334,51 @@ class User implements UserInterface
             }
 
             return $this->getAcademy()->getBaseCharacteristics();
+        }
+
+        return null;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @return bool
+     */
+    public function getCanGuildBossFight(): bool
+    {
+        if ($this->getGuild() && $this->getGuild()->getMonster()) {
+            /** @var Fight $fight */
+            foreach ($this->getFights() as $fight) {
+                if (
+                    $fight->getType() !== Fight::WAITING_TYPE &&
+                    $fight->getMonster()->isGuildBoss() &&
+                    $fight->getMonster()->getId() === $this->getGuild()->getMonster()->getId() &&
+                    $fight->getUpdatedAt()->format('Y-m-d') >= (new \DateTime())->format('Y-m-d')
+                ) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @return null|Fight
+     */
+    public function getLastGuildBossFightOfDay(): ?Fight
+    {
+        if ($this->getGuild() && $this->getGuild()->getMonster()) {
+            /** @var Fight $fight */
+            foreach ($this->getFights() as $fight) {
+                if (
+                    $fight->getMonster()->isGuildBoss() &&
+                    $fight->getMonster()->getId() === $this->getGuild()->getMonster()->getId() &&
+                    $fight->getUpdatedAt()->format('Y-m-d') >= (new \DateTime())->format('Y-m-d')
+                ) {
+                    return $fight;
+                }
+            }
         }
 
         return null;

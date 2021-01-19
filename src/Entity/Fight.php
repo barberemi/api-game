@@ -71,6 +71,17 @@ class Fight
     protected $round = 0;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $remainingHp = 0;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Monster", inversedBy="fights")
      *
      * @Serializer\MaxDepth(3)
@@ -256,6 +267,25 @@ class Fight
     {
         $this->items[] = $item;
         $item->setFight($this);
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRemainingHp(): int
+    {
+        return $this->remainingHp;
+    }
+
+    /**
+     * @param int $remainingHp
+     * @return Fight
+     */
+    public function setRemainingHp(int $remainingHp): self
+    {
+        $this->remainingHp = $remainingHp;
 
         return $this;
     }
