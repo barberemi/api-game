@@ -126,6 +126,19 @@ class Item
     protected $type = self::CRAFT_TYPE;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $image;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\BindCharacteristic", mappedBy="item", cascade={"persist", "remove"})
@@ -392,6 +405,25 @@ class Item
     public function setItemsNeededToCraft(Collection $itemsNeededToCraft): self
     {
         $this->itemsNeededToCraft = $itemsNeededToCraft;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage(): string
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string $image
+     * @return Item
+     */
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
