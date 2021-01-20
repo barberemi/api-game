@@ -96,7 +96,7 @@ class Guild
     /**
      * @var Collection
      *
-     * @Serializer\MaxDepth(5)
+     * @Serializer\MaxDepth(6)
      * @ORM\OneToMany(targetEntity="App\Entity\OwnItem", mappedBy="guild", cascade={"persist", "remove"})
      * @ORM\OrderBy({"id" = "ASC"})
      *
