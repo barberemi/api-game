@@ -552,18 +552,18 @@ class Skill
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getScaleType(): string
+    public function getScaleType(): ?string
     {
         return $this->scaleType;
     }
 
     /**
-     * @param string $scaleType
+     * @param null|string $scaleType
      * @return Skill
      */
-    public function setScaleType(string $scaleType): self
+    public function setScaleType(?string $scaleType): self
     {
         $this->scaleType = $scaleType;
 
