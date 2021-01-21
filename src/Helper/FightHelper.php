@@ -87,18 +87,21 @@ class FightHelper
         $results = [];
         /** @var Skill $skill */
         foreach ($entity->getSkills() as $skill) {
+            $amount = $skill->getAmount() + (
+                $skill->getScaleType()
+                ? $skill->getRate() * $entity->getSpecificCharacteristic($entity->getCharacteristics(), $skill->getScaleType())
+                : 0);
+
             $results[] = [
                 'id'             => $skill->getId(),
                 'name'           => $skill->getName(),
                 'color'          => $skill->getAcademy()->getColor(),
-                'description'    => $skill->getDescription(),
-                'amount'         => $skill->getAmount() + ($skill->getScaleType()
-                        ? $skill->getRate() * $entity->getSpecificCharacteristic($entity->getCharacteristics(), $skill->getScaleType())
-                        : 0
-                ),
+                'description'    => str_replace('#MONTANT#', $amount, $skill->getDescription()),
+                'amount'         => $amount,
                 'effect'         => $skill->getType(),
                 'duration'       => $skill->getDuration(),
                 'cooldown'       => $skill->getCooldown(),
+                'image'          => $skill->getImage(),
                 'nbBlockedTurns' => 0
             ];
         }

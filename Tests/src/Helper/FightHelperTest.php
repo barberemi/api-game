@@ -65,9 +65,9 @@ class FightHelperTest extends TestCase
 
         // Skills
         $skill1 = (new Skill())->setId(1)->setName('Premier skill')->setDescription('Premier skill description')
-            ->setAmount(50)->setAcademy($warrior);
+            ->setAmount(50)->setAcademy($warrior)->setImage('premier-skill.png');
         $skill2 = (new Skill())->setId(2)->setName('Second skill')->setDescription('Second skill description')
-            ->setAmount(100)->setRate(0.7)->setScaleType('health')->setAcademy($warrior);
+            ->setAmount(100)->setRate(0.7)->setScaleType('health')->setAcademy($warrior)->setImage('second-skill.png');
 
         $user = (new User())
             ->setId(1)->setEmail('totodanslasavane@gmail.com')->setName('Gros joueur')->setExperience(3000)
@@ -100,7 +100,8 @@ class FightHelperTest extends TestCase
                         'duration'       => 0,
                         'nbBlockedTurns' => 0,
                         'color'          => '#ffffff',
-                        'cooldown'       => 0
+                        'cooldown'       => 0,
+                        'image'          => 'premier-skill.png'
                     ],
                     [
                         'id'             => 2,
@@ -111,7 +112,8 @@ class FightHelperTest extends TestCase
                         'duration'       => 0,
                         'nbBlockedTurns' => 0,
                         'color'          => '#ffffff',
-                        'cooldown'       => 0
+                        'cooldown'       => 0,
+                        'image'          => 'second-skill.png'
                     ],
                 ],
             ],
@@ -132,7 +134,8 @@ class FightHelperTest extends TestCase
                         'duration'       => 0,
                         'nbBlockedTurns' => 0,
                         'color'          => '#ffffff',
-                        'cooldown'       => 0
+                        'cooldown'       => 0,
+                        'image'          => 'premier-skill.png'
                     ],
                 ],
             ]

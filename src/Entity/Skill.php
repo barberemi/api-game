@@ -173,6 +173,19 @@ class Skill
     protected $level = 1;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $image;
+
+    /**
      * @var Collection
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="skills", cascade={"persist"})
@@ -553,6 +566,25 @@ class Skill
     public function setScaleType(string $scaleType): self
     {
         $this->scaleType = $scaleType;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage(): string
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string $image
+     * @return Skill
+     */
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
