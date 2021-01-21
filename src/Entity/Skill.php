@@ -151,7 +151,7 @@ class Skill
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @Assert\Choice(choices=Skill::SCALE_TYPES)
      *
