@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\Entity\Map;
+use App\Entity\OwnItem;
 use App\Entity\User;
 use App\Helper\ExplorationHelper;
 use Doctrine\ORM\EntityManagerInterface;
@@ -42,6 +43,7 @@ class UserManager extends AbstractManager
     }
 
     /**
+     * @param array $data
      * @param int $idUser
      * @param int $idMap
      *
@@ -49,8 +51,12 @@ class UserManager extends AbstractManager
      *
      * @throws \Exception
      */
-    public function generateExploration(int $idUser, int $idMap): ?array
+    public function generateExploration(array $data, int $idUser, int $idMap): ?array
     {
+        if (!array_key_exists('type', $data)) {
+            $data['type'] = 'treasure';
+        }
+
         /** @var User $user */
         $user = $this->em->getRepository(User::class)->find($idUser);
         if (!$user) {
@@ -63,11 +69,51 @@ class UserManager extends AbstractManager
             throw new \Exception('Map doesnt exists.');
         }
 
-        $exploration = ExplorationHelper::generate($user, $map);
+        $exploration = ExplorationHelper::generate($data['type'], $user, $map);
         $user->setExploration($exploration);
         $user = $this->em->getRepository(User::class)->softUpdate($user);
 
         return $user->getExploration();
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return null|mixed
+     *
+     * @throws \Exception
+     */
+    public function finishTreasureExploration(int $id)
+    {
+        /** @var User $user */
+        $user = $this->em->getRepository(User::class)->find($id);
+        if (!$user) {
+            throw new \Exception('User doesnt exists.');
+        }
+
+        if (!$user->getExploration()) {
+            throw new \Exception('User havent exploration.');
+        }
+
+        $exploration = $user->getExploration();
+        $idMap       = $exploration[array_key_first($exploration)]['map'];
+
+        $map = $this->em->getRepository(Map::class)->find($idMap);
+        if (!$map) {
+            throw new \Exception('No map existing with this id of user exploration.');
+        }
+
+        // Reset exploration user
+        $user->setExploration(null);
+        $item = null;
+        if (sizeof($map->getItems()) > 0) {
+            $ownItem = $map->getItems()[rand(0, sizeof($map->getItems()) - 1)];
+            $item = (new OwnItem())->setItem($ownItem->getItem())->setUser($user);
+            $user->addItem($item);
+        }
+        $this->em->getRepository(User::class)->softUpdate($user);
+
+        return $item ? json_decode($this->serialize($item)) : null;
     }
 
     /**

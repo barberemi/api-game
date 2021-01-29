@@ -90,6 +90,16 @@ class OwnItem
     protected $guild;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Map", inversedBy="items")
+     *
+     * @Serializer\MaxDepth(3)
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Map")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $map;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Item")
      *
      * @Serializer\Expose
@@ -251,6 +261,26 @@ class OwnItem
     public function setGuild($guild): self
     {
         $this->guild = $guild;
+
+        return $this;
+    }
+
+    /**
+     * @return Map
+     */
+    public function getMap(): Map
+    {
+        return $this->map;
+    }
+
+    /**
+     * @param $map
+     *
+     * @return OwnItem
+     */
+    public function setMap($map): self
+    {
+        $this->map = $map;
 
         return $this;
     }

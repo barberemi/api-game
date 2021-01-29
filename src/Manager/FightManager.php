@@ -75,13 +75,15 @@ class FightManager extends AbstractManager
             $user->setMoney(($user->getMoney() + $monster->getGivenMoney()));
             $user->setExperience(($user->getExperience() + $monster->getGivenXp()));
 
-            // 3 - Boss fight : reset exploration (Exploration Fight)
+            // 3 - Last exploration fight : reset exploration (Exploration Fight)
             if (!$monster->isGuildBoss()) {
-                if ($monster->isBoss()) {
+                $exploration = $user->getExploration();
+                if ($exploration[array_key_last($exploration)]['position'] === '1' &&
+                    $exploration[array_key_first($exploration)]['type'] !== 'treasure'
+                ) {
                     $user->setExploration(null);
                 } else {
                     // 4 - Hp user exploration
-                    $exploration = $user->getExploration();
                     $exploration[array_key_last($exploration)]['hp'] = $hp;
                     $user->setExploration($exploration);
                 }

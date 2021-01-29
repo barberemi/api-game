@@ -79,11 +79,24 @@ class Map
     protected $monsters;
 
     /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\OwnItem", mappedBy="map", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\OwnItem>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $items;
+
+    /**
      * Map constructor.
      */
     public function __construct()
     {
         $this->monsters = new ArrayCollection();
+        $this->items = new ArrayCollection();
     }
 
     /**
@@ -92,6 +105,22 @@ class Map
     public function getId(): int
     {
         return $this->id;
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @return Monster|null
+     */
+    public function getBoss(): ?Monster
+    {
+        /** @var Monster $monster */
+        foreach ($this->getMonsters() as $monster) {
+            if ($monster->isBoss()) {
+                return $monster;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -216,17 +245,21 @@ class Map
     }
 
     /**
-     * @return Monster|null
+     * @return Collection
      */
-    public function getBoss(): ?Monster
+    public function getItems(): Collection
     {
-        /** @var Monster $monster */
-        foreach ($this->getMonsters() as $monster) {
-            if ($monster->isBoss()) {
-                return $monster;
-            }
-        }
+        return $this->items;
+    }
 
-        return null;
+    /**
+     * @param Collection $items
+     * @return Map
+     */
+    public function setItems(Collection $items): self
+    {
+        $this->items = $items;
+
+        return $this;
     }
 }

@@ -219,20 +219,52 @@ class UserController extends AbstractController
      * )
      * @SWG\Tag(name="users")
      *
+     * @param Request $request
      * @param int $idUser
      * @param int $idMap
      *
      * @return JsonResponse
      */
-    public function generateExploration(int $idUser, int $idMap): JsonResponse
+    public function generateExploration(Request $request, int $idUser, int $idMap): JsonResponse
     {
+        $data = json_decode($request->getContent(), true);
         try {
-            $exploration = $this->userManager->generateExploration($idUser, $idMap);
+            $exploration = $this->userManager->generateExploration($data, $idUser, $idMap);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         return new JsonResponse($exploration, JsonResponse::HTTP_OK);
+    }
+
+    /**
+     * Finish the treasure exploration of the user.
+     *
+     * @Route("/{id}/exploration", methods={"POST"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="When correctly finished treasure exploration."
+     * )
+     * @SWG\Response(
+     *     response=500,
+     *     description="When some errors on params."
+     * )
+     * @SWG\Tag(name="users")
+     *
+     * @param int $id
+     *
+     * @return JsonResponse
+     */
+    public function finishTreasureExploration(int $id): JsonResponse
+    {
+        try {
+            $item = $this->userManager->finishTreasureExploration($id);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse($item, JsonResponse::HTTP_OK);
     }
 
     /**

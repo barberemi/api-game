@@ -385,6 +385,17 @@ class User implements UserInterface
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @return Collection
+     */
+    public function getEquippedItems(): Collection
+    {
+        return $this->items->filter(function (OwnItem $own) {
+            return $own->isEquipped();
+        });
+    }
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -772,16 +783,6 @@ class User implements UserInterface
     public function getItems(): Collection
     {
         return $this->items;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getEquippedItems(): Collection
-    {
-        return $this->items->filter(function (OwnItem $own) {
-            return $own->isEquipped();
-        });
     }
 
     /**

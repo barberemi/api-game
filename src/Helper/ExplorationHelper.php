@@ -25,15 +25,23 @@ class ExplorationHelper
     static protected $randomRoomsByFloor;
 
     /**
+     * @param string $explorationType
      * @param User $user
      * @param Map $map
      * @param bool $randomRoomsByFloor
      * @return array
      */
-    static public function generate(User $user, Map $map, $randomRoomsByFloor = true)
+    static public function generate(string $explorationType, User $user, Map $map, $randomRoomsByFloor = true)
     {
         ExplorationHelper::$randomRoomsByFloor = $randomRoomsByFloor;
-        ExplorationHelper::generateBoss($map);
+
+        // Boss exploration
+        if ($explorationType === 'boss') {
+            ExplorationHelper::generateBoss($map);
+        } else {
+            // Treasure exploration
+            ExplorationHelper::generateTreasure($map);
+        }
 
         for ($i = 2; $i <= $map->getNbFloors() + 1; $i++) {
             ExplorationHelper::generateFloor($i, $map);
@@ -81,6 +89,27 @@ class ExplorationHelper
             'name'   => $boss->getName(),
             'image'  => $boss->getImage(),
             'map'    => $map->getId(),
+        ];
+    }
+
+    /**
+     * @param Map $map
+     */
+    static protected function generateTreasure(Map $map): void
+    {
+        $monsters = [];
+        /** @var Monster $monster */
+        foreach ($map->getMonsters() as $monster) {
+            if (!$monster->isBoss() && !$monster->isGuildBoss()) {
+                $monsters[] = $monster->getId();
+            }
+        }
+
+        ExplorationHelper::$floors[ExplorationHelper::$lastRoomId] = [
+            'id'       => ExplorationHelper::$lastRoomId,
+            'idBoss'   => $monsters[rand(0, count($monsters) - 1)],
+            'type'     => 'treasure',
+            'map'      => $map->getId()
         ];
     }
 
