@@ -49,19 +49,28 @@ class GuildManager extends AbstractManager
         }
 
         if ($data['type'] === "add") {
-            if ($user->getRole() !== 'ROLE_ADMIN' && $user->getRole() !== 'ROLE_GUILD_MASTER') {
+            if ($user->getRole() !== 'ROLE_ADMIN' &&
+                $user->getGuildRole() !== User::MASTER_GUILD_ROLE &&
+                $user->getGuildRole() !== User::OFFICER_GUILD_ROLE
+            ) {
                 throw new \Exception('User havent privileges to add a member.');
             }
             $guild->addUser($member);
+            if ($member->getGuildRole() === null) {
+                $member->setGuildRole(User::MEMBER_GUILD_ROLE);
+                $this->em->getRepository(User::class)->softUpdate($member);
+            }
         } else {
-            if ($user->getRole() !== 'ROLE_ADMIN' && $user->getRole() !== 'ROLE_GUILD_MASTER' && $user !== $member) {
+            if ($user->getRole() !== 'ROLE_ADMIN' &&
+                $user->getGuildRole() !== User::MASTER_GUILD_ROLE &&
+                $user->getGuildRole() !== User::OFFICER_GUILD_ROLE &&
+                $user !== $member
+            ) {
                 throw new \Exception('User havent privileges to delete a member.');
             }
             $guild->removeUser($member);
-            if ($user->getRole() !== 'ROLE_ADMIN') {
-                $user->setRole('ROLE_USER');
-                $this->em->getRepository(User::class)->softUpdate($user);
-            }
+            $member->setGuildRole(null);
+            $this->em->getRepository(User::class)->softUpdate($member);
         }
 
         $this->em->getRepository($this->repositoryNamespace)->update($guild);

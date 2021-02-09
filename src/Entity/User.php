@@ -19,6 +19,11 @@ class User implements UserInterface
 {
     use TimestampableEntity;
 
+    const MEMBER_GUILD_ROLE  = 'member';
+    const OFFICER_GUILD_ROLE = 'officer';
+    const MASTER_GUILD_ROLE  = 'master';
+    const GUILD_ROLES = [self::MEMBER_GUILD_ROLE, self::OFFICER_GUILD_ROLE, self::MASTER_GUILD_ROLE];
+
     /**
      * @var int
      *
@@ -198,12 +203,25 @@ class User implements UserInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Guild", inversedBy="users", cascade={"persist"})
      * @ORM\JoinColumn(name="guild_id", referencedColumnName="id")
      *
-     * @Serializer\MaxDepth(3)
+     * @Serializer\MaxDepth(5)
      * @Serializer\Expose
      * @Serializer\Type("App\Entity\Guild")
      * @Serializer\Groups({"create", "update"})
      */
     protected $guild;
+
+    /**
+     * @var null|string
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @Assert\Choice(choices=User::GUILD_ROLES)
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $guildRole = self::MEMBER_GUILD_ROLE;
 
     /**
      * @var ArrayCollection
@@ -958,5 +976,24 @@ class User implements UserInterface
         }
 
         return $amount;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getGuildRole(): ?string
+    {
+        return $this->guildRole;
+    }
+
+    /**
+     * @param null|string $guildRole
+     * @return User
+     */
+    public function setGuildRole(?string $guildRole): self
+    {
+        $this->guildRole = $guildRole;
+
+        return $this;
     }
 }
