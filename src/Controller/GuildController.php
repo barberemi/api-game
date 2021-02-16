@@ -109,7 +109,6 @@ class GuildController extends AbstractController
      *     @SWG\Schema(
      *         type="object",
      *         @SWG\Property(property="name", type="string", example="Les dinguos"),
-     *         @SWG\Property(property="nbMembers", type="number", example=10),
      *     )
      * )
      * @SWG\Tag(name="guilds")
@@ -151,7 +150,6 @@ class GuildController extends AbstractController
      *     @SWG\Schema(
      *         type="object",
      *         @SWG\Property(property="name", type="string", example="Les dinguos"),
-     *         @SWG\Property(property="nbMembers", type="number", example=5),
      *     )
      * )
      * @SWG\Tag(name="guilds")
@@ -201,6 +199,36 @@ class GuildController extends AbstractController
         }
 
         return new JsonResponse([], JsonResponse::HTTP_OK);
+    }
+
+    /**
+     * Generate exploration Json of the guild.
+     *
+     * @Route("/{idGuild}/exploration", methods={"POST"})
+     *
+     * @SWG\Response(
+     *     response=200,
+     *     description="When correctly generate the exploration Json."
+     * )
+     * @SWG\Response(
+     *     response=500,
+     *     description="When some errors on params."
+     * )
+     * @SWG\Tag(name="guilds")
+     *
+     * @param int $idGuild
+     *
+     * @return JsonResponse
+     */
+    public function generateExploration(int $idGuild): JsonResponse
+    {
+        try {
+            $exploration = $this->guildManager->generateExploration($idGuild);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse($exploration, JsonResponse::HTTP_OK);
     }
 
     /**

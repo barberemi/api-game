@@ -3,6 +3,8 @@
 namespace App\Manager;
 
 use App\Entity\Fight;
+use App\Entity\Guild;
+use App\Entity\Monster;
 use App\Entity\OwnItem;
 use App\Entity\User;
 use App\Helper\FightHelper;
@@ -75,8 +77,21 @@ class FightManager extends AbstractManager
             $user->setMoney(($user->getMoney() + $monster->getGivenMoney()));
             $user->setExperience(($user->getExperience() + $monster->getGivenXp()));
 
-            // 3 - Last exploration fight : reset exploration (Exploration Fight)
-            if (!$monster->isGuildBoss()) {
+            // 3 - Guild Boss : check if needed to increment guild position
+            if ($monster->isGuildBoss()) {
+                $guildBoss = $this->em->getRepository(Monster::class)->findBy(
+                    ['isGuildBoss' => true],
+                    ['level' => 'asc']
+                );
+                $position = $user->getGuild()->getPosition();
+
+                if ($monster->getId() === $guildBoss[$position]->getId()) {
+                    $guild = $user->getGuild();
+                    $guild->setPosition($guild->getPosition() + 1);
+                    $this->em->getRepository(Guild::class)->update($guild);
+                }
+            } else {
+                // 4 - Last exploration fight : reset exploration (Exploration Fight)
                 $exploration = $user->getExploration();
                 if ($exploration[array_key_last($exploration)]['position'] === '1' &&
                     $exploration[array_key_first($exploration)]['type'] !== 'treasure'

@@ -15,11 +15,11 @@ use PHPUnit\Framework\TestCase;
 use App\Helper\ExplorationHelper;
 
 /**
- * Class ExplorationHelperTest
+ * Class UserExplorationHelperTest
  */
-class ExplorationHelperTest extends TestCase
+class UserExplorationHelperTest extends TestCase
 {
-    public function testGetExploration()
+    public function testGetClassicExploration()
     {
         $health  = (new Characteristic())->setId(1)->setName('health');
 
@@ -42,7 +42,7 @@ class ExplorationHelperTest extends TestCase
         $mob  = (new Monster())->setId(2)->setName('Mob 1')->setIsBoss(0)->setItems(new ArrayCollection([$own3]));
         $map  = (new Map())->setId(1)->setNbFloors(3)->setMonsters(new ArrayCollection([$boss, $mob]));
 
-        $exploration = ExplorationHelper::generate('boss', $user, $map, false);
+        $exploration = ExplorationHelper::generate('boss', $user, $map, null, [], false);
 
         $expetedResult = [
             1 => [

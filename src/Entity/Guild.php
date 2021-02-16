@@ -52,7 +52,29 @@ class Guild
      * @Serializer\Type("integer")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $nbMembers;
+    protected $position = 0;
+
+    /**
+     * @var array|null
+     *
+     * @ORM\Column(type="json", nullable=true)
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("array")
+     * @Serializer\Groups({"update"})
+     */
+    protected $exploration;
+
+    /**
+     * @var null|string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $announcement;
 
     /**
      * @var ArrayCollection
@@ -111,7 +133,6 @@ class Guild
      */
     public function __construct()
     {
-        $this->nbMembers = 5;
         $this->users = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->items = new ArrayCollection();
@@ -210,19 +231,19 @@ class Guild
     /**
      * @return int
      */
-    public function getNbMembers(): int
+    public function getPosition(): int
     {
-        return $this->nbMembers;
+        return $this->position;
     }
 
     /**
-     * @param int $nbMembers
+     * @param int $position
      *
      * @return Guild
      */
-    public function setNbMembers(int $nbMembers): self
+    public function setPosition(int $position): self
     {
-        $this->nbMembers = $nbMembers;
+        $this->position = $position;
 
         return $this;
     }
@@ -324,6 +345,44 @@ class Guild
     {
         $this->items[] = $item;
         $item->setGuild($this);
+
+        return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getExploration(): ?array
+    {
+        return $this->exploration;
+    }
+
+    /**
+     * @param array|null $exploration
+     * @return Guild
+     */
+    public function setExploration(?array $exploration): self
+    {
+        $this->exploration = $exploration;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAnnouncement(): ?string
+    {
+        return $this->announcement;
+    }
+
+    /**
+     * @param string|null $announcement
+     * @return Guild
+     */
+    public function setAnnouncement(?string $announcement): self
+    {
+        $this->announcement = $announcement;
 
         return $this;
     }

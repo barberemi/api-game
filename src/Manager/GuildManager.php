@@ -3,7 +3,9 @@
 namespace App\Manager;
 
 use App\Entity\Guild;
+use App\Entity\Monster;
 use App\Entity\User;
+use App\Helper\ExplorationHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerInterface;
 
@@ -76,5 +78,30 @@ class GuildManager extends AbstractManager
         $this->em->getRepository($this->repositoryNamespace)->update($guild);
 
         return json_decode($this->serialize($guild));
+    }
+
+    /**
+     * @param int $idGuild
+     *
+     * @return null|array
+     *
+     * @throws \Exception
+     */
+    public function generateExploration(int $idGuild): ?array
+    {
+        /** @var Guild $guild */
+        $guild = $this->em->getRepository(Guild::class)->find($idGuild);
+        if (!$guild) {
+            throw new \Exception('Guild doesnt exists.');
+        }
+
+        // Get all guild boss
+        $guildBoss = $this->em->getRepository(Monster::class)->findBy(['isGuildBoss' => true], ['level' => 'desc']);
+
+        $exploration = ExplorationHelper::generate('guild', null, null, $guild, $guildBoss);
+        $guild->setExploration($exploration);
+        $this->em->flush();
+
+        return $guild->getExploration();
     }
 }

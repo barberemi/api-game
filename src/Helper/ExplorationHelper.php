@@ -2,6 +2,7 @@
 
 namespace App\Helper;
 
+use App\Entity\Guild;
 use App\Entity\Map;
 use App\Entity\Monster;
 use App\Entity\OwnItem;
@@ -25,29 +26,56 @@ class ExplorationHelper
     static protected $randomRoomsByFloor;
 
     /**
+     * @var string
+     */
+    static protected $explorationType;
+
+    /**
      * @param string $explorationType
-     * @param User $user
-     * @param Map $map
+     * @param null|User $user
+     * @param null|Map $map
+     * @param null|Guild $guild
+     * @param null|array $boss
      * @param bool $randomRoomsByFloor
      * @return array
      */
-    static public function generate(string $explorationType, User $user, Map $map, $randomRoomsByFloor = true)
+    static public function generate(string $explorationType, ?User $user, ?Map $map, ?Guild $guild = null, array $boss = [], $randomRoomsByFloor = true)
     {
         ExplorationHelper::$randomRoomsByFloor = $randomRoomsByFloor;
+        ExplorationHelper::$explorationType = $explorationType;
 
-        // Boss exploration
-        if ($explorationType === 'boss') {
-            ExplorationHelper::generateBoss($map);
+        if ($explorationType === 'guild') {
+            for ($i = 0; $i < sizeof($boss); $i++) {
+                ExplorationHelper::$floors[$i][] = [
+                    'monster' => $boss[$i]->getId(),
+                    'image'   => $boss[$i]->getImage(),
+                    'name'    => $boss[$i]->getName(),
+                    'id'      => ExplorationHelper::$lastRoomId,
+                    'type'    => 'arene-boss',
+                    'next'    => $i === 0 ? null : [ExplorationHelper::$lastRoomId - 1]
+                ];
+                ExplorationHelper::$lastRoomId = ExplorationHelper::$lastRoomId + 1;
+            }
+            ExplorationHelper::$floors[][] = [
+                'id'      => 0,
+                'type'    => 'arene-boss',
+                'next'    => [ExplorationHelper::$lastRoomId - 1]
+            ];
         } else {
-            // Treasure exploration
-            ExplorationHelper::generateTreasure($map);
-        }
+            // Boss exploration
+            if ($explorationType === 'boss') {
+                ExplorationHelper::generateBoss($map);
+            } else {
+                // Treasure exploration
+                ExplorationHelper::generateTreasure($map);
+            }
 
-        for ($i = 2; $i <= $map->getNbFloors() + 1; $i++) {
-            ExplorationHelper::generateFloor($i, $map);
+            for ($i = 2; $i <= $map->getNbFloors() + 1; $i++) {
+                ExplorationHelper::generateFloor($i, $map);
+            }
+            ExplorationHelper::$floors[][] = ExplorationHelper::generateRoom(count(ExplorationHelper::$floors) + 1, 1, 1);
+            ExplorationHelper::generateUser($user);
         }
-        ExplorationHelper::$floors[][] = ExplorationHelper::generateRoom(count(ExplorationHelper::$floors) + 1, 1, 1);
-        ExplorationHelper::generateUser($user);
 
         return ExplorationHelper::$floors;
     }
@@ -190,6 +218,11 @@ class ExplorationHelper
         if ($idFloor === 2) return [1];
 
         $tabPossibleNext = [
+            1 => [ // 1 top rank
+                1 => [ // 1 bottom rank
+                    1 => [1] // pos 1
+                ]
+            ],
             2 => [ // 2 top ranks
                 1 => [ // 1 bottom ranks
                     1 => [1, 2], // pos 1

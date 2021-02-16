@@ -154,8 +154,7 @@ class FightController extends AbstractController
      *     description="JSON payload.",
      *     @SWG\Schema(
      *         type="object",
-     *         @SWG\Property(property="name", type="string", example="Aincarde"),
-     *         @SWG\Property(property="level", type="number", example=5),
+     *         @SWG\Property(property="type", type="string", example="won")
      *     )
      * )
      * @SWG\Tag(name="fights")
