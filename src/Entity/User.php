@@ -111,7 +111,7 @@ class User implements UserInterface
      * @Serializer\Type("boolean")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $isActive = false;
+    protected $isNoob = true;
 
     /**
      * @var int
@@ -578,19 +578,19 @@ class User implements UserInterface
     /**
      * @return bool
      */
-    public function isActive(): bool
+    public function isNoob(): bool
     {
-        return $this->isActive;
+        return $this->isNoob;
     }
 
     /**
-     * @param bool $isActive
+     * @param bool $isNoob
      *
      * @return User
      */
-    public function setIsActive(bool $isActive): self
+    public function setIsNoob(bool $isNoob): self
     {
-        $this->isActive = $isActive;
+        $this->isNoob = $isNoob;
 
         return $this;
     }
