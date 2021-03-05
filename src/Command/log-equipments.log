@@ -1,0 +1,58 @@
+Array
+(
+    [_id] => 70
+    [ankamaId] => 70
+    [name] => Amulette du Hibou
+    [level] => 8
+    [type] => Amulette
+    [imgUrl] => https://s.ankama.com/www/static.ankama.com/dofus/www/game/items/200/1001.png
+    [url] => https://www.dofus.com/fr/mmorpg/encyclopedie/equipements/70-amulette-hibou
+    [description] => Cette amulette augmente l'intelligence de son porteur.
+    [statistics] => Array
+        (
+            [0] => Array
+                (
+                    [Intelligence] => Array
+                        (
+                            [min] => 10
+                            [max] => 13
+                        )
+
+                )
+
+        )
+
+    [recipe] => Array
+        (
+            [0] => Array
+                (
+                    [Bave de Bouftou] => Array
+                        (
+                            [ankamaId] => 385
+                            [url] => https://www.dofus-touch.com/fr/mmorpg/encyclopedie/ressources/385-bave-bouftou
+                            [imgUrl] => https://s.ankama.com/www/static.ankama.com/dofus/www/game/items/52/15057.w48h48.png
+                            [type] => Ressources diverses
+                            [level] => 7
+                            [quantity] => 3
+                        )
+
+                )
+
+            [1] => Array
+                (
+                    [Relique d'Incarnam] => Array
+                        (
+                            [ankamaId] => 16524
+                            [url] => https://www.dofus-touch.com/fr/mmorpg/encyclopedie/ressources/16524-relique-incarnam
+                            [imgUrl] => https://s.ankama.com/www/static.ankama.com/dofus/www/game/items/52/164068.w48h48.png
+                            [type] => Ressources diverses
+                            [level] => 5
+                            [quantity] => 3
+                        )
+
+                )
+
+        )
+
+    [setId] => 0
+)
