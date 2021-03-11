@@ -114,6 +114,17 @@ class User implements UserInterface
     protected $isNoob = true;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("boolean")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $isDark = false;
+
+    /**
      * @var int
      *
      * @ORM\Column(type="integer")
@@ -591,6 +602,26 @@ class User implements UserInterface
     public function setIsNoob(bool $isNoob): self
     {
         $this->isNoob = $isNoob;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDark(): bool
+    {
+        return $this->isDark;
+    }
+
+    /**
+     * @param bool $isDark
+     *
+     * @return User
+     */
+    public function setIsDark(bool $isDark): self
+    {
+        $this->isDark = $isDark;
 
         return $this;
     }

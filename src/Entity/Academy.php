@@ -52,7 +52,18 @@ class Academy
      * @Serializer\Type("string")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $label;
+    protected $labelLight;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $labelDark;
 
     /**
      * @var string
@@ -265,18 +276,37 @@ class Academy
     /**
      * @return string
      */
-    public function getLabel(): string
+    public function getLabelLight(): string
     {
-        return $this->label;
+        return $this->labelLight;
     }
 
     /**
-     * @param string $label
+     * @param string $labelLight
      * @return Academy
      */
-    public function setLabel(string $label): self
+    public function setLabelLight(string $labelLight): self
     {
-        $this->label = $label;
+        $this->labelLight = $labelLight;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLabelDark(): string
+    {
+        return $this->labelDark;
+    }
+
+    /**
+     * @param string $labelDark
+     * @return Academy
+     */
+    public function setLabelDark(string $labelDark): self
+    {
+        $this->labelDark = $labelDark;
 
         return $this;
     }
