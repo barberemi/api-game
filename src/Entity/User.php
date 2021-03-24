@@ -285,6 +285,18 @@ class User implements UserInterface
     protected $friendsWithMe;
 
     /**
+     * @var Job
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Job", inversedBy="users", cascade={"persist"})
+     * @ORM\JoinColumn(name="job_id", referencedColumnName="id")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Job")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $job;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -422,6 +434,16 @@ class User implements UserInterface
         return $this->items->filter(function (OwnItem $own) {
             return $own->isEquipped();
         });
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @return int
+     */
+    public function getRemainingActions(): int
+    {
+        // TODO : check daily buildings + job of the user
+        return 5;
     }
 
     /**
@@ -1024,6 +1046,25 @@ class User implements UserInterface
     public function setGuildRole(?string $guildRole): self
     {
         $this->guildRole = $guildRole;
+
+        return $this;
+    }
+
+    /**
+     * @return Job
+     */
+    public function getJob(): Job
+    {
+        return $this->job;
+    }
+
+    /**
+     * @param Job $job
+     * @return User
+     */
+    public function setJob(Job $job): self
+    {
+        $this->job = $job;
 
         return $this;
     }

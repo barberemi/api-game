@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Job;
 use App\Entity\User;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -37,6 +38,7 @@ class UserRepository extends AbstractRepository
     {
         try{
             $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPlainPassword()));
+            $user->setJob($this->_em->getRepository(Job::class)->findOneBy(['name' => 'villager']));
 
             $this->validate($user);
 
