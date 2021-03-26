@@ -129,6 +129,18 @@ class Guild
     protected $items;
 
     /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Construction", mappedBy="guild", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\Construction>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $constructions;
+
+    /**
      * Guild constructor.
      */
     public function __construct()
@@ -136,6 +148,7 @@ class Guild
         $this->users = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->items = new ArrayCollection();
+        $this->constructions = new ArrayCollection();
     }
 
     /**
@@ -383,6 +396,25 @@ class Guild
     public function setAnnouncement(?string $announcement): self
     {
         $this->announcement = $announcement;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getConstructions()
+    {
+        return $this->constructions;
+    }
+
+    /**
+     * @param Collection $constructions
+     * @return Guild
+     */
+    public function setConstructions(Collection $constructions): self
+    {
+        $this->constructions = $constructions;
 
         return $this;
     }

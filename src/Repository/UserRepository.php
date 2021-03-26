@@ -29,29 +29,25 @@ class UserRepository extends AbstractRepository
     }
 
     /**
-     * @param User $user
+     * @param $entity
      *
      * @return User
      * @throws \Exception
      */
-    public function create($user): User
+    public function create($entity): User
     {
         try{
-            $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPlainPassword()));
-            $user->setJob($this->_em->getRepository(Job::class)->findOneBy(['name' => 'villager']));
+            $entity->setPassword($this->passwordEncoder->encodePassword($entity, $entity->getPlainPassword()));
+            $entity->setJob($this->_em->getRepository(Job::class)->findOneBy(['name' => 'villager']));
 
-            $this->validate($user);
+            parent::create($entity);
 
-            $this->_em->persist($user);
-            $this->_em->flush();
-
-            $user->setPlainPassword(null);
-
+            $entity->setPlainPassword(null);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
 
-        return $user;
+        return $entity;
     }
 
     /**

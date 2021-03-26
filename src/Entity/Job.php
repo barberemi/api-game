@@ -78,7 +78,7 @@ class Job
     protected $users;
 
     /**
-     * Map constructor.
+     * Job constructor.
      */
     public function __construct()
     {

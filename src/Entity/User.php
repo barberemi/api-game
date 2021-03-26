@@ -297,6 +297,18 @@ class User implements UserInterface
     protected $job;
 
     /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Construction", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("ArrayCollection<App\Entity\Construction>")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $constructions;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -307,6 +319,7 @@ class User implements UserInterface
         $this->friends = new ArrayCollection();
         $this->friendsWithMe = new ArrayCollection();
         $this->fights = new ArrayCollection();
+        $this->constructions = new ArrayCollection();
         $this->salt = md5(uniqid(null, true));
         $this->role = 'ROLE_USER';
     }
@@ -1065,6 +1078,25 @@ class User implements UserInterface
     public function setJob(Job $job): self
     {
         $this->job = $job;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getConstructions()
+    {
+        return $this->constructions;
+    }
+
+    /**
+     * @param Collection $constructions
+     * @return User
+     */
+    public function setConstructions(Collection $constructions): self
+    {
+        $this->constructions = $constructions;
 
         return $this;
     }
