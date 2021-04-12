@@ -4,10 +4,8 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as Serializer;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="construction")
@@ -16,6 +14,10 @@ use Doctrine\Common\Collections\Collection;
 class Construction
 {
     use TimestampableEntity;
+
+    const IN_PROGRESS_STATUS = 'in_progress';
+    const DONE_STATUS = 'done';
+    const STATUS = [self::IN_PROGRESS_STATUS, self::DONE_STATUS];
 
     /**
      * @var int
@@ -51,6 +53,19 @@ class Construction
      * @Serializer\Groups({"create", "update"})
      */
     protected $remainingMaterials;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\Choice(choices=Construction::STATUS)
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $status = self::IN_PROGRESS_STATUS;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Guild", inversedBy="constructions")
@@ -193,6 +208,25 @@ class Construction
     public function setBuilding(Building $building): self
     {
         $this->building = $building;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     * @return Construction
+     */
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
