@@ -72,6 +72,9 @@ abstract class AbstractRepository extends ServiceEntityRepository
         // Check if items exist to clean them
         $this->checkItems($entity);
 
+        // Check if Construction done
+        $this->checkConstructionDone($entity);
+
         try{
             $this->validate($entity);
 
@@ -294,6 +297,25 @@ abstract class AbstractRepository extends ServiceEntityRepository
                 }
 
                 $this->_em->flush();
+            }
+        }
+    }
+
+    /**
+     * @param $entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    protected function checkConstructionDone($entity): void
+    {
+        if (get_class($entity) === Construction::class) {
+            if ($entity->getStatus() !== Construction::DONE_STATUS) {
+                if ($entity->getRemainingActions() === 0 && $entity->getRemainingMaterials() === 0) {
+                    $entity->setStatus(Construction::DONE_STATUS);
+
+                    $this->_em->flush();
+                }
             }
         }
     }

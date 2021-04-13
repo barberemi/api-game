@@ -44,15 +44,15 @@ class Construction
     protected $remainingActions = 10;
 
     /**
-     * @var array|null
+     * @var int
      *
-     * @ORM\Column(type="json", nullable=true)
+     * @ORM\Column(type="integer")
      *
      * @Serializer\Expose
-     * @Serializer\Type("array")
+     * @Serializer\Type("integer")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $remainingMaterials;
+    protected $remainingMaterials = 10;
 
     /**
      * @var string
@@ -137,18 +137,18 @@ class Construction
     }
 
     /**
-     * @return array|null
+     * @return int
      */
-    public function getRemainingMaterials(): ?array
+    public function getRemainingMaterials(): int
     {
         return $this->remainingMaterials;
     }
 
     /**
-     * @param array|null $remainingMaterials
+     * @param int $remainingMaterials
      * @return Construction
      */
-    public function setRemainingMaterials(?array $remainingMaterials): self
+    public function setRemainingMaterials(int $remainingMaterials): self
     {
         $this->remainingMaterials = $remainingMaterials;
 

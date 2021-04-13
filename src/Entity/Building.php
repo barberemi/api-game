@@ -109,15 +109,15 @@ class Building
     protected $neededActions = 10;
 
     /**
-     * @var array|null
+     * @var int
      *
-     * @ORM\Column(type="json", nullable=true)
+     * @ORM\Column(type="integer")
      *
      * @Serializer\Expose
-     * @Serializer\Type("array")
+     * @Serializer\Type("integer")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $neededMaterials;
+    protected $neededMaterials = 10;
 
     /**
      * @var ArrayCollection
@@ -282,18 +282,18 @@ class Building
     }
 
     /**
-     * @return array|null
+     * @return int
      */
-    public function getNeededMaterials(): ?array
+    public function getNeededMaterials(): int
     {
         return $this->neededMaterials;
     }
 
     /**
-     * @param array|null $neededMaterials
+     * @param int $neededMaterials
      * @return Building
      */
-    public function setNeededMaterials(?array $neededMaterials): self
+    public function setNeededMaterials(int $neededMaterials): self
     {
         $this->neededMaterials = $neededMaterials;
 
