@@ -23,6 +23,7 @@ class User implements UserInterface
     const OFFICER_GUILD_ROLE = 'officer';
     const MASTER_GUILD_ROLE  = 'master';
     const GUILD_ROLES = [self::MEMBER_GUILD_ROLE, self::OFFICER_GUILD_ROLE, self::MASTER_GUILD_ROLE];
+    const NB_ACTIONS_BY_DAY = 5;
 
     /**
      * @var int
@@ -167,6 +168,17 @@ class User implements UserInterface
      * @Serializer\Groups({"update"})
      */
     protected $exploration;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $remainingActions = self::NB_ACTIONS_BY_DAY;
 
     /**
      * @var Collection
@@ -453,10 +465,10 @@ class User implements UserInterface
      * @Serializer\VirtualProperty()
      * @return int
      */
-    public function getRemainingActions(): int
+    public function getDefense(): int
     {
-        // TODO : check daily buildings + job of the user
-        return 5;
+        // TODO : level user + job user + constructions with defense
+        return 20;
     }
 
     /**
@@ -1097,6 +1109,25 @@ class User implements UserInterface
     public function setConstructions(Collection $constructions): self
     {
         $this->constructions = $constructions;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRemainingActions(): int
+    {
+        return $this->remainingActions;
+    }
+
+    /**
+     * @param int $remainingActions
+     * @return User
+     */
+    public function setRemainingActions(int $remainingActions): self
+    {
+        $this->remainingActions = $remainingActions;
 
         return $this;
     }

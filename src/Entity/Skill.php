@@ -37,9 +37,8 @@ class Skill
     const HEALTH_TYPE       = 'health';
     const STRENGTH_TYPE     = 'strength';
     const INTELLIGENCE_TYPE = 'intelligence';
-    const HASTE_TYPE        = 'haste';
     const FOCUS_TYPE        = 'focus';
-    const SCALE_TYPES = [self::HEALTH_TYPE, self::STRENGTH_TYPE, self::INTELLIGENCE_TYPE, self::HASTE_TYPE, self::FOCUS_TYPE];
+    const SCALE_TYPES = [self::HEALTH_TYPE, self::STRENGTH_TYPE, self::INTELLIGENCE_TYPE, self::FOCUS_TYPE];
 
     /**
      * @var int

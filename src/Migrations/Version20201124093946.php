@@ -26,8 +26,6 @@ final class Version20201124093946 extends AbstractMigration
         $this->addSql('UPDATE characteristic SET name = "health" WHERE name = "Vie"');
         $this->addSql('UPDATE characteristic SET label = name WHERE name = "Force"');
         $this->addSql('UPDATE characteristic SET name = "strength" WHERE name = "Force"');
-        $this->addSql('UPDATE characteristic SET label = name WHERE name = "Hâte"');
-        $this->addSql('UPDATE characteristic SET name = "haste" WHERE name = "Hâte"');
         $this->addSql('UPDATE characteristic SET label = name WHERE name = "Intelligence"');
         $this->addSql('UPDATE characteristic SET name = "intelligence" WHERE name = "Intelligence"');
         $this->addSql('UPDATE characteristic SET label = name WHERE name = "Confiance"');
@@ -46,7 +44,6 @@ final class Version20201124093946 extends AbstractMigration
 
         $this->addSql('ALTER TABLE characteristic DROP label');
         $this->addSql('UPDATE characteristic SET name = "Vie" WHERE name = "health"');
-        $this->addSql('UPDATE characteristic SET name = "Hâte" WHERE name = "haste"');
         $this->addSql('UPDATE characteristic SET name = "Intelligence" WHERE name = "intelligence"');
         $this->addSql('UPDATE characteristic SET name = "Confiance" WHERE name = "focus"');
 
