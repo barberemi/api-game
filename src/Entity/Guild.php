@@ -152,6 +152,33 @@ class Guild
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @return int
+     */
+    public function getDefense(): int
+    {
+        $defense = 0;
+        // Get all guild constructions defense
+        /** @var Construction $construction */
+        foreach ($this->getConstructions() as $construction) {
+            if (
+                $construction->getStatus() === Construction::DONE_STATUS &&
+                $construction->getBuilding()->getType() === Building::DEFENSE_TYPE
+            ) {
+                $defense = $defense + $construction->getBuilding()->getAmount();
+            }
+        }
+
+        // Get all guild users defense
+        /** @var User $user */
+        foreach ($this->getUsers() as $user) {
+            $defense = $defense + $user->getDefense();
+        }
+
+        return $defense;
+    }
+
+    /**
      * @return int
      */
     public function getId(): int

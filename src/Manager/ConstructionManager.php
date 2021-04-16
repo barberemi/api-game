@@ -3,6 +3,8 @@
 namespace App\Manager;
 
 use App\Entity\Construction;
+use App\Entity\OwnItem;
+use App\Entity\User;
 use App\Helper\ConstructionHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerInterface;
@@ -66,8 +68,30 @@ class ConstructionManager extends AbstractManager
         }
 
         ConstructionHelper::decrementData($construction, $data);
+
+        if ($data['type'] === "action") {
+            if ($user->getRemainingActions() < 1) {
+                throw new \Exception('Havent enough actions. Try tomorrow.');
+            }
+            $user->setRemainingActions($user->getRemainingActions() - 1);
+            $this->em->getRepository(User::class)->softUpdate($user);
+        } else if ($data['type'] === "material") {
+            $find = false;
+            /** @var OwnItem $item */
+            foreach ($user->getItems() as $item) {
+                if($item->getItem()->getName() === "Bois") {
+                    $find = true;
+                    $this->em->getRepository(OwnItem::class)->delete($item);
+                    break;
+                }
+            }
+            if (!$find) {
+                throw new \Exception('Havent Wood on your inventory.');
+            }
+        }
+
         $construction = $this->em->getRepository($this->repositoryNamespace)->update($construction);
 
-        return json_decode($this->serialize($construction));
+        return json_decode($this->serialize($user));
     }
 }

@@ -467,8 +467,25 @@ class User implements UserInterface
      */
     public function getDefense(): int
     {
-        // TODO : level user + job user + constructions with defense
-        return 20;
+        $defense = 1 * $this->getLevel();
+
+        // Defender job level give * 2 defense
+        if ($this->getJob() && $this->getJob()->getName() === "defender") {
+            $defense = $defense * 2;
+        }
+
+        // Get all user constructions defense
+        /** @var Construction $construction */
+        foreach ($this->getConstructions() as $construction) {
+            if (
+                $construction->getStatus() === Construction::DONE_STATUS &&
+                $construction->getBuilding()->getType() === Building::DEFENSE_TYPE
+            ) {
+                $defense = $defense + $construction->getBuilding()->getAmount();
+            }
+        }
+
+        return $defense;
     }
 
     /**

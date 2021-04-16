@@ -76,6 +76,17 @@ class Building
     protected $type = self::DEFENSE_TYPE;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $amount = 1;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="text")
@@ -162,6 +173,15 @@ class Building
     {
         $this->children = new ArrayCollection();
         $this->constructions = new ArrayCollection();
+    }
+
+    /**
+     * @Serializer\VirtualProperty()
+     * @return null|int
+     */
+    public function hasParentId(): ?int
+    {
+        return $this->getParent() ? $this->getParent()->getId() : null;
     }
 
     /**
@@ -404,6 +424,25 @@ class Building
     public function setConstructions(Collection $constructions): self
     {
         $this->constructions = $constructions;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAmount(): int
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @param int $amount
+     * @return Building
+     */
+    public function setAmount(int $amount): self
+    {
+        $this->amount = $amount;
 
         return $this;
     }

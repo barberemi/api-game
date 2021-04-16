@@ -99,11 +99,11 @@ class ConstructionController extends AbstractController
                 throw new \Exception('Needed to be connected to do this action.');
             }
 
-            $construction = $this->constructionManager->giveActionOrMaterial($id, $user, $data);
+            $userOrGuild = $this->constructionManager->giveActionOrMaterial($id, $user, $data);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse($construction, JsonResponse::HTTP_OK);
+        return new JsonResponse($userOrGuild, JsonResponse::HTTP_OK);
     }
 }
