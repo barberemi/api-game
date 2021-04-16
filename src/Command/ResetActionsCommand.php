@@ -66,11 +66,7 @@ class ResetActionsCommand extends Command
         /** @var User $user */
         foreach ($users as $user) {
             $count++;
-            $nb = User::NB_ACTIONS_BY_DAY;
-            if ($user->getJob() && $user->getJob()->getName() === "engineer") {
-                $nb = $nb + 1;
-            }
-            $user->setRemainingActions($nb);
+            $user->setRemainingActions($user->getMaxActions());
 
             if ($count % 30 === 0) {
                 $this->entityManager->flush();

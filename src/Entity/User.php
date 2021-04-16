@@ -489,6 +489,38 @@ class User implements UserInterface
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @return int
+     */
+    public function getMaxActions(): int
+    {
+        $actions = User::NB_ACTIONS_BY_DAY;
+        if ($this->getJob() && $this->getJob()->getName() === "engineer") {
+            $actions = $actions + 1;
+        }
+
+        $constructions = $this->getGuild() ?
+            new ArrayCollection(
+                array_merge(
+                    $this->getConstructions()->toArray(),
+                    $this->getGuild()->getConstructions()->toArray()
+                )
+            ) : $this->getConstructions();
+
+        // Get all action constructions
+        /** @var Construction $construction */
+        foreach ($constructions as $construction) {
+            if (
+                $construction->getStatus() === Construction::DONE_STATUS &&
+                $construction->getBuilding()->getType() === Building::ACTION_TYPE
+            ) {
+                $actions = $actions + $construction->getBuilding()->getAmount();
+            }
+        }
+        return $actions;
+    }
+
+    /**
      * @return int
      */
     public function getId(): int
