@@ -61,15 +61,17 @@ class FightManager extends AbstractManager
             $monster = $entity->getMonster();
             $entity->setIsRewarded(true);
 
-            // 1 - Add items on entity Fight & User
+            // 1 - Add items on entity Fight & User if bag space can
             /** @var OwnItem $item */
             foreach ($monster->getItems() as $item) {
                 if (rand(0, 100) <= $item->getItem()->getDropRate() * 100) {
-                    $newItemUser = (new OwnItem())->setItem($item->getItem())->setUser($user);
-                    $user->addItem($newItemUser);
+                    if ($user->getRemainingBagSpace() > 0) {
+                        $newItemUser = (new OwnItem())->setItem($item->getItem())->setUser($user);
+                        $user->addItem($newItemUser);
 
-                    $newItemFight = (new OwnItem())->setItem($item->getItem())->setFight($entity);
-                    $entity->addItem($newItemFight);
+                        $newItemFight = (new OwnItem())->setItem($item->getItem())->setFight($entity);
+                        $entity->addItem($newItemFight);
+                    }
                 }
             }
 

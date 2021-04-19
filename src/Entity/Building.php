@@ -20,12 +20,10 @@ class Building
 {
     use TimestampableEntity;
 
-    const ORB_TYPE      = 'orb';
     const ACTION_TYPE   = 'action';
     const DEFENSE_TYPE  = 'defense';
     const USER_BAG_TYPE = 'user_bag';
-    const GUILD_BAG_TYPE = 'guild_bag';
-    const TYPES = [self::USER_BAG_TYPE, self::GUILD_BAG_TYPE, self::DEFENSE_TYPE, self::ACTION_TYPE, self::ORB_TYPE];
+    const TYPES = [self::USER_BAG_TYPE, self::DEFENSE_TYPE, self::ACTION_TYPE];
 
     /**
      * @var int

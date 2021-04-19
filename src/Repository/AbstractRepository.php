@@ -209,22 +209,28 @@ abstract class AbstractRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param mixed  $entity
+     * @param $entity
      * @param string $entityName
-     * @param array  $keepIds
-     *
+     * @param array $keepIds
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     protected function clearItems($entity, string $entityName, array $keepIds): void
     {
         if (method_exists($entity, 'getItems')) {
-            $items = $this->_em->getRepository(OwnItem::class)->findBy([strtolower($entityName) => $entity]);
+            $oldItems = $this->_em->getRepository(OwnItem::class)->findBy([strtolower($entityName) => $entity]);
         } else {
-            $items = $this->_em->getRepository(Crafting::class)->findBy(['itemToCraft' => $entity]);
+            $oldItems = $this->_em->getRepository(Crafting::class)->findBy(['itemToCraft' => $entity]);
         }
 
-        foreach ($items as $item) {
+        // Check if user & if have remaining bag space
+        if (get_class($entity) === User::class) {
+            if (count($keepIds) > count($oldItems) && $entity->getRemainingBagSpace() < 1) {
+                throw new \Exception('Cant add new items, no bag space.');
+            }
+        }
+
+        foreach ($oldItems as $item) {
             if (!in_array($item->getId(), $keepIds)) {
                 $this->_em->remove($item);
             }

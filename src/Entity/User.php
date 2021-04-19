@@ -24,6 +24,7 @@ class User implements UserInterface
     const MASTER_GUILD_ROLE  = 'master';
     const GUILD_ROLES = [self::MEMBER_GUILD_ROLE, self::OFFICER_GUILD_ROLE, self::MASTER_GUILD_ROLE];
     const NB_ACTIONS_BY_DAY = 5;
+    const NB_STARTING_BAG_SPACE = 20;
 
     /**
      * @var int
@@ -146,17 +147,6 @@ class User implements UserInterface
      * @Serializer\Groups({"create", "update"})
      */
     protected $money = 0;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     *
-     * @Serializer\Expose
-     * @Serializer\Type("integer")
-     * @Serializer\Groups({"create", "update"})
-     */
-    protected $itemSpaceNb = 10;
 
     /**
      * @var array|null
@@ -521,6 +511,36 @@ class User implements UserInterface
     }
 
     /**
+     * @Serializer\VirtualProperty()
+     * @return int
+     */
+    public function getRemainingBagSpace(): int
+    {
+        $space = User::NB_STARTING_BAG_SPACE;
+
+        $constructions = $this->getGuild() ?
+            new ArrayCollection(
+                array_merge(
+                    $this->getConstructions()->toArray(),
+                    $this->getGuild()->getConstructions()->toArray()
+                )
+            ) : $this->getConstructions();
+
+        // Get all bag space constructions
+        /** @var Construction $construction */
+        foreach ($constructions as $construction) {
+            if (
+                $construction->getStatus() === Construction::DONE_STATUS &&
+                $construction->getBuilding()->getType() === Building::USER_BAG_TYPE
+            ) {
+                $space = $space + $construction->getBuilding()->getAmount();
+            }
+        }
+
+        return $this->getItems() ? $space - count($this->getItems()) : $space;
+    }
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -848,26 +868,6 @@ class User implements UserInterface
     public function setMoney(int $money): self
     {
         $this->money = $money;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getItemSpaceNb(): int
-    {
-        return $this->itemSpaceNb;
-    }
-
-    /**
-     * @param int $itemSpaceNb
-     *
-     * @return User
-     */
-    public function setItemSpaceNb(int $itemSpaceNb): self
-    {
-        $this->itemSpaceNb = $itemSpaceNb;
 
         return $this;
     }
