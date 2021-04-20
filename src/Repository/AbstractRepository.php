@@ -225,7 +225,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
 
         // Check if user & if have remaining bag space
         if (get_class($entity) === User::class) {
-            if (count($keepIds) > count($oldItems) && $entity->getRemainingBagSpace() < 1) {
+            if (count($keepIds) > count($oldItems) && $entity->getRemainingBagSpace() < 0) {
                 throw new \Exception('Cant add new items, no bag space.');
             }
         }
