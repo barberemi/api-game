@@ -164,7 +164,7 @@ class User implements UserInterface
      * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      *
      * @Serializer\Expose
-     * @Serializer\Type("DateTime")
+     * @Serializer\Type("DateTime<'Y-m-d\TH:i:s.uT'>")
      * @Serializer\Groups({"create", "update"})
      */
     protected $jobUpdatedAt;
