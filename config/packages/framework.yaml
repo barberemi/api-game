@@ -57,4 +57,4 @@ jms_serializer:
         id: 'jms_serializer.identical_property_naming_strategy'
     handlers:
         datetime:
-            default_format: 'Y-m-d\TH:i:s.uT'
+            default_format: 'Y-m-d H:i:s'
