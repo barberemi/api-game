@@ -160,6 +160,16 @@ class User implements UserInterface
     protected $exploration;
 
     /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("DateTime")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $jobUpdatedAt;
+
+    /**
      * @var int
      *
      * @ORM\Column(type="integer")
@@ -1177,6 +1187,25 @@ class User implements UserInterface
     public function setRemainingActions(int $remainingActions): self
     {
         $this->remainingActions = $remainingActions;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getJobUpdatedAt(): \DateTime
+    {
+        return $this->jobUpdatedAt;
+    }
+
+    /**
+     * @param \DateTime $jobUpdatedAt
+     * @return User
+     */
+    public function setJobUpdatedAt(\DateTime $jobUpdatedAt): self
+    {
+        $this->jobUpdatedAt = $jobUpdatedAt;
 
         return $this;
     }
