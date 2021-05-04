@@ -63,4 +63,36 @@ class LevelHelper
             return 5;
         }
     }
+
+    /**
+     * Get woods receipe by level
+     *
+     * @param int $lvl
+     *
+     * @return int
+     */
+    static public function woodsByLevel(int $lvl): int
+    {
+        if ($lvl < 1) {
+            return 1;
+        } else if ($lvl < 10) {
+            return 2;
+        } else if ($lvl < 20) {
+            return 3;
+        } else if ($lvl < 30) {
+            return 4;
+        } else if ($lvl < 40) {
+            return 5;
+        } else if ($lvl < 50) {
+            return 6;
+        } else if ($lvl < 60) {
+            return 7;
+        } else if ($lvl < 70) {
+            return 8;
+        } else if ($lvl < 80) {
+            return 9;
+        } else {
+            return 10;
+        }
+    }
 }

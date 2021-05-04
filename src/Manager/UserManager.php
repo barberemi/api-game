@@ -2,10 +2,13 @@
 
 namespace App\Manager;
 
+use App\Entity\Item;
 use App\Entity\Map;
 use App\Entity\OwnItem;
 use App\Entity\User;
+use App\Helper\AttackHelper;
 use App\Helper\ExplorationHelper;
+use App\Helper\LevelHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializerInterface;
 
@@ -40,6 +43,37 @@ class UserManager extends AbstractManager
         $data['plainPassword'] = $data['password'];
 
         return parent::create($data);
+    }
+
+    /**
+     * @param int $id
+     * @param array $data
+     * @return mixed
+     * @throws \Exception
+     */
+    public function update(int $id, array $data)
+    {
+        $exist  = $this->em->getRepository(User::class)->find($id);
+
+        if (!$exist) throw new \Exception(sprintf('User id %d doesnt exists.', $id));
+
+        if(array_key_exists('canAction', $data) && $exist->isCanAction() && $exist->getGuild() && $exist->getJob()) {
+            if ($exist->getJob()->getName() === 'scout') {
+                // Scout
+                AttackHelper::estimate($exist->getGuild());
+            } else if ($exist->getJob()->getName() === 'minor' && $exist->getRemainingBagSpace() > 0) {
+                // Minor
+                $wood = $this->em->getRepository(Item::class)->findOneBy(['name' => 'Bois']);
+                if ($wood) {
+                    $nbWoods = LevelHelper::woodsByLevel($exist->getLevel());
+                    for ($i = 1; $i <= $nbWoods; $i++) {
+                        $exist->addItem((new OwnItem())->setItem($wood));
+                    }
+                }
+            }
+        }
+
+        return parent::update($id, $data);
     }
 
     /**

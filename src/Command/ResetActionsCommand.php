@@ -67,6 +67,7 @@ class ResetActionsCommand extends Command
         foreach ($users as $user) {
             $count++;
             $user->setRemainingActions($user->getMaxActions());
+            $user->setCanAction(true);
 
             if ($count % 30 === 0) {
                 $this->entityManager->flush();

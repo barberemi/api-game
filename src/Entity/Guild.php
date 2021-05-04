@@ -77,6 +77,68 @@ class Guild
     protected $announcement;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Exclude
+     */
+    protected $lastAttack = 0;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Exclude
+     */
+    protected $lastTrueAttack = 0;
+
+    /**
+     * @var null|int
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $minAttack;
+
+    /**
+     * @var null|int
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $maxAttack;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $upDraw = 0;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $downDraw = 0;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="guild", cascade={"persist"})
@@ -442,6 +504,120 @@ class Guild
     public function setConstructions(Collection $constructions): self
     {
         $this->constructions = $constructions;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLastAttack(): int
+    {
+        return $this->lastAttack;
+    }
+
+    /**
+     * @param int $lastAttack
+     * @return Guild
+     */
+    public function setLastAttack(int $lastAttack): self
+    {
+        $this->lastAttack = $lastAttack;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getMinAttack(): ?int
+    {
+        return $this->minAttack;
+    }
+
+    /**
+     * @param int|null $minAttack
+     * @return Guild
+     */
+    public function setMinAttack(?int $minAttack): self
+    {
+        $this->minAttack = $minAttack;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getMaxAttack(): ?int
+    {
+        return $this->maxAttack;
+    }
+
+    /**
+     * @param int|null $maxAttack
+     * @return Guild
+     */
+    public function setMaxAttack(?int $maxAttack): self
+    {
+        $this->maxAttack = $maxAttack;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLastTrueAttack(): int
+    {
+        return $this->lastTrueAttack;
+    }
+
+    /**
+     * @param int $lastTrueAttack
+     * @return Guild
+     */
+    public function setLastTrueAttack(int $lastTrueAttack): self
+    {
+        $this->lastTrueAttack = $lastTrueAttack;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUpDraw(): int
+    {
+        return $this->upDraw;
+    }
+
+    /**
+     * @param int $upDraw
+     * @return Guild
+     */
+    public function setUpDraw(int $upDraw): self
+    {
+        $this->upDraw = $upDraw;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDownDraw(): int
+    {
+        return $this->downDraw;
+    }
+
+    /**
+     * @param int $downDraw
+     * @return Guild
+     */
+    public function setDownDraw(int $downDraw): self
+    {
+        $this->downDraw = $downDraw;
 
         return $this;
     }

@@ -24,7 +24,7 @@ class User implements UserInterface
     const MASTER_GUILD_ROLE  = 'master';
     const GUILD_ROLES = [self::MEMBER_GUILD_ROLE, self::OFFICER_GUILD_ROLE, self::MASTER_GUILD_ROLE];
     const NB_ACTIONS_BY_DAY = 5;
-    const NB_STARTING_BAG_SPACE = 20;
+    const NB_STARTING_BAG_SPACE = 30;
 
     /**
      * @var int
@@ -179,6 +179,17 @@ class User implements UserInterface
      * @Serializer\Groups({"create", "update"})
      */
     protected $remainingActions = self::NB_ACTIONS_BY_DAY;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("boolean")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $canAction = true;
 
     /**
      * @var Collection
@@ -1206,6 +1217,25 @@ class User implements UserInterface
     public function setJobUpdatedAt(\DateTime $jobUpdatedAt): self
     {
         $this->jobUpdatedAt = $jobUpdatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCanAction(): bool
+    {
+        return $this->canAction;
+    }
+
+    /**
+     * @param bool $canAction
+     * @return User
+     */
+    public function setCanAction(bool $canAction): self
+    {
+        $this->canAction = $canAction;
 
         return $this;
     }
