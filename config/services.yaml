@@ -18,7 +18,7 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Entity,Migrations,Serializer,Tests,Kernel.php}'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Serializer,EventListener,Tests,Kernel.php}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -43,3 +43,9 @@ services:
         arguments:
             $secret: '%env(MERCURE_JWT_KEY)%'
             $tokenGenerator: '@security.untracked_token_storage'
+
+    acme_api.event.jwt_created_listener:
+        class: App\EventListener\AuthentificationListener
+        arguments: [ '@request_stack' ]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
