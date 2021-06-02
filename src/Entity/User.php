@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
 use App\Helper\LevelHelper;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table(name="user")
@@ -162,6 +163,7 @@ class User implements UserInterface
     /**
      * @var \DateTime
      * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     * @Gedmo\Timestampable(on="create")
      *
      * @Serializer\Expose
      * @Serializer\Type("DateTime<'Y-m-d H:i:s'>")
