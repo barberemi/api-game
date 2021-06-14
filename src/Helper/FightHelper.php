@@ -75,6 +75,7 @@ class FightHelper
             'hp'     => $health,
             'maxHp'  => $health,
             'skills' => FightHelper::getSkills($fight->getMonster()),
+            'isGuildBoss' => $fight->getMonster()->isGuildBoss(),
         ];
     }
 

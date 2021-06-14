@@ -138,6 +138,7 @@ class FightHelperTest extends TestCase
                         'image'          => 'premier-skill.png'
                     ],
                 ],
+                'isGuildBoss' => false
             ]
         ];
 

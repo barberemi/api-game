@@ -45,19 +45,19 @@ class LevelHelperTest extends TestCase
 
     public function testSkillPointsOfLevel()
     {
-        $skillPoints = LevelHelper::skillPointsOfLevel(1);
+        $skillPoints = LevelHelper::skillPointsOfLevel(0);
         $this->assertEquals(1, $skillPoints);
 
+        $skillPoints = LevelHelper::skillPointsOfLevel(2);
+        $this->assertEquals(2, $skillPoints);
+
         $skillPoints = LevelHelper::skillPointsOfLevel(5);
+        $this->assertEquals(3, $skillPoints);
+
+        $skillPoints = LevelHelper::skillPointsOfLevel(9);
+        $this->assertEquals(4, $skillPoints);
+
+        $skillPoints = LevelHelper::skillPointsOfLevel(88);
         $this->assertEquals(5, $skillPoints);
-
-        $skillPoints = LevelHelper::skillPointsOfLevel(25);
-        $this->assertEquals(10, $skillPoints);
-
-        $skillPoints = LevelHelper::skillPointsOfLevel(99);
-        $this->assertEquals(30, $skillPoints);
-
-        $skillPoints = LevelHelper::skillPointsOfLevel(120);
-        $this->assertEquals(30, $skillPoints);
     }
 }
