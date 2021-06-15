@@ -64,7 +64,8 @@ class FightManager extends AbstractManager
             // 1 - Add items on entity Fight & User if bag space can
             /** @var OwnItem $item */
             foreach ($monster->getItems() as $item) {
-                if (rand(0, 100) <= $item->getItem()->getDropRate() * 100) {
+                // Max : 2 numbers behind the dot (ex: 0.04)
+                if ((rand(0, 10000)/100) <= $item->getItem()->getDropRate()) {
                     if ($user->getRemainingBagSpace() > 0) {
                         $newItemUser = (new OwnItem())->setItem($item->getItem())->setUser($user);
                         $user->addItem($newItemUser);
