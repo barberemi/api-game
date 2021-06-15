@@ -85,7 +85,9 @@ class ExplorationHelper
      */
     static protected function generateUser(User $user): void
     {
-        $health = $user->getSpecificCharacteristic($user->getCharacteristics(), 'health');
+        $characteristics = $user->getCharacteristics();
+
+        $health = $user->getSpecificCharacteristic($characteristics, 'health');
 
         /** @var OwnItem $equippedItem */
         foreach ($user->getEquippedItems() as $equippedItem) {

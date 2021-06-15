@@ -229,7 +229,7 @@ class UserController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
         try {
-            $exploration = $this->userManager->generateExploration($data, $idUser, $idMap);
+            $exploration = $this->userManager->generateExploration($idUser, $idMap, $data);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }

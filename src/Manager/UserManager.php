@@ -2,6 +2,8 @@
 
 namespace App\Manager;
 
+use App\Entity\Academy;
+use App\Entity\BindCharacteristic;
 use App\Entity\Item;
 use App\Entity\Map;
 use App\Entity\OwnItem;
@@ -77,17 +79,17 @@ class UserManager extends AbstractManager
     }
 
     /**
-     * @param array $data
      * @param int $idUser
      * @param int $idMap
+     * @param null|array $data
      *
      * @return null|array
      *
      * @throws \Exception
      */
-    public function generateExploration(array $data, int $idUser, int $idMap): ?array
+    public function generateExploration(int $idUser, int $idMap, ?array $data): ?array
     {
-        if (!array_key_exists('type', $data)) {
+        if (!$data || !array_key_exists('type', $data)) {
             $data['type'] = 'treasure';
         }
 
@@ -104,6 +106,13 @@ class UserManager extends AbstractManager
         }
 
         $exploration = ExplorationHelper::generate($data['type'], $user, $map);
+
+        /** TODO : check this fuck - change base characteristics from academy */
+        /** @var BindCharacteristic $charac */
+        foreach ($user->getAcademy()->getBaseCharacteristics() as $charac) {
+            $this->em->refresh($charac);
+        }
+
         $user->setExploration($exploration);
         $user = $this->em->getRepository(User::class)->softUpdate($user);
 

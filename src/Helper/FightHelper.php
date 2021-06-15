@@ -29,6 +29,8 @@ class FightHelper
      */
     static protected function generateUser(Fight $fight): array
     {
+        $characteristics = $fight->getUser()->getCharacteristics();
+
         $health = $fight->getUser()->getExploration()
             ? $fight->getUser()->getExploration()[array_key_last($fight->getUser()->getExploration())]['hp']
             : 100;
@@ -37,7 +39,7 @@ class FightHelper
             : 100;
 
         if ($fight->getMonster()->isGuildBoss()) {
-            $health = $fight->getUser()->getSpecificCharacteristic($fight->getUser()->getCharacteristics(), 'health');
+            $health = $fight->getUser()->getSpecificCharacteristic($characteristics, 'health');
 
             /** @var OwnItem $equippedItem */
             foreach ($fight->getUser()->getEquippedItems() as $equippedItem) {
@@ -55,7 +57,7 @@ class FightHelper
             'level'  => $fight->getUser()->getLevel(),
             'hp'     => $health,
             'maxHp'  => $maxHealth,
-            'skills' => FightHelper::getSkills($fight->getUser()),
+            'skills' => FightHelper::getSkills($fight->getUser(), $characteristics),
         ];
     }
 
@@ -65,7 +67,8 @@ class FightHelper
      */
     static protected function generateMonster(Fight $fight): array
     {
-        $health = $fight->getMonster()->getSpecificCharacteristic($fight->getMonster()->getCharacteristics(), 'health');
+        $characteristics = $fight->getMonster()->getCharacteristics();
+        $health = $fight->getMonster()->getSpecificCharacteristic($characteristics, 'health');
 
         return [
             'id'     => $fight->getMonster()->getId(),
@@ -74,24 +77,34 @@ class FightHelper
             'level'  => $fight->getMonster()->getLevel(),
             'hp'     => $health,
             'maxHp'  => $health,
-            'skills' => FightHelper::getSkills($fight->getMonster()),
+            'skills' => FightHelper::getSkills($fight->getMonster(), $characteristics),
             'isGuildBoss' => $fight->getMonster()->isGuildBoss(),
         ];
     }
 
     /**
      * @param User|Monster $entity
+     * @param mixed $characteristics
      * @return array
      */
-    static protected function getSkills($entity): array
+    static protected function getSkills($entity, $characteristics): array
     {
         $results = [];
+
         /** @var Skill $skill */
         foreach ($entity->getSkills() as $skill) {
-            $amount = $skill->getAmount() + (
+            $amount = 0;
+            if (get_class($entity) === User::class) {
+                /** @var OwnItem $equippedItem */
+                foreach ($entity->getEquippedItems() as $equippedItem) {
+                    $amount = $amount + $entity->getSpecificCharacteristic($equippedItem->getItem()->getCharacteristics(), $skill->getScaleType());
+                }
+            }
+
+            $amount = round($skill->getAmount() + (
                 $skill->getScaleType()
-                ? $skill->getRate() * $entity->getSpecificCharacteristic($entity->getCharacteristics(), $skill->getScaleType())
-                : 0);
+                ? $skill->getRate() * ($entity->getSpecificCharacteristic($characteristics, $skill->getScaleType()) + $amount)
+                : 0));
 
             $results[] = [
                 'id'             => $skill->getId(),
