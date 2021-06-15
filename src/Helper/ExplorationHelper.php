@@ -73,6 +73,28 @@ class ExplorationHelper
             for ($i = 2; $i <= $map->getNbFloors() + 1; $i++) {
                 ExplorationHelper::generateFloor($i, $map);
             }
+            // Put arene on first building
+            for ($i = 0; $i < count(ExplorationHelper::$floors[count(ExplorationHelper::$floors)]); $i++) {
+                ExplorationHelper::$floors[count(ExplorationHelper::$floors)][$i]['type'] = 'arene';
+
+                if(array_key_exists('item', ExplorationHelper::$floors[count(ExplorationHelper::$floors)][$i])) {
+                    unset(ExplorationHelper::$floors[count(ExplorationHelper::$floors)][$i]['item']);
+                }
+                if(array_key_exists('cost', ExplorationHelper::$floors[count(ExplorationHelper::$floors)][$i])) {
+                    unset(ExplorationHelper::$floors[count(ExplorationHelper::$floors)][$i]['cost']);
+                }
+
+                $monsters = [];
+                /** @var Monster $monster */
+                foreach ($map->getMonsters() as $monster) {
+                    if (!$monster->isBoss() && !$monster->isGuildBoss()) {
+                        $monsters[] = $monster->getId();
+                    }
+                }
+                if (count($monsters) > 0) {
+                    ExplorationHelper::$floors[count(ExplorationHelper::$floors)][$i]['monster'] = $monsters[rand(0, count($monsters) - 1)];
+                }
+            }
             ExplorationHelper::$floors[][] = ExplorationHelper::generateRoom(count(ExplorationHelper::$floors) + 1, 1, 1);
             ExplorationHelper::generateUser($user);
         }
@@ -195,8 +217,9 @@ class ExplorationHelper
                 }
             }
             if (count($items) > 0) {
-                $result['item'] = $items[rand(0, count($items) - 1)]->getId();
-                $result['cost'] = $items[rand(0, count($items) - 1)]->getCost();
+                $rand = rand(0, count($items) - 1);
+                $result['item'] = $items[$rand]->getId();
+                $result['cost'] = $items[$rand]->getCost();
             }
         }
 
@@ -300,14 +323,14 @@ class ExplorationHelper
      */
     static protected function getRoomType(int $position): string
     {
-        $types = ['arene-boss', 'arene', 'dealer', 'healer'];
+        $types = ['arene-boss', 'arene', 'arene', 'dealer', 'healer'];
 
         if (count(ExplorationHelper::$floors) === 0) return $types[0]; // Boss
         if (
             ($position === 1 && count(ExplorationHelper::$floors) === 1) ||
             ($position !== 1 && count(ExplorationHelper::$floors) === 2)
-        ) return $types[3]; // Healer after boss
+        ) return $types[4]; // Healer after boss
 
-        return $types[ExplorationHelper::$randomRoomsByFloor ? rand(1, 3) : 1];  // Testing without random
+        return $types[ExplorationHelper::$randomRoomsByFloor ? rand(1, 4) : 1];  // Testing without random
     }
 }
