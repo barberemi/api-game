@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -64,6 +65,19 @@ class Map
      * @Serializer\Groups({"create", "update"})
      */
     protected $nbFloors = 10;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("string")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $image;
 
     /**
      * @var ArrayCollection
@@ -259,6 +273,25 @@ class Map
     public function setItems(Collection $items): self
     {
         $this->items = $items;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage(): string
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string $image
+     * @return Map
+     */
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }
