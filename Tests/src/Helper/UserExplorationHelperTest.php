@@ -26,7 +26,7 @@ class UserExplorationHelperTest extends TestCase
         // Academy
         $bind    = (new BindCharacteristic())->setId(1)->setAmount(200)->setCharacteristic($health);
         $bind3   = (new BindCharacteristic())->setId(3)->setAmount(50)->setCharacteristic($health);
-        $academy = (new Academy())->setId(1)->setName('warrior')->setLabelLight("Guerrier")->setBaseCharacteristics(new ArrayCollection([$bind]))->setCharacteristics(new ArrayCollection([$bind3]));
+        $academy = (new Academy())->setId(1)->setName('warrior')->setLabel("Guerrier")->setBaseCharacteristics(new ArrayCollection([$bind]))->setCharacteristics(new ArrayCollection([$bind3]));
 
         // Item
         $bind2 = (new BindCharacteristic())->setId(2)->setAmount(200)->setCharacteristic($health);
