@@ -118,6 +118,10 @@ class AttackCommand extends Command
 
             $this->logger->info(sprintf('Guild %s attacked by %d monsters.', $guild->getName(), $guild->getLastTrueAttack()));
 
+            if ($guild->getDefense() < $guild->getLastTrueAttack()) {
+
+            }
+
             if ($count % 30 === 0) {
                 $this->entityManager->flush();
             }
