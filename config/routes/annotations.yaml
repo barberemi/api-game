@@ -3,6 +3,10 @@ controllers:
     type: annotation
     prefix: /api
 
+homeController:
+    resource: ../../src/Controller/HomeController.php
+    type: annotation
+
 kernel:
     resource: ../../src/Kernel.php
     type: annotation
