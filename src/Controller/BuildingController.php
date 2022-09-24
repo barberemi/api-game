@@ -110,6 +110,7 @@ class BuildingController extends AbstractController
      *         type="object",
      *         @SWG\Property(property="name", type="string", example="caserne"),
      *         @SWG\Property(property="label", type="string", example="Caserne"),
+     *         @SWG\Property(property="description", type="string", example="Description de la caserne"),
      *     )
      * )
      * @SWG\Tag(name="buildings")
