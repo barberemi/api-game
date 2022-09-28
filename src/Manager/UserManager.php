@@ -59,7 +59,7 @@ class UserManager extends AbstractManager
 
         if (!$exist) throw new \Exception(sprintf('User id %d doesnt exists.', $id));
 
-        if(array_key_exists('canAction', $data) && $exist->isCanAction() && $exist->getGuild() && $exist->getJob()) {
+        if (array_key_exists('canAction', $data) && $exist->isCanAction() && $exist->getGuild() && $exist->getJob()) {
             if ($exist->getJob()->getName() === 'scout') {
                 // Scout
                 AttackHelper::estimate($exist->getGuild());
@@ -174,9 +174,9 @@ class UserManager extends AbstractManager
             throw new \Exception('User with this id doesnt exists.');
         }
 
-        $friend = $this->em->getRepository(User::class)->findOneBy(['email' => $data['email']]);
+        $friend = $this->em->getRepository(User::class)->findOneBy(['name' => $data['name']]);
         if (!$friend) {
-            throw new \Exception('User with this email doesnt exists.');
+            throw new \Exception('User with this name doesnt exists.');
         }
 
         if (!array_key_exists('type', $data)) {

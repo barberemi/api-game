@@ -38,9 +38,9 @@ class GuildManager extends AbstractManager
             throw new \Exception('Guild with this id doesnt exists.');
         }
 
-        $member = $this->em->getRepository(User::class)->findOneBy(['email' => $data['email']]);
+        $member = $this->em->getRepository(User::class)->findOneBy(['name' => $data['name']]);
         if (!$member) {
-            throw new \Exception('User with this email doesnt exists.');
+            throw new \Exception('User with this name doesnt exists.');
         }
         if ($member->getGuild() && $member->getGuild() !== $guild) {
             throw new \Exception('User already have a guild.');
@@ -51,7 +51,8 @@ class GuildManager extends AbstractManager
         }
 
         if ($data['type'] === "add") {
-            if ($user->getRole() !== 'ROLE_ADMIN' &&
+            if (
+                $user->getRole() !== 'ROLE_ADMIN' &&
                 $user->getGuildRole() !== User::MASTER_GUILD_ROLE &&
                 $user->getGuildRole() !== User::OFFICER_GUILD_ROLE
             ) {
@@ -63,7 +64,8 @@ class GuildManager extends AbstractManager
                 $this->em->getRepository(User::class)->softUpdate($member);
             }
         } else {
-            if ($user->getRole() !== 'ROLE_ADMIN' &&
+            if (
+                $user->getRole() !== 'ROLE_ADMIN' &&
                 $user->getGuildRole() !== User::MASTER_GUILD_ROLE &&
                 $user->getGuildRole() !== User::OFFICER_GUILD_ROLE &&
                 $user !== $member

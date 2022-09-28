@@ -250,7 +250,7 @@ class GuildController extends AbstractController
      *     description="JSON payload.",
      *     @SWG\Schema(
      *         type="object",
-     *         @SWG\Property(property="email", type="string", example="phil@gmail.com"),
+     *         @SWG\Property(property="name", type="string", example="PhilouDu32"),
      *     )
      * )
      * @SWG\Tag(name="guilds")
