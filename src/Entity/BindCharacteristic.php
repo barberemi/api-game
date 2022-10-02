@@ -33,7 +33,7 @@ class BindCharacteristic
      *
      * @ORM\Column(type="integer")
      *
-     * @Assert\GreaterThanOrEqual(1)
+     * @Assert\GreaterThanOrEqual(0)
      *
      * @Serializer\Expose
      * @Serializer\Type("integer")
