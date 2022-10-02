@@ -407,7 +407,7 @@ class User implements UserInterface
                 /** @var BindCharacteristic $byLevelCharacteristic */
                 foreach ($this->getAcademy()->getCharacteristics() as $byLevelCharacteristic) {
                     if ($baseCharacteristic->getCharacteristic() === $byLevelCharacteristic->getCharacteristic()) {
-                        $baseCharacteristic->setAmount($baseCharacteristic->getAmount() + $byLevelCharacteristic->getAmount() * $this->getLevel());
+                        $baseCharacteristic->setAmount(intval(($byLevelCharacteristic->getAmount() / 0.077) * ((1 + 0.077) ** $this->getLevel())));
                     }
                 }
             }
@@ -668,7 +668,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return $this->getEmail();//Use by JWT for authenticate user
+        return $this->getEmail(); //Use by JWT for authenticate user
     }
 
     /**
