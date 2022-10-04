@@ -139,6 +139,17 @@ class Guild
     protected $downDraw = 0;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("integer")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $seasonRecord = 0;
+
+    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="guild", cascade={"persist"})
@@ -618,6 +629,25 @@ class Guild
     public function setDownDraw(int $downDraw): self
     {
         $this->downDraw = $downDraw;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSeasonRecord(): int
+    {
+        return $this->seasonRecord;
+    }
+
+    /**
+     * @param int $seasonRecord
+     * @return Guild
+     */
+    public function setSeasonRecord(int $seasonRecord): self
+    {
+        $this->seasonRecord = $seasonRecord;
 
         return $this;
     }
