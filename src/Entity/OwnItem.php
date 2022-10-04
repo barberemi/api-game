@@ -100,6 +100,46 @@ class OwnItem
     protected $map;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Season", inversedBy="itemsRewarded1")
+     *
+     * @Serializer\MaxDepth(3)
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Season")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $seasonReward1;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Season", inversedBy="itemsRewarded2")
+     *
+     * @Serializer\MaxDepth(3)
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Season")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $seasonReward2;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Season", inversedBy="itemsRewarded3")
+     *
+     * @Serializer\MaxDepth(3)
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Season")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $seasonReward3;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Season", inversedBy="itemsRewarded4")
+     *
+     * @Serializer\MaxDepth(3)
+     * @Serializer\Expose
+     * @Serializer\Type("App\Entity\Season")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $seasonReward4;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Item")
      *
      * @Serializer\Expose
@@ -281,6 +321,86 @@ class OwnItem
     public function setMap($map): self
     {
         $this->map = $map;
+
+        return $this;
+    }
+
+    /**
+     * @return Season
+     */
+    public function getSeasonReward1(): Season
+    {
+        return $this->seasonReward1;
+    }
+
+    /**
+     * @param $seasonReward1
+     *
+     * @return OwnItem
+     */
+    public function setSeasonReward1($seasonReward1): self
+    {
+        $this->seasonReward1 = $seasonReward1;
+
+        return $this;
+    }
+
+    /**
+     * @return Season
+     */
+    public function getSeasonReward2(): Season
+    {
+        return $this->seasonReward2;
+    }
+
+    /**
+     * @param $seasonReward2
+     *
+     * @return OwnItem
+     */
+    public function setSeasonReward2($seasonReward2): self
+    {
+        $this->seasonReward2 = $seasonReward2;
+
+        return $this;
+    }
+
+    /**
+     * @return Season
+     */
+    public function getSeasonReward3(): Season
+    {
+        return $this->seasonReward3;
+    }
+
+    /**
+     * @param $seasonReward3
+     *
+     * @return OwnItem
+     */
+    public function setSeasonReward3($seasonReward3): self
+    {
+        $this->seasonReward3 = $seasonReward3;
+
+        return $this;
+    }
+
+    /**
+     * @return Season
+     */
+    public function getSeasonReward4(): Season
+    {
+        return $this->seasonReward4;
+    }
+
+    /**
+     * @param $seasonReward4
+     *
+     * @return OwnItem
+     */
+    public function setSeasonReward4($seasonReward4): self
+    {
+        $this->seasonReward4 = $seasonReward4;
 
         return $this;
     }
