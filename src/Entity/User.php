@@ -482,11 +482,6 @@ class User implements UserInterface
     {
         $defense = 1 * $this->getLevel();
 
-        // Defender job level give * 2 defense
-        if ($this->getJob() && $this->getJob()->getName() === "defender") {
-            $defense = $defense * 2;
-        }
-
         // Get all user constructions defense
         /** @var Construction $construction */
         foreach ($this->getConstructions() as $construction) {
@@ -496,6 +491,11 @@ class User implements UserInterface
             ) {
                 $defense = $defense + $construction->getBuilding()->getAmount();
             }
+        }
+
+        // Defender job level give * 2 defense
+        if ($this->getJob() && $this->getJob()->getName() === "defender") {
+            $defense = $defense * 2;
         }
 
         return $defense;
