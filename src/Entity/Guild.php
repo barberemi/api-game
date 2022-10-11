@@ -147,7 +147,7 @@ class Guild
      * @Serializer\Type("integer")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $seasonRecord = 0;
+    protected $seasonRecord = 1;
 
     /**
      * @var int
@@ -158,7 +158,7 @@ class Guild
      * @Serializer\Type("integer")
      * @Serializer\Groups({"create", "update"})
      */
-    protected $seasonDay = 0;
+    protected $seasonDay = 1;
 
     /**
      * @var ArrayCollection
