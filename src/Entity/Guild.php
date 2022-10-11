@@ -141,7 +141,7 @@ class Guild
     /**
      * @var int
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default" : 1})
      *
      * @Serializer\Expose
      * @Serializer\Type("integer")
@@ -152,7 +152,7 @@ class Guild
     /**
      * @var int
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default" : 1})
      *
      * @Serializer\Expose
      * @Serializer\Type("integer")

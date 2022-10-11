@@ -128,9 +128,19 @@ class AttackCommand extends Command
                 $guild->setPosition(0);
                 // Reset du boss de guild et des fights en cours
                 $guild->setMonster(null);
+                // Mise a 0 du champ User pour le message de défaite de la guilde
+                /** @var User $user */
+                foreach ($guild->getUsers() as $user) {
+                    $user->setHasSurvivedToAttack(0);
+                }
             } else {
                 // Ajout de 1 au compteur de jour de saison
                 $guild->setSeasonDay($guild->getSeasonDay() + 1);
+                // Mise a 1 du champ User pour le message de victoire de la guilde
+                /** @var User $user */
+                foreach ($guild->getUsers() as $user) {
+                    $user->setHasSurvivedToAttack(1);
+                }
             }
             // Check si on a dépassé le record de saison
             if ($guild->getSeasonDay() > $guild->getSeasonRecord()) {
@@ -177,6 +187,13 @@ class AttackCommand extends Command
                     usort($guilds, function ($guild1, $guild2) {
                         return $guild2->getSeasonRecord() <=> $guild1->getSeasonRecord();
                     });
+
+                    // Reset des compteurs de jours de saison des guildes
+                    /** @var Guild $aGuild */
+                    foreach ($guilds as $aGuild) {
+                        $aGuild->setSeasonDay(0);
+                        $aGuild->setSeasonRecord(0);
+                    }
 
                     // Check des objets à donner aux joueurs du TOP 1 des guildes
                     /** @var OwnItem $ownItem */

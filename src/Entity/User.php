@@ -194,6 +194,17 @@ class User implements UserInterface
     protected $canAction = true;
 
     /**
+     * @var null|bool
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     *
+     * @Serializer\Expose
+     * @Serializer\Type("boolean")
+     * @Serializer\Groups({"create", "update"})
+     */
+    protected $hasSurvivedToAttack;
+
+    /**
      * @var Collection
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Fight", mappedBy="user", cascade={"persist", "remove"})
@@ -1238,6 +1249,25 @@ class User implements UserInterface
     public function setCanAction(bool $canAction): self
     {
         $this->canAction = $canAction;
+
+        return $this;
+    }
+
+    /**
+     * @return null|bool
+     */
+    public function isHasSurvivedToAttack(): ?bool
+    {
+        return $this->hasSurvivedToAttack;
+    }
+
+    /**
+     * @param bool $hasSurvivedToAttack
+     * @return User
+     */
+    public function setHasSurvivedToAttack(bool $hasSurvivedToAttack): self
+    {
+        $this->hasSurvivedToAttack = $hasSurvivedToAttack;
 
         return $this;
     }
