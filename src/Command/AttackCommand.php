@@ -122,7 +122,7 @@ class AttackCommand extends Command
 
             if ($guild->getDefense() < $guild->getLastTrueAttack()) {
                 // Reset le nombre de jour dans la saison
-                $guild->setSeasonDay(0);
+                $guild->setSeasonDay(1);
                 // Reset de l'exploration et de la position de guilde
                 $guild->setExploration(null);
                 $guild->setPosition(0);
