@@ -375,16 +375,17 @@ class User implements UserInterface
      */
     public function getXpToNextLevel(): int
     {
-        return LevelHelper::xpToLevel($this->getLevel() + 1);
+        return LevelHelper::xpToLevel($this->getLevel());
     }
 
     /**
      * @Serializer\VirtualProperty()
      * @return int
      */
-    public function getXpToActualLevel(): int
+    public function getXpMissingOnActualLevel(): int
     {
-        return LevelHelper::xpToLevel($this->getLevel());
+        return
+            LevelHelper::xpMissingOnActualLevel($this->getExperience());
     }
 
     /**

@@ -5,8 +5,8 @@ namespace App\Helper;
 
 class LevelHelper
 {
-    const EXPONENTIAL = 1.5;
-    const BASEXP = 1000;
+    const EXPONENTIAL = 1.15;
+    const BASEXP = 100;
 
     /**
      * Get the Level from Xp given.
@@ -15,16 +15,38 @@ class LevelHelper
      *
      * @return int
      */
-    static public function levelFromXp(int $xp): int
+    static public function levelFromXp(int $xpGlobale): int
     {
-        if ($xp < self::BASEXP) return 0;
+        if ($xpGlobale < self::BASEXP) return 1;
 
         for ($i = 1; $i <= 100; $i++) {
-            $xpNeeded = round(self::BASEXP * ($i ** self::EXPONENTIAL));
+            $xpNeeded = round(self::BASEXP / (self::EXPONENTIAL - 1) * self::EXPONENTIAL ** $i - self::BASEXP / (self::EXPONENTIAL - 1));
 
-            if ($xp == $xpNeeded) return $i;
+            if ($xpGlobale == $xpNeeded) return $i + 1;
 
-            if ($xp < $xpNeeded) return $i-1;
+            if ($xpGlobale < $xpNeeded) return $i;
+        }
+
+        return 100;
+    }
+
+    /**
+     * Get the Level from Xp given.
+     *
+     * @param int $xp
+     *
+     * @return int
+     */
+    static public function xpMissingOnActualLevel(int $xpGlobale): int
+    {
+        if ($xpGlobale < self::BASEXP) return self::BASEXP - $xpGlobale;
+
+        for ($i = 1; $i <= 100; $i++) {
+            $xpNeeded = round(self::BASEXP / (self::EXPONENTIAL - 1) * self::EXPONENTIAL ** $i - self::BASEXP / (self::EXPONENTIAL - 1));
+
+            if ($xpGlobale == $xpNeeded) return self::xpToLevel($i + 1);
+
+            if ($xpGlobale < $xpNeeded) return $xpNeeded - $xpGlobale;
         }
 
         return 100;
@@ -39,7 +61,7 @@ class LevelHelper
      */
     static public function xpToLevel(int $lvl): int
     {
-        return round(self::BASEXP * ($lvl ** self::EXPONENTIAL));
+        return round(self::BASEXP * (self::EXPONENTIAL ** ($lvl - 1)));
     }
 
     /**
@@ -51,7 +73,7 @@ class LevelHelper
      */
     static public function skillPointsOfLevel(int $lvl): int
     {
-        if ($lvl < 1) {
+        if ($lvl <= 1) {
             return 1;
         } else if ($lvl < 4) {
             return 2;
@@ -73,7 +95,7 @@ class LevelHelper
      */
     static public function woodsByLevel(int $lvl): int
     {
-        if ($lvl < 1) {
+        if ($lvl <= 1) {
             return 1;
         } else if ($lvl < 10) {
             return 2;
